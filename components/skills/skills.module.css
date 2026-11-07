@@ -121,7 +121,7 @@
   padding: var(--space-3);
   max-height: 24rem;
   overflow: auto;
-  background: var(--surface);
+  background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   font-size: 0.85rem;
@@ -146,7 +146,7 @@
   padding: var(--space-4);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: var(--card);
   transition: border-color var(--ease), transform var(--ease);
 }
 .item:hover { border-color: var(--rule-strong); }

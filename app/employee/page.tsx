@@ -5,7 +5,7 @@ import { EmployeeFlow } from "@/components/employee/EmployeeFlow";
 import { AOIFE_ID } from "@/data/frame";
 import { recommend } from "@/engine/recommend";
 
-export const metadata: Metadata = { title: "Frame Next: what to hand to AI" };
+export const metadata: Metadata = { title: "Handoff: what to hand to AI" };
 // Today's date and the data are read per request.
 export const dynamic = "force-dynamic";
 

@@ -64,7 +64,7 @@ describe("AI Lead view data", () => {
 describe("AI Lead page", () => {
   it("renders all four panels, the export button and the question box", () => {
     const html = renderToStaticMarkup(<AiLeadPage />);
-    for (const title of ["Adoption by team", "Frame against Ireland and the EU", "Cost per task", "AI literacy log"]) {
+    for (const title of ["Adoption by team", "Your firm against Ireland and the EU", "Cost per task", "AI literacy log"]) {
       expect(html).toContain(`aria-label="${title}"`);
     }
     expect(html).toContain("Export CSV");

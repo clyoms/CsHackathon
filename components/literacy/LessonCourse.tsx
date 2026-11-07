@@ -1,7 +1,6 @@
 "use client";
 // The 4D course: four lessons, each with an exercise and a "Mark lesson complete" button
 // that saves to /api/literacy and updates the progress line without a reload.
-import Link from "next/link";
 import { useState } from "react";
 import type { LiteracyLogEntry } from "@/contract/types";
 import { LESSONS, LITERACY_SOURCE } from "@/catalogue/literacy/lessons";
@@ -47,10 +46,8 @@ export function LessonCourse({
 
   return (
     <main className={skills.page}>
-      <p className={skills.kicker}>
-        <Link href="/">Frame Next</Link>
-      </p>
-      <h1 className={skills.title}>AI literacy: the 4D course</h1>
+      <p className={skills.kicker}>AI fluency</p>
+      <h1 className={skills.title}>AI fluency: the 4Ds</h1>
       <p className={skills.lead}>
         Four short lessons on working well with AI: Delegation, Description, Discernment and Diligence. Each takes about
         two minutes to read and ends with one exercise from accounting work. Based on{" "}

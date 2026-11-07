@@ -61,13 +61,13 @@ export function BenchmarkChart({ frameShare, benchmarks }: { frameShare: number;
   const h = rows.length * ROW + 8;
   return (
     <figure className={styles.figure}>
-      <svg viewBox={`0 0 ${W} ${h}`} className={styles.chart} role="img" aria-label="Frame against Ireland and the EU">
+      <svg viewBox={`0 0 ${W} ${h}`} className={styles.chart} role="img" aria-label="Your firm against Ireland and the EU">
         {rows.map((r, i) => {
           const y = i * ROW + 8;
           const w = Math.max(2, (BAR_W * r.percent) / max);
           return (
             <g key={r.label} className={styles.bar} tabIndex={0} aria-label={`${r.label}, ${r.year}: ${r.percent}%`}>
-              <title>{r.source ? `Source: ${r.source}` : "Frame data"}</title>
+              <title>{r.source ? `Source: ${r.source}` : "Your usage data"}</title>
               <line x1={0} x2={W} y1={y + ROW - 4} y2={y + ROW - 4} className={styles.rule} />
               <text x={0} y={y + 20} className={styles.label}>
                 {r.label.length > 20 ? `${r.label.slice(0, 19)}…` : r.label}

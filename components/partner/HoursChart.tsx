@@ -48,7 +48,7 @@ export function HoursChart({ rows }: { rows: PartnerRow[] }) {
       </ul>
       <figcaption className={styles.explain}>
         <span className={styles.keyUsed} aria-hidden /> hours inside budget <span className={styles.keyOver} aria-hidden /> hours over budget{" "}
-        <span className={styles.keyBudget} aria-hidden /> budget line. All hours are Frame data.
+        <span className={styles.keyBudget} aria-hidden /> budget line. All hours come from timesheets.
       </figcaption>
     </figure>
   );
