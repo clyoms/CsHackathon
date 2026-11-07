@@ -135,9 +135,12 @@ describe("holidays and adoption", () => {
 });
 
 describe("prices", () => {
-  it("starts with null prices, so the meter shows tokens only", () => {
+  it("holds the human-checked Sonnet 5.5 price and converts it to euros", () => {
     const p = loadPrices();
-    expect(p.models["claude-sonnet-5-5"]).toEqual({ inputPerMTok: null, outputPerMTok: null });
-    expect(priceFor("claude-sonnet-5-5", p)).toEqual(NO_PRICE);
+    expect(p.models["claude-sonnet-5-5"]).toEqual({ inputPerMTok: 2, outputPerMTok: 10 });
+    const eur = priceFor("claude-sonnet-5-5", p);
+    expect(eur).not.toEqual(NO_PRICE);
+    expect(eur.inputPerMTok).toBeCloseTo(2 * p.usdToEur!, 6);
+    expect(eur.outputPerMTok).toBeCloseTo(10 * p.usdToEur!, 6);
   });
 });
