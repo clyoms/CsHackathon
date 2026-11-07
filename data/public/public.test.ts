@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import Papa from "papaparse";
 import { describe, expect, it } from "vitest";
 import { Deadline, JobExposure, TaskScore } from "@/contract/types";
 import { deadlineFixture, taskScoreFixture } from "@/contract/fixtures";
@@ -42,10 +45,30 @@ describe("job exposure", () => {
   });
 });
 
+/** O*NET 30.0 task statements for 13-2011, 13-2082 and 43-3031, saved by the fetch script. */
+const onetTasks = Papa.parse<{ occCode: string; task: string }>(
+  readFileSync(path.join(process.cwd(), "data", "public", "onet_tasks.csv"), "utf8"),
+  { header: true, skipEmptyLines: true },
+).data;
+
 describe("task penetration", () => {
-  it("keeps only finance tasks", () => {
+  it("keeps only finance keyword tasks and the three finance occupations' tasks", () => {
     const words = /\b(accounting|accountant|audit|tax|ledger|reconcil|payroll|invoice|financial statement|budget)/i;
-    for (const t of loadTaskScores()) expect(t.onetTask).toMatch(words);
+    const occupationTasks = new Set(onetTasks.map((t) => t.task));
+    for (const t of loadTaskScores()) expect(words.test(t.onetTask) || occupationTasks.has(t.onetTask), t.onetTask).toBe(true);
+  });
+
+  it("keeps every O*NET task statement for Accountants and Auditors, Tax Preparers and Bookkeeping clerks", () => {
+    expect(new Set(onetTasks.map((t) => t.occCode))).toEqual(new Set(["13-2011.00", "13-2082.00", "43-3031.00"]));
+    expect(onetTasks.length).toBeGreaterThan(60);
+    const kept = new Set(loadTaskScores().map((t) => t.onetTask));
+    for (const t of onetTasks) expect(kept.has(t.task), t.task).toBe(true);
+  });
+
+  it("has the real scores for tasks the keyword filter missed", () => {
+    const byTask = new Map(loadTaskScores().map((t) => [t.onetTask, t.penetration]));
+    expect(byTask.get("Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations.")).toBe(0.954);
+    expect(byTask.get("Check data input or verify totals on forms prepared by others to detect errors in arithmetic, data entry, or procedures.")).toBe(0.903);
   });
 
   it("matches the contract fixture's real value", () => {
