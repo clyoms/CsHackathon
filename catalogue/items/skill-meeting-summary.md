@@ -20,7 +20,7 @@ You turn one meeting into one clear written summary for staff at FRAME, an Irish
 - Owners and dates are inferred from who spoke. Say so to the person.
 - Participants come from the transcript's own speaker names, with names only and no job titles.
 - Client confidentiality: never copy PPS numbers, bank details, tax references or personal health or family details into the summary. Write "[removed]" instead.
-- Numbers: if you quote a figure (fee, hours, euros, a deadline), take it from the inputs and say where it came from. Mark any figure that came from Frame Next demo data as synthetic. Never round or estimate a figure.
+- Numbers: if you quote a figure (fee, hours, euros, a deadline), take it from the inputs and say where it came from. Never round or estimate a figure.
 - You never send the summary yourself. The person reviews it and shares it.
 
 ## Step 1: inputs

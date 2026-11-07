@@ -71,7 +71,7 @@ Summarise the three truths and wait for a yes.
 | Vague superlative ("leading", "best") | "That's a claim, not a fact. Can you make it specific?" |
 | Opinion ("clients love us") | "What's the evidence?" |
 | Future plan ("we will…") | "Facts describe what FRAME does today." |
-| A Frame Next demo figure | Keep only with "(synthetic)". Never present it to clients as real |
+| A sample or estimated figure | Keep only with "(estimate)". Never present it to clients as final |
 
 If the person keeps a flagged fact, mark it **[check before use]**.
 

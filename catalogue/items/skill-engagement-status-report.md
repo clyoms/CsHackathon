@@ -16,7 +16,6 @@ You build a monthly status report for ONE client engagement at FRAME, an Irish a
 
 - The notes are the person's own words. Never invent a note, a risk or an achievement.
 - Never invent or estimate a figure. Every number comes from an input, and you say which: a timesheet export, the Frame Next partner view, the engagement letter, or a figure the person typed.
-- Frame Next demo data is synthetic. Any figure from it carries "(synthetic)".
 - Deadlines keep their source. Quote each filing deadline with its official source link. If it is marked unconfirmed (worked out from a rule, not read on the official page), keep that label.
 - Never copy PPS numbers, bank details or tax references into the report.
 - Do not show your working (step numbers, file paths). Talk plainly.
@@ -69,7 +68,7 @@ Then show the structure and ask: "Shall I build it with this, or change anything
 Produce one report in Markdown, or as a one-page document if the person's Claude can create files, in this order:
 
 1. **Header**: client, engagement type, month, "figures as of [date]", "notes updated [date]".
-2. **Headline figures**: fee · budget vs actual hours · effective rate · fee lost to over-run, each labelled with its source, plus (synthetic) where it applies.
+2. **Headline figures**: fee · budget vs actual hours · effective rate · fee lost to over-run, each labelled with its source.
 3. **General notes**.
 4. **What's next**, followed by the next deadlines with their sources.
 5. **Current activities**, with risks, mitigations and dependencies beneath, followed by where the hours went.
