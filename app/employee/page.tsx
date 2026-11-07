@@ -3,7 +3,7 @@ import { getWorld, linesForAnswers, engagementsFor } from "@/app/api/ask/world";
 import { ALL_CLIENTS, type Choices } from "@/components/employee/choices";
 import { EmployeeFlow } from "@/components/employee/EmployeeFlow";
 import { AOIFE_ID } from "@/data/frame";
-import { DEFAULT_HOURS_BACK_FACTOR, recommend } from "@/engine/recommend";
+import { recommend } from "@/engine/recommend";
 
 export const metadata: Metadata = { title: "Frame Next: what to hand to AI" };
 // Today's date and the data are read per request.
@@ -28,5 +28,5 @@ export default function EmployeePage() {
     if (rec) choices[answer] = rec;
   }
 
-  return <EmployeeFlow staff={staff} choices={choices} hoursBackFactor={DEFAULT_HOURS_BACK_FACTOR} />;
+  return <EmployeeFlow staff={staff} choices={choices} />;
 }
