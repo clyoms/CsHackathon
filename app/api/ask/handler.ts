@@ -4,11 +4,15 @@
 // template filled from the same numbers, and the meter reads zero tokens.
 import Anthropic from "@anthropic-ai/sdk";
 import { AskResponse, type AskRequest } from "@/contract/api";
-import type { SourcedNumber } from "@/contract/types";
+import type { Recommendation, SourcedNumber } from "@/contract/types";
+import { loadRisk } from "@/catalogue";
+import type { AthenaOutcome, Deadline } from "@/engine/contract";
+import { extractContext } from "@/engine/athena/triage";
+import { parseNamedDeadline, pickDeadline, taskTopic } from "@/engine/deadline";
 import { MODEL, NO_PRICE, loadPrice, readingFromUsage, type EuroPrice } from "@/engine/meter";
-import { HOURS_BACK_ASSUMPTION, estimateTasks, rankByMoneyLost } from "@/engine/productivity";
+import { estimateTasks, rankByMoneyLost } from "@/engine/productivity";
 import { LOW_VERIFY_RATE, daysBetween, recommend, verifiedRate } from "@/engine/recommend";
-import { linesForAnswers, type World } from "./world";
+import { engagementsFor, linesForAnswers, type World } from "./world";
 
 export const MAX_ANSWER_WORDS = 80;
 const SYNTHETIC_SOURCE = "synthetic Frame data";
@@ -50,6 +54,10 @@ export interface Findings {
   numbers: SourcedNumber[];
   /** Fixed answer built from the numbers, used with no key. At most 80 words. */
   template: string;
+  /** Employee view only: what Athena's answers led to. */
+  outcome?: AthenaOutcome;
+  /** Employee view only: the chosen item and the deadline to count down to. */
+  card?: { recommendation: Recommendation; deadline: Deadline };
 }
 
 /** Runs the engine that matches the view and returns its numbers. */
@@ -67,40 +75,72 @@ function employeeFindings(req: AskRequest, world: World): Findings {
   // If Athena asked which client, keep only that client's lines.
   const { chosen, lines } = linesForAnswers(world, staff.id, req.athenaAnswers);
 
-  const rec = recommend({
-    staff,
-    lines,
-    engagements: world.engagements,
-    deadlines: world.deadlines,
-    taskScores: world.taskScores,
-    catalogue: world.catalogue,
-    usage: world.usage,
-    today: world.today,
-  });
+  // What the person asked for: client, task, goal, risk tolerance and any date they named.
+  const answers = req.athenaAnswers.map((a) => a.answer);
+  const context = extractContext(req.question, answers, engagementsFor(world, staff.id));
+  if (chosen && !context.client) context.client = chosen.client;
+
+  // A named task decides the item on its own: the wanted output ("a table") must not pull in an
+  // item for a different task. Someone who wants the safest start gets the lowest-risk item, not a task match.
+  const recContext =
+    context.riskTolerance === "low"
+      ? { client: context.client, riskTolerance: context.riskTolerance }
+      : context.task
+        ? { ...context, goal: undefined }
+        : context;
+  const rec = recommend({ ...world, staff, lines, context: recContext, risk: loadRisk() });
+  // The user's own date wins. A named task with its own deadline (VAT, CT1) comes next.
+  const named = parseNamedDeadline([req.question, ...answers].join(" "), world.today);
+  // If the person's date is a known filing date (18 November is ROS pay and file), use that deadline and its source.
+  const sameDay = named ? world.deadlines.find((d) => d.date === named.dueDate) : undefined;
+  const userDeadline: Deadline | null = sameDay
+    ? { label: sameDay.label, dueDate: sameDay.date, daysLeft: named!.daysLeft, source: "catalogue" }
+    : named;
+  const taskText = context.task ?? req.question;
+
   if (!rec) {
-    return {
-      numbers: [],
-      template: "I could not find logged work that a catalogue item covers yet. Log a week of timesheets and ask again.",
-    };
+    // Still count down to the date they named, so they know how long they have.
+    const what = context.task ? `for ${context.task}` : "for that task";
+    const left = userDeadline ? ` ${userDeadline.label}: ${countdownText(userDeadline.daysLeft)}.` : "";
+    const message = `There is no matching skill ${what} yet.${left}`;
+    return { numbers: [], template: message, outcome: { kind: "no_match", message } };
   }
 
+  const deadline: Deadline =
+    userDeadline ??
+    (taskTopic(taskText) ? pickDeadline(null, world.deadlines, taskText, world.today) : null) ?? {
+      label: rec.deadline.label,
+      dueDate: rec.deadline.date,
+      daysLeft: daysBetween(world.today, rec.deadline.date),
+      source: "catalogue",
+    };
+  const catalogueDeadline = world.deadlines.find((d) => d.label === deadline.label && d.date === deadline.dueDate);
+
   const scoreSource = world.taskScores.find((t) => rec.item.targetsOnetTasks.includes(t.onetTask))?.source;
-  const days = daysBetween(world.today, rec.deadline.date);
+  const days = deadline.daysLeft;
   const numbers: SourcedNumber[] = [
     { label: "Hours back before the deadline", value: rec.hoursBackEstimate, unit: "hours", source: scoreSource, synthetic: true },
     { label: "Euros back", value: rec.eurosBack, unit: "EUR", synthetic: true },
     { label: "AI-ready hours", value: rec.aiReadyHours, unit: "hours", source: scoreSource, synthetic: true },
-    { label: `Days to ${rec.deadline.label}`, value: days, unit: "days", source: rec.deadline.source, synthetic: false },
   ];
+  // A date the user named has no source page, so it rides on the response as `deadline`, not here.
+  if (catalogueDeadline) {
+    numbers.push({ label: `Days to ${deadline.label}`, value: days, unit: "days", source: catalogueDeadline.source, synthetic: false });
+  }
   const rate = verifiedRate(world.usage, staff.id);
   const check = rate !== null && rate < LOW_VERIFY_RATE && rec.item.verifyStep ? " It includes a step to check the output." : "";
-  const client = chosen ? ` for ${chosen.client}` : "";
+  const client = context.client ? ` for ${context.client}` : "";
+  const where = catalogueDeadline ? ` (${sourceName(catalogueDeadline.source)})` : "";
   const template =
     `Start with the ${rec.item.title} ${rec.item.kind}${client}. ` +
     `It could give you about ${rec.hoursBackEstimate} hour${rec.hoursBackEstimate === 1 ? "" : "s"} back (${euro(rec.eurosBack)}, ${SYNTHETIC_SOURCE}) ` +
-    `before ${rec.deadline.label} on ${dayMonth(rec.deadline.date)}, ${days} days away (${sourceName(rec.deadline.source)}).${check} ` +
-    `Hours estimate assumes 30% of AI-ready hours come back.`;
-  return { numbers, template };
+    `before ${deadline.label} on ${dayMonth(deadline.dueDate)}, ${days} day${days === 1 ? "" : "s"} away${where}.${check}`;
+  return { numbers, template, outcome: { kind: "skill" }, card: { recommendation: rec, deadline } };
+}
+
+function countdownText(days: number): string {
+  if (days <= 0) return "due today";
+  return `${days} day${days === 1 ? "" : "s"} to go`;
 }
 
 function partnerFindings(world: World): Findings {
@@ -192,7 +232,9 @@ async function writeWithClaude(
     `Question: ${req.question}`,
     answers ? `Their answers to clarifying questions:\n${answers}` : "",
     `Numbers:\n${facts}`,
-    `Assumption to mention if you use hours back: ${HOURS_BACK_ASSUMPTION}`,
+    f.card?.deadline.source === "user"
+      ? `Deadline the person named: ${f.card.deadline.label}, ${dayMonth(f.card.deadline.dueDate)}, ${f.card.deadline.daysLeft} days away (their own date, no source).`
+      : "",
     `A correct answer in the right style, for reference:\n${f.template}`,
   ]
     .filter(Boolean)
@@ -217,13 +259,26 @@ async function writeWithClaude(
 }
 
 /** Matches Usage in engine/contract.ts (T-2). Switch to that import once it is merged. */
-export type AskApiResponse = AskResponse & { offline: boolean; offlineReason?: string; tokensUsed: number };
+export type AskApiResponse = AskResponse & {
+  offline: boolean;
+  offlineReason?: string;
+  tokensUsed: number;
+  outcome?: AthenaOutcome;
+  card?: { recommendation: Recommendation; deadline: Deadline };
+};
 
 export async function handleAsk(req: AskRequest, deps: AskDeps): Promise<AskApiResponse> {
   const price = deps.price ?? NO_PRICE;
   const f = findings(req, deps.world);
+  const extra = { ...(f.outcome ? { outcome: f.outcome } : {}), ...(f.card ? { card: f.card } : {}) };
   // The key is read per request, never at module load.
   const client = deps.client === undefined ? defaultClient() : deps.client;
+
+  // No matching skill is a plain answer, not a failure: nothing for Claude to write.
+  if (f.outcome?.kind === "no_match") {
+    const res = AskResponse.parse({ answer: f.template, numbers: [], meter: readingFromUsage("ask", null, price, true), fallback: false });
+    return { ...res, ...extra, offline: !client, offlineReason: client ? undefined : "no ANTHROPIC_API_KEY on the server", tokensUsed: 0 };
+  }
 
   let offlineReason: string;
   if (!client) offlineReason = "no ANTHROPIC_API_KEY on the server";
@@ -233,14 +288,14 @@ export async function handleAsk(req: AskRequest, deps: AskDeps): Promise<AskApiR
       const { answer, usage } = await writeWithClaude(client, req, f);
       const meter = readingFromUsage("ask", usage, price, true);
       const res = AskResponse.parse({ answer, numbers: f.numbers, meter, fallback: false });
-      return { ...res, offline: false, tokensUsed: meter.tokensIn + meter.tokensOut };
+      return { ...res, ...extra, offline: false, tokensUsed: meter.tokensIn + meter.tokensOut };
     } catch (err) {
       offlineReason = `Claude call failed: ${err instanceof Error ? err.message : String(err)}`;
     }
   }
   console.warn(`[ask] offline answer: ${offlineReason}`);
   const res = AskResponse.parse({ answer: f.template, numbers: f.numbers, meter: readingFromUsage("ask", null, price, true), fallback: true });
-  return { ...res, offline: true, offlineReason, tokensUsed: 0 };
+  return { ...res, ...extra, offline: true, offlineReason, tokensUsed: 0 };
 }
 
 /** The price the routes use: data/public/prices.json, or unknown. */

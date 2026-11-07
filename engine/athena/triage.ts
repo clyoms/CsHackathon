@@ -29,6 +29,8 @@ export interface TriageResult {
   outcome: TriageOutcome;
   context: WorkContext;
   usage: Usage;
+  /** Claude's raw token usage, so the meter can split tokens in and out. Null when Claude was not called. */
+  rawUsage: Anthropic.Usage | null;
 }
 
 export interface TriageOptions {
@@ -146,7 +148,7 @@ const SYSTEM = [
   "such as weather, sport, news or personal chat.",
 ].join(" ");
 
-async function topicWithClaude(client: Pick<Anthropic, "messages">, request: string): Promise<{ topic: Topic; tokens: number }> {
+async function topicWithClaude(client: Pick<Anthropic, "messages">, request: string): Promise<{ topic: Topic; tokens: number; raw: Anthropic.Usage }> {
   const response = await client.messages.parse({
     model: MODEL,
     max_tokens: 200,
@@ -159,7 +161,7 @@ async function topicWithClaude(client: Pick<Anthropic, "messages">, request: str
   }
   const u = response.usage;
   const tokens = u.input_tokens + (u.cache_creation_input_tokens ?? 0) + (u.cache_read_input_tokens ?? 0) + u.output_tokens;
-  return { topic: response.parsed_output.topic, tokens };
+  return { topic: response.parsed_output.topic, tokens, raw: u };
 }
 
 // ---------- The step ----------
@@ -176,11 +178,13 @@ export async function triage(request: string, opts: TriageOptions = {}): Promise
 
   let topic: Topic;
   let usage: Usage;
+  let rawUsage: Anthropic.Usage | null = null;
   if (client) {
     try {
       const r = await topicWithClaude(client, request);
       topic = r.topic;
       usage = { offline: false, tokensUsed: r.tokens };
+      rawUsage = r.raw;
     } catch (err) {
       const reason = `Claude topic check failed: ${err instanceof Error ? err.message : String(err)}`;
       console.warn(`[athena] triage offline: ${reason}`);
@@ -194,7 +198,7 @@ export async function triage(request: string, opts: TriageOptions = {}): Promise
     usage = { offline: true, offlineReason: reason, tokensUsed: 0 };
   }
 
-  if (topic === "off_topic") return { outcome: { kind: "decline", message: DECLINE_MESSAGE }, context: {}, usage };
-  if (topic === "help") return { outcome: { kind: "clarify", questions: [...HELP_QUESTIONS] }, context: {}, usage };
-  return { outcome: { kind: "skill" }, context: extractContext(request, opts.answers, engagements), usage };
+  if (topic === "off_topic") return { outcome: { kind: "decline", message: DECLINE_MESSAGE }, context: {}, usage, rawUsage };
+  if (topic === "help") return { outcome: { kind: "clarify", questions: [...HELP_QUESTIONS] }, context: {}, usage, rawUsage };
+  return { outcome: { kind: "skill" }, context: extractContext(request, opts.answers, engagements), usage, rawUsage };
 }
