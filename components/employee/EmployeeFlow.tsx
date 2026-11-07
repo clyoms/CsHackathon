@@ -7,7 +7,7 @@ import type { AskResponse, AthenaAnswer, AthenaResponse } from "@/contract/api";
 import type { AthenaQuestion, LiteracyLogEntry, MeterReading, Recommendation, Staff } from "@/contract/types";
 import { recordAdopted } from "@/engine/literacy";
 import type { AthenaOutcome, Usage } from "@/engine/contract";
-import { ALL_CLIENTS, type Choices } from "./choices";
+import { ALL_CLIENTS, namesClient, type Choices } from "./choices";
 import { UPLOAD_HINT, downloadSkill } from "./exportSkill";
 import { SourceLink, SyntheticBadge } from "./Tags";
 import styles from "./employee.module.css";
@@ -23,7 +23,7 @@ export interface EmployeeFlowProps {
 type Extra = Partial<Usage> & {
   outcome?: AthenaOutcome;
   /** From /api/ask: the item picked from Athena's answers and the deadline to count down to. */
-  card?: { recommendation: Recommendation; deadline: CardDeadline };
+  card?: { recommendation: Recommendation; deadline: CardDeadline | null };
 };
 
 /** Deadline from engine/contract.ts as the API sends it. */
@@ -62,7 +62,7 @@ async function postJson<T>(url: string, body: unknown): Promise<T> {
 
 /** Adds "All my clients" to a question whose options are the person's client names. */
 function withAllClients(q: AthenaQuestion, clients: string[]): AthenaQuestion {
-  const isClientQuestion = q.options.some((o) => clients.includes(o));
+  const isClientQuestion = q.options.some((o) => clients.some((c) => namesClient(o, c)));
   if (!isClientQuestion || q.options.includes(ALL_CLIENTS)) return q;
   return { ...q, options: [...q.options, ALL_CLIENTS] };
 }
@@ -92,7 +92,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
   const [today, setToday] = useState<string | null>(null);
   useEffect(() => setToday(todayIso()), []);
 
-  const chosenClient = answers.map((a) => a.answer).find((a) => clients.includes(a));
+  const chosenClient = clients.find((c) => answers.some((a) => namesClient(a.answer, c)));
   // The API's card follows Athena's answers (task, risk, named date). The page's own choice is
   // only a fallback for when the API gives none.
   const recommendation = written?.card?.recommendation ?? ((chosenClient && choices[chosenClient]) || choices[ALL_CLIENTS]);
@@ -309,17 +309,17 @@ interface AnswerCardProps {
 
 function AnswerCard({ recommendation, cardDeadline, written, today, copied, exported, adopted, onCopy, onExport, onTry }: AnswerCardProps) {
   const { item } = recommendation;
+  // The countdown shows only when the question points at a date (the API sends none otherwise).
   // A date the person named has no source page. A catalogue date keeps its source link.
-  const known = cardDeadline ? undefined : recommendation.deadline;
   const deadline = cardDeadline
     ? { label: cardDeadline.label, date: cardDeadline.dueDate, source: undefined as string | undefined, checked: true }
-    : { label: known!.label, date: known!.date, source: known!.source as string | undefined, checked: known!.checked };
-  if (cardDeadline?.source === "catalogue" && cardDeadline.dueDate === recommendation.deadline.date) {
+    : null;
+  if (deadline && cardDeadline?.source === "catalogue" && cardDeadline.dueDate === recommendation.deadline.date) {
     deadline.source = recommendation.deadline.source;
     deadline.checked = recommendation.deadline.checked;
   }
-  const days = today === null ? null : daysUntil(deadline.date, today);
-  const dateText = longDate.format(new Date(`${deadline.date}T00:00:00Z`));
+  const days = deadline && today !== null ? daysUntil(deadline.date, today) : null;
+  const dateText = deadline ? longDate.format(new Date(`${deadline.date}T00:00:00Z`)) : "";
 
   return (
     <section className={styles.card} aria-live="polite">
@@ -340,16 +340,18 @@ function AnswerCard({ recommendation, cardDeadline, written, today, copied, expo
             {euro.format(recommendation.eurosBack)} {recommendation.synthetic && <SyntheticBadge />}
           </dd>
         </div>
-        <div>
-          <dt>{deadline.label}</dt>
-          <dd>
-            {days === null ? dateText : countdown(days)} {deadline.source && <SourceLink href={deadline.source} />}
-          </dd>
-          <dd className={styles.small}>
-            {dateText}
-            {!deadline.checked && " · date not yet confirmed"}
-          </dd>
-        </div>
+        {deadline && (
+          <div>
+            <dt>{deadline.label}</dt>
+            <dd>
+              {days === null ? dateText : countdown(days)} {deadline.source && <SourceLink href={deadline.source} />}
+            </dd>
+            <dd className={styles.small}>
+              {dateText}
+              {!deadline.checked && " · date not yet confirmed"}
+            </dd>
+          </div>
+        )}
       </dl>
 
       {written && !written.fallback && <p>{written.answer}</p>}
