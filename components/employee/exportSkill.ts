@@ -54,3 +54,23 @@ export function downloadSkill(item: ExportableSkill): string {
 /** Where to put the file. Checked against support.claude.com "Use skills in Claude", 07-11-2026: uploads take a ZIP of a folder holding SKILL.md. */
 export const UPLOAD_HINT =
   "To add it in Claude: rename it SKILL.md, put it in a folder, zip the folder, then open Customize, Skills, +, Create skill, Upload a skill.";
+
+/** Copies text to the clipboard. Falls back to a hidden text box and the copy command when the clipboard API is blocked. */
+export async function copyText(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    // Some browsers block the clipboard API.
+  }
+  const box = document.createElement("textarea");
+  box.value = text;
+  box.setAttribute("readonly", "");
+  box.style.position = "fixed";
+  box.style.opacity = "0";
+  document.body.appendChild(box);
+  box.select();
+  const ok = document.execCommand("copy");
+  box.remove();
+  return ok;
+}

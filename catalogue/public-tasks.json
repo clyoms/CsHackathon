@@ -19,6 +19,12 @@
     { "onetTask": "Comply with federal, state, and company policies, procedures, and regulations.", "penetration": 0 },
     { "onetTask": "Review financial records, such as income statements and documentation of expenditures to determine forms needed to prepare tax returns.", "penetration": 0 },
     { "onetTask": "Compile statistical, financial, accounting, or auditing reports and tables pertaining to such matters as cash receipts, expenditures, accounts payable and receivable, and profits and losses.", "penetration": 0.9318 },
-    { "onetTask": "Prepare detailed reports on audit findings.", "penetration": 0.7793 }
+    { "onetTask": "Prepare detailed reports on audit findings.", "penetration": 0.7793 },
+    { "onetTask": "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.", "penetration": 0.9107 },
+    { "onetTask": "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.", "penetration": 0 },
+    { "onetTask": "Perform general office duties, such as filing, answering telephones, and handling routine correspondence.", "penetration": 0 },
+    { "onetTask": "Develop, maintain, or analyze budgets, preparing periodic reports that compare budgeted costs to actual costs.", "penetration": 0 },
+    { "onetTask": "Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.", "penetration": 0 },
+    { "onetTask": "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.", "penetration": 0 }
   ]
 }
