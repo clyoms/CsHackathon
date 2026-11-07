@@ -57,7 +57,7 @@ export interface Findings {
   /** Employee view only: what Athena's answers led to. */
   outcome?: AthenaOutcome;
   /** Employee view only: the chosen item and the deadline to count down to. */
-  card?: { recommendation: Recommendation; deadline: Deadline };
+  card?: { recommendation: Recommendation; deadline: Deadline | null };
 }
 
 /** Runs the engine that matches the view and returns its numbers. */
@@ -106,35 +106,36 @@ function employeeFindings(req: AskRequest, world: World): Findings {
     return { numbers: [], template: message, outcome: { kind: "no_match", message } };
   }
 
-  const deadline: Deadline =
-    userDeadline ??
-    (taskTopic(taskText) ? pickDeadline(null, world.deadlines, taskText, world.today) : null) ?? {
-      label: rec.deadline.label,
-      dueDate: rec.deadline.date,
-      daysLeft: daysBetween(world.today, rec.deadline.date),
-      source: "catalogue",
-    };
-  const catalogueDeadline = world.deadlines.find((d) => d.label === deadline.label && d.date === deadline.dueDate);
+  // Only a date the question points at: one the person named, or the filing date of a task they named.
+  // The skill's own catalogue date is left out, because it has nothing to do with the question.
+  const deadline: Deadline | null =
+    userDeadline ?? (taskTopic(taskText) ? pickDeadline(null, world.deadlines, taskText, world.today) : null);
+  const catalogueDeadline = deadline
+    ? world.deadlines.find((d) => d.label === deadline.label && d.date === deadline.dueDate)
+    : undefined;
 
   const scoreSource = world.taskScores.find((t) => rec.item.targetsOnetTasks.includes(t.onetTask))?.source;
-  const days = deadline.daysLeft;
   const numbers: SourcedNumber[] = [
     { label: "Hours back before the deadline", value: rec.hoursBackEstimate, unit: "hours", source: scoreSource, synthetic: true },
     { label: "Euros back", value: rec.eurosBack, unit: "EUR", synthetic: true },
     { label: "AI-ready hours", value: rec.aiReadyHours, unit: "hours", source: scoreSource, synthetic: true },
   ];
   // A date the user named has no source page, so it rides on the response as `deadline`, not here.
-  if (catalogueDeadline) {
-    numbers.push({ label: `Days to ${deadline.label}`, value: days, unit: "days", source: catalogueDeadline.source, synthetic: false });
+  if (deadline && catalogueDeadline) {
+    numbers.push({ label: `Days to ${deadline.label}`, value: deadline.daysLeft, unit: "days", source: catalogueDeadline.source, synthetic: false });
   }
   const rate = verifiedRate(world.usage, staff.id);
   const check = rate !== null && rate < LOW_VERIFY_RATE && rec.item.verifyStep ? " It includes a step to check the output." : "";
   const client = context.client ? ` for ${context.client}` : "";
   const where = catalogueDeadline ? ` (${sourceName(catalogueDeadline.source)})` : "";
+  const days = deadline?.daysLeft ?? 0;
+  const before = deadline
+    ? ` before ${deadline.label} on ${dayMonth(deadline.dueDate)}, ${days} day${days === 1 ? "" : "s"} away${where}`
+    : "";
   const template =
     `Start with the ${rec.item.title} ${rec.item.kind}${client}. ` +
-    `It could give you about ${rec.hoursBackEstimate} hour${rec.hoursBackEstimate === 1 ? "" : "s"} back (${euro(rec.eurosBack)}, ${SYNTHETIC_SOURCE}) ` +
-    `before ${deadline.label} on ${dayMonth(deadline.dueDate)}, ${days} day${days === 1 ? "" : "s"} away${where}.${check}`;
+    `It could give you about ${rec.hoursBackEstimate} hour${rec.hoursBackEstimate === 1 ? "" : "s"} back (${euro(rec.eurosBack)}, ${SYNTHETIC_SOURCE})` +
+    `${before}.${check}`;
   return { numbers, template, outcome: { kind: "skill" }, card: { recommendation: rec, deadline } };
 }
 
@@ -232,7 +233,7 @@ async function writeWithClaude(
     `Question: ${req.question}`,
     answers ? `Their answers to clarifying questions:\n${answers}` : "",
     `Numbers:\n${facts}`,
-    f.card?.deadline.source === "user"
+    f.card?.deadline?.source === "user"
       ? `Deadline the person named: ${f.card.deadline.label}, ${dayMonth(f.card.deadline.dueDate)}, ${f.card.deadline.daysLeft} days away (their own date, no source).`
       : "",
     `A correct answer in the right style, for reference:\n${f.template}`,
@@ -264,7 +265,7 @@ export type AskApiResponse = AskResponse & {
   offlineReason?: string;
   tokensUsed: number;
   outcome?: AthenaOutcome;
-  card?: { recommendation: Recommendation; deadline: Deadline };
+  card?: { recommendation: Recommendation; deadline: Deadline | null };
 };
 
 export async function handleAsk(req: AskRequest, deps: AskDeps): Promise<AskApiResponse> {

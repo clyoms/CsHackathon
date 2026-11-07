@@ -3,6 +3,7 @@
 // fixtureWorld() keeps the small contract-fixture world for tests. Server only (reads files).
 import { loadCatalogue } from "@/catalogue";
 import type { AthenaAnswer } from "@/contract/api";
+import { namesClient } from "@/components/employee/choices";
 import {
   catalogueItemFixture,
   deadlineFixture,
@@ -91,7 +92,7 @@ export function linesForAnswers(
   staffId: string,
   answers: AthenaAnswer[],
 ): { chosen: Engagement | undefined; lines: TimesheetLine[] } {
-  const chosen = engagementsFor(world, staffId).find((e) => answers.some((a) => a.answer === e.client));
+  const chosen = engagementsFor(world, staffId).find((e) => answers.some((a) => namesClient(a.answer, e.client)));
   const lines = chosen ? world.timesheets.filter((l) => l.engagementId === chosen.id) : world.timesheets;
   return { chosen, lines };
 }
