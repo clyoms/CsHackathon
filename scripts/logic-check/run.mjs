@@ -1,4 +1,4 @@
-// Logic check: send every prompt in tests/logic/prompts.json to a running Frame Next server,
+// Logic check: send every prompt in tests/logic/prompts.json to a running Handoff server,
 // follow the employee page's flow, grade each reply and write logic-report.json and logic-report.md.
 // Usage: npm run logic   (base URL from LOGIC_BASE_URL, default http://localhost:3000)
 // Exit codes: 0 all passed, 1 at least one failure, 2 server not reachable.

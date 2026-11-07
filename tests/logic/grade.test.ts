@@ -14,7 +14,7 @@ import {
 } from "../../scripts/logic-check/grade.mjs";
 import prompts from "./prompts.json";
 
-const decline = (message = "Frame Next helps with work tasks.") => ({
+const decline = (message = "Handoff helps with work tasks.") => ({
   outcome: { kind: "decline", message },
   result: { needed: false, questions: [] },
 });

@@ -152,7 +152,7 @@ export function extractContext(request: string, answers: string[] = [], engageme
 const ClaudeTopic = z.object({ topic: z.enum(["work", "off_topic", "help"]) });
 
 const SYSTEM = [
-  "You triage requests for Frame Next, a tool for staff at FRAME, an Irish accounting firm.",
+  "You triage requests for Handoff, a tool for staff at FRAME, an Irish accounting firm.",
   "Answer with one topic. work: anything about their accounting, tax, audit, bookkeeping or office work,",
   "their clients and deadlines, or using AI for that work, including worries about trusting AI.",
   "help: a bare greeting or a request for help with no task in it. off_topic: anything else,",

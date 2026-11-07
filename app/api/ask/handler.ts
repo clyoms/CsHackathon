@@ -273,7 +273,7 @@ async function writeWithClaude(
   return { answer, usage: response.usage };
 }
 
-/** Matches Usage in engine/contract.ts (T-2). Switch to that import once it is merged. */
+/** The ask response plus offline status and tokens used (same fields as Usage in engine/contract.ts). */
 export type AskApiResponse = AskResponse & {
   offline: boolean;
   offlineReason?: string;

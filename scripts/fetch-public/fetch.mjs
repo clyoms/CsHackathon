@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Downloads the real public data Frame Next uses into data/public/.
+// Downloads the real public data Handoff uses into data/public/.
 // Run from the repo root: node scripts/fetch-public/fetch.mjs
 // No dependencies. Writes sources.json with each file's URL and fetch time.
 // deadlines.json and prices.json are written by hand and never touched here.

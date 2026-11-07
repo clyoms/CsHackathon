@@ -6,7 +6,7 @@ Built at Corkathon 2026 for the FRAME and Ignite tracks.
 
 ## The problem
 
-Companies pay for AI, but most staff do not know what to use it for. Partners cannot see which jobs leak hours. And since February 2025, Article 4 of the EU AI Act requires every company that uses AI to take measures so its staff are AI literate. Most firms have no record to show for it.
+Companies pay for AI, but most staff do not know what to use it for. Partners cannot see which jobs leak hours. And since February 2025, Article 4 of the EU AI Act has required every company that uses AI to take measures on its staff's AI literacy. The 2026 Digital Omnibus softened the wording to "take measures to promote" AI literacy, but the duty stays. Most firms have no record to show for it.
 
 ## The solution
 
@@ -84,4 +84,3 @@ ANTHROPIC_API_KEY=your-key-here
 
 Two people, one day, coordinating AI agents through Relay, our own task board. Relay splits the build into tasks along a critical path, and every pull request passes tests and a review by the other person's agent before it merges.
 
-Plans and research: `docs/plan/` and `docs/research/`.

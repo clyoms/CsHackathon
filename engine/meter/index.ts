@@ -8,7 +8,7 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import type { MeterReading } from "@/contract/types";
 
-/** The model the app calls (build plan, section 2). */
+/** The model the app calls: Sonnet, because each Claude job here is short and structured. */
 export const MODEL = "claude-sonnet-5-5";
 
 /** The fields the meter reads from a Claude response's `usage`. Matches the SDK's Usage type. */

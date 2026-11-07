@@ -1,6 +1,6 @@
-// Shared data contract for Frame Next. Every module and view builds against these.
+// Shared data contract for Handoff. Every module and view builds against these.
 //
-// Ground rules from docs/plan/frame-next-build-plan.md section 2:
+// Ground rules:
 // - Every synthetic number carries `synthetic: true`, so the UI can show a "synthetic" badge.
 // - Every real number carries a `source` URL, so the UI can show it on hover.
 // Changing this file after it is frozen needs a new contract task.
