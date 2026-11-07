@@ -65,9 +65,13 @@ export function contentWords(text: string): string[] {
 
 /** How many task words match a word of the item (same first five letters, or the whole short word). */
 export function taskMatchCount(item: CatalogueItem, taskWords: string[]): number {
-  const hay = contentWords([item.id, item.title, item.plainSummary, ...item.targetsOnetTasks].join(" "));
   const stem = (w: string) => w.slice(0, 5);
-  return taskWords.filter((t) => hay.some((h) => (t.length < 5 ? h === t : stem(h) === stem(t)))).length;
+  const hits = (hay: string[]) => (t: string) => hay.some((h) => (t.length < 5 ? h === t : stem(h) === stem(t)));
+  const name = hits(contentWords([item.id, item.title].join(" ")));
+  const rest = hits(contentWords([item.plainSummary, ...item.targetsOnetTasks].join(" ")));
+  // A word in the item's own name counts double, so "transaction classification" picks the item
+  // named that over one that only mentions classifying in its O*NET tasks.
+  return taskWords.reduce((sum, t) => sum + (name(t) ? 2 : rest(t) ? 1 : 0), 0);
 }
 
 export function itemMatchesTask(item: CatalogueItem, taskWords: string[]): boolean {

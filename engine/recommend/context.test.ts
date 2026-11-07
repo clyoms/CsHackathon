@@ -3,7 +3,7 @@
 import { describe, expect, it } from "vitest";
 import type { CatalogueItem } from "@/contract/types";
 import { loadCatalogue, loadRisk } from "@/catalogue";
-import { fixtureWorld } from "@/app/api/ask/world";
+import { fixtureWorld, realWorld } from "@/app/api/ask/world";
 import { contentWords, itemMatchesTask, pickItem, recommend, scoreItems, type RecommendInput } from "./index";
 
 const catalogue = loadCatalogue();
@@ -83,5 +83,27 @@ describe("catalogue growth", () => {
   it("handles an empty catalogue", () => {
     expect(recommend(base({ catalogue: [] }))).toBeNull();
     expect(pickItem([], { riskTolerance: "low" })).toBeNull();
+  });
+});
+
+describe("a task named after an item picks that item", () => {
+  // Real data, where two items can tie on score: the item's own name must win the tie.
+  const real = realWorld("2026-11-07");
+  const aoife = real.staff.find((s) => s.id === "s-aoife")!;
+  const realBase = (context: RecommendInput["context"]): RecommendInput => ({
+    ...real,
+    staff: aoife,
+    lines: real.timesheets,
+    risk,
+    context,
+  });
+
+  it.each(catalogue.map((item) => [item.title, item] as const))("task '%s'", (title, item) => {
+    const picked = pickItem(scoreItems(realBase({ task: title })), { task: title }, risk);
+    expect(picked).not.toBeNull();
+    const words = contentWords(title);
+    const pickedName = contentWords(`${picked!.item.id} ${picked!.item.title}`).join(" ");
+    for (const w of words) expect(pickedName, `${picked!.item.id} for task '${title}'`).toContain(w.slice(0, 5));
+    expect(item.id).toBeTruthy();
   });
 });
