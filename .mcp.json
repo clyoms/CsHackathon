@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "relay": {
+      "type": "http",
+      "url": "https://relay-blue-beta.vercel.app/api/mcp",
+      "headers": { "Authorization": "Bearer ${RELAY_TOKEN}" }
+    }
+  }
+}
