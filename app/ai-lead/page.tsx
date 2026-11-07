@@ -33,7 +33,10 @@ export default function AiLeadPage() {
   // Lessons people finished (saved by /api/literacy) beside today's recommendations, newest first.
   const lessons = lessonEntries(getLessonStore().read());
   // Demo data: about two in three people have said they will try their pick, so the log shows both answers.
-  const shown = literacyFromRecommendations(recs, world.today).map((e, i) => (i % 3 === 2 ? e : { ...e, adopted: true }));
+  // Real "I'll try it" clicks saved by /api/literacy override the demo answer for that person and item.
+  const saved = getLessonStore().read().filter((e) => e.measure === "adopted");
+  const clicked = (e: { staffId: string; itemId: string }) => saved.some((s) => s.staffId === e.staffId && s.itemId === e.itemId);
+  const shown = literacyFromRecommendations(recs, world.today).map((e, i) => (clicked(e) || i % 3 !== 2 ? { ...e, adopted: true } : e));
   const literacyLog = newestFirst([...shown, ...lessons]);
   const names = Object.fromEntries(world.staff.map((s) => [s.id, s.name]));
   const titles = Object.fromEntries(recs.map((r) => [r.item.id, r.item.title]));

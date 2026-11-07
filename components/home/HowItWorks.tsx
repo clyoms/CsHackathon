@@ -27,6 +27,9 @@ export function HowItWorks() {
           </li>
         ))}
       </ol>
+      <p className={styles.stepDetail}>
+        Built on Anthropic&apos;s Economic Index, O*NET tasks and Revenue deadlines (real, sourced), joined with the firm&apos;s timesheets and AI usage (demo data here).
+      </p>
     </section>
   );
 }

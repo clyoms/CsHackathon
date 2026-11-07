@@ -178,6 +178,8 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
   function tryIt() {
     if (!recommendation) return;
     setLog((l) => recordAdopted(l, staff.id, recommendation.item.id, todayIso()));
+    // Save it for the AI Lead's literacy log. The button still works if the save fails.
+    postJson("/api/literacy", { staffId: staff.id, itemId: recommendation.item.id, measure: "adopted" }).catch(() => {});
   }
 
   const current = step === "questions" ? questions[answers.length] : undefined;
