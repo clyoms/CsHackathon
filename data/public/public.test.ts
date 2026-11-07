@@ -67,8 +67,18 @@ describe("deadlines", () => {
     expect(new Set(all.map((d) => d.jurisdiction))).toEqual(new Set(["IE", "US", "KY"]));
     expect(all.map((d) => d.date)).toEqual([...all.map((d) => d.date)].sort());
     expect(new Set(all.map((d) => d.id)).size).toBe(all.length);
-    for (const id of ["us-est-2026-q4", "us-1065-1120s-2026", "us-1040-2026", "ky-far-2026"]) {
+    for (const id of ["us-est-2027-01", "us-1065-2027-03", "us-1040-2027-04", "ky-annual-2027-06"]) {
       expect(all.some((d) => d.id === id)).toBe(true);
+    }
+  });
+
+  it("has every deadline id that data/frame engagements link to (agreed on Relay T-3)", () => {
+    const ids = new Set(loadDeadlines().map((d) => d.id));
+    for (const id of [
+      "ie-form11-2026", "ie-ros-2026", "ie-ct1-2026-11", "ie-vat-2026-11", "ie-ct1-2027-01",
+      "us-est-2027-01", "us-1065-2027-03", "us-1040-2027-04", "ky-annual-2027-06",
+    ]) {
+      expect(ids.has(id), id).toBe(true);
     }
   });
 

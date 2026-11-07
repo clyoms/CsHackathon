@@ -20,7 +20,7 @@
       "basis": "eBrief 034/26: Form 11 and payment through ROS extended to Wednesday 18 November 2026."
     },
     {
-      "id": "ie-ct1-2026-02",
+      "id": "ie-ct1-2026-11",
       "label": "CT1 return and balance, year ended 28 Feb 2026",
       "date": "2026-11-23",
       "jurisdiction": "IE",
@@ -29,7 +29,7 @@
       "basis": "Worked out from Revenue's rule: file and pay on or before the 23rd of the ninth month after the accounting period ends."
     },
     {
-      "id": "ie-ct1-2026-03",
+      "id": "ie-ct1-2026-12",
       "label": "CT1 return and balance, year ended 31 Mar 2026",
       "date": "2026-12-23",
       "jurisdiction": "IE",
@@ -38,7 +38,7 @@
       "basis": "Worked out from Revenue's rule: the 23rd of the ninth month after the period ends."
     },
     {
-      "id": "ie-ct1-2026-04",
+      "id": "ie-ct1-2027-01",
       "label": "CT1 return and balance, year ended 30 Apr 2026",
       "date": "2027-01-23",
       "jurisdiction": "IE",
@@ -47,7 +47,7 @@
       "basis": "Worked out from Revenue's rule: the 23rd of the ninth month after the period ends. 23 Jan 2027 is a Saturday; weekend handling not confirmed."
     },
     {
-      "id": "ie-ct1-2026-05",
+      "id": "ie-ct1-2027-02",
       "label": "CT1 return and balance, year ended 31 May 2026",
       "date": "2027-02-23",
       "jurisdiction": "IE",
@@ -56,7 +56,7 @@
       "basis": "Worked out from Revenue's rule: the 23rd of the ninth month after the period ends."
     },
     {
-      "id": "ie-ct1-2026-06",
+      "id": "ie-ct1-2027-03",
       "label": "CT1 return and balance, year ended 30 Jun 2026",
       "date": "2027-03-23",
       "jurisdiction": "IE",
@@ -65,7 +65,7 @@
       "basis": "Worked out from Revenue's rule: the 23rd of the ninth month after the period ends."
     },
     {
-      "id": "ie-vat-2026-p5",
+      "id": "ie-vat-2026-11",
       "label": "VAT return and payment through ROS, Sep-Oct 2026",
       "date": "2026-11-23",
       "jurisdiction": "IE",
@@ -74,7 +74,7 @@
       "basis": "Not confirmed on a Revenue page: assumes the bi-monthly ROS return and payment falls on the 23rd of the month after the period."
     },
     {
-      "id": "ie-vat-2026-p6",
+      "id": "ie-vat-2027-01",
       "label": "VAT return and payment through ROS, Nov-Dec 2026",
       "date": "2027-01-23",
       "jurisdiction": "IE",
@@ -83,7 +83,7 @@
       "basis": "Not confirmed on a Revenue page: assumes the 23rd of the month after the bi-monthly period."
     },
     {
-      "id": "ie-vat-2027-p1",
+      "id": "ie-vat-2027-03",
       "label": "VAT return and payment through ROS, Jan-Feb 2027",
       "date": "2027-03-23",
       "jurisdiction": "IE",
@@ -92,7 +92,7 @@
       "basis": "Not confirmed on a Revenue page: assumes the 23rd of the month after the bi-monthly period."
     },
     {
-      "id": "us-est-2026-q4",
+      "id": "us-est-2027-01",
       "label": "IRS estimated tax, Sep-Dec 2026 payment",
       "date": "2027-01-15",
       "jurisdiction": "US",
@@ -101,7 +101,7 @@
       "basis": "Worked out from the IRS table: Sept. 1-Dec. 31 is due Jan. 15 of the following year. 15 Jan 2027 is a Friday."
     },
     {
-      "id": "us-1065-1120s-2026",
+      "id": "us-1065-2027-03",
       "label": "IRS partnership and S corporation returns, calendar year 2026",
       "date": "2027-03-15",
       "jurisdiction": "US",
@@ -110,7 +110,7 @@
       "basis": "Not confirmed on the page: assumes the 15th day of the third month after a calendar year end."
     },
     {
-      "id": "us-1040-2026",
+      "id": "us-1040-2027-04",
       "label": "IRS individual returns, calendar year 2026",
       "date": "2027-04-15",
       "jurisdiction": "US",
@@ -119,7 +119,7 @@
       "basis": "Worked out from the IRS page: calendar year filers file on April 15 (the page shows the 2026 date). 15 Apr 2027 is a Thursday."
     },
     {
-      "id": "ky-far-2026",
+      "id": "ky-annual-2027-06",
       "label": "Cayman fund annual return, year ended 31 Dec 2026",
       "date": "2027-06-30",
       "jurisdiction": "KY",
