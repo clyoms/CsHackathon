@@ -55,8 +55,12 @@ export function parseNamedDeadline(text: string, today: string): Deadline | null
   const isoMatch = t.match(/\b(\d{4})-(\d{2})-(\d{2})\b/);
   const dayMonth = t.match(new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?(?:\\s+of)?\\s+${MONTH_RE}\\b`));
   const monthDay = t.match(new RegExp(`\\b${MONTH_RE}\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`));
-  const weekday = t.match(/\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
-  const ordinal = t.match(/\b(?:the\s+)?(\d{1,2})(st|nd|rd|th)\b/);
+  // A weekday or bare ordinal counts only after a date word, so "Monday meeting notes"
+  // and "my 1st draft" are not deadlines.
+  const weekday = t.match(/\b(?:on|by|before|until|till|for|due|this|next)\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+  const ordinal =
+    t.match(/\b(?:on|by|before|until|till|for|due)\s+(?:the\s+)?(\d{1,2})(st|nd|rd|th)\b/) ??
+    t.match(/\bthe\s+(\d{1,2})(st|nd|rd|th)(?=\s*(?:$|[.,;:!?]|of the month))/);
 
   if (isoMatch) {
     date = isoMatch[0];

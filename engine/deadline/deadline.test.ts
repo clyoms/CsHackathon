@@ -30,6 +30,14 @@ describe("parseNamedDeadline", () => {
     expect(parseNamedDeadline("by the 2nd", TODAY)?.dueDate).toBe("2026-12-02");
   });
 
+  it("ignores ordinals and weekdays that are not dates", () => {
+    expect(parseNamedDeadline("Review my 1st draft of the letter", TODAY)).toBeNull();
+    expect(parseNamedDeadline("the 2nd review of the CT1", TODAY)).toBeNull();
+    expect(parseNamedDeadline("Monday morning meeting notes", TODAY)).toBeNull();
+    expect(parseNamedDeadline("by the 3rd", TODAY)?.dueDate).toBe("2026-12-03");
+    expect(parseNamedDeadline("Can you finish it on the 22nd?", TODAY)?.dueDate).toBe("2026-11-22");
+  });
+
   it("treats a weekday equal to today as today", () => {
     expect(parseNamedDeadline("by Saturday", TODAY)).toMatchObject({ dueDate: TODAY, daysLeft: 0 });
   });
