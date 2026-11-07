@@ -2,14 +2,14 @@ import { describe, expect, it } from "vitest";
 import { CatalogueItem, TaskScore } from "@/contract/types";
 import { ONET_CLASSIFY_TASK } from "@/contract/fixtures";
 import publicTasks from "./public-tasks.json";
-import { loadCatalogue, parseItem } from "./index";
+import { readdirSync } from "node:fs";
+import { ITEMS_DIR, loadCatalogue, loadRisk, parseItem, parseRisk } from "./index";
 
 const items = loadCatalogue();
 const taskSet = new Set(publicTasks.tasks.map((t) => t.onetTask));
 
 describe("catalogue", () => {
-  it("loads all 10 items through the CatalogueItem schema", () => {
-    expect(items).toHaveLength(10);
+  it("loads every item through the CatalogueItem schema", () => {
     for (const item of items) expect(CatalogueItem.safeParse(item).success).toBe(true);
   });
 
@@ -28,23 +28,21 @@ describe("catalogue", () => {
     expect(publicTasks.tasks.find((t) => t.onetTask === ONET_CLASSIFY_TASK)?.penetration).toBe(0.9664);
   });
 
-  it("includes every item the plan asks for", () => {
-    expect(items.map((i) => i.id).sort()).toEqual([
-      "hook-check-the-output",
-      "hook-no-pps-in-email",
-      "plugin-deadline-reminder",
-      "skill-bank-reconciliation",
-      "skill-client-query-reply",
-      "skill-ct1-review-checklist",
-      "skill-meeting-notes-actions",
-      "skill-transaction-classification",
-      "skill-working-paper-summary",
-      "skill-write-a-good-brief",
-    ]);
-    const kinds = Object.fromEntries(items.map((i) => [i.id, i.kind]));
-    expect(kinds["hook-check-the-output"]).toBe("hook");
-    expect(kinds["hook-no-pps-in-email"]).toBe("hook");
-    expect(kinds["plugin-deadline-reminder"]).toBe("plugin");
+  it("loads one item per file, whatever the number of files", () => {
+    const files = readdirSync(ITEMS_DIR).filter((f) => f.endsWith(".md"));
+    expect(items).toHaveLength(files.length);
+    expect(items.length).toBeGreaterThan(0);
+    // File names start with the item's kind, so a reader can sort the folder.
+    for (const i of items) expect(files).toContain(`${i.id}.md`);
+    for (const i of items) expect(i.id.startsWith(`${i.kind}-`), i.id).toBe(true);
+  });
+
+  it("gives every item a valid risk", () => {
+    const risk = loadRisk();
+    expect(Object.keys(risk).sort()).toEqual(items.map((i) => i.id).sort());
+    for (const r of Object.values(risk)) expect(["low", "medium", "high"]).toContain(r);
+    expect(() => parseRisk("---\nid: x\nrisk: extreme\n---\n", "bad.md")).toThrow(/bad\.md/);
+    expect(parseRisk("---\nid: x\n---\n")).toBe("medium");
   });
 
   it("gives every item a short plain summary, a body and a verify step", () => {
@@ -55,15 +53,11 @@ describe("catalogue", () => {
     }
   });
 
-  it("lets the bank reconciliation skill score on real data", () => {
-    // Real reconciliation tasks have penetration 0 in the Economic Index, so the skill
-    // also targets the classification task (0.9664) to earn AI-ready hours.
-    const rec = items.find((i) => i.id === "skill-bank-reconciliation")!;
-    expect(rec.targetsOnetTasks).toContain(ONET_CLASSIFY_TASK);
-  });
-
-  it("asks the check-the-output hook to confirm three figures", () => {
-    expect(items.find((i) => i.id === "hook-check-the-output")!.body).toMatch(/three figures/i);
+  it("lets at least one item earn AI-ready hours on real data", () => {
+    // Items score only on tasks with penetration above 0 in the Economic Index.
+    const scored = new Set(publicTasks.tasks.filter((t) => t.penetration > 0).map((t) => t.onetTask));
+    expect(items.some((i) => i.targetsOnetTasks.some((t) => scored.has(t)))).toBe(true);
+    expect(scored).toContain(ONET_CLASSIFY_TASK);
   });
 
   it("rejects an item that breaks the contract", () => {

@@ -1,5 +1,6 @@
 ---
 id: skill-transaction-classification
+risk: medium
 kind: skill
 title: Transaction classification
 plainSummary: Sorts a bank export into ledger codes so you only check the unusual ones.

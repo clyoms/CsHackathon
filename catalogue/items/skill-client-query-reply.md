@@ -1,5 +1,6 @@
 ---
 id: skill-client-query-reply
+risk: high
 kind: skill
 title: Client query reply
 plainSummary: Drafts a clear, friendly reply to a client's tax question for you to check and send.

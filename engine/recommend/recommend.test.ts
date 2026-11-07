@@ -30,18 +30,18 @@ const scores: TaskScore[] = [
 ];
 
 const reconSkill: CatalogueItem = {
-  id: "skill-bank-rec",
+  id: "test-item-a",
   kind: "skill",
-  title: "Bank reconciliation",
+  title: "Test item A",
   plainSummary: "Matches the bank statement to the ledger and lists what does not match.",
   targetsOnetTasks: [RECONCILE],
   body: "Match each bank line to a ledger line and list the differences.",
   verifyStep: "",
 };
 const memoSkill: CatalogueItem = {
-  id: "skill-wp-summary",
+  id: "test-item-b",
   kind: "skill",
-  title: "Working-paper summary",
+  title: "Test item B",
   plainSummary: "Turns a working paper into a short summary for the reviewer.",
   targetsOnetTasks: [MEMO],
   body: "Summarise this working paper in five bullets.",
@@ -106,7 +106,7 @@ describe("recommend", () => {
   it("gives a person with 10 reconciliation hours and a deadline in 11 days the reconciliation skill", () => {
     const rec = recommend(input({ lines: [line(RECONCILE, 10), line(MEMO, 2)] }));
     expect(rec).not.toBeNull();
-    expect(rec!.item.id).toBe("skill-bank-rec");
+    expect(rec!.item.id).toBe(reconSkill.id);
     // 10 h × 0.5 = 5 AI-ready hours; × 0.3 = 1.5 h back; × €85 = €127.50.
     expect(rec!.aiReadyHours).toBe(5);
     expect(rec!.hoursBackEstimate).toBe(1.5);
@@ -126,7 +126,7 @@ describe("recommend", () => {
     expect(rec!.reason).toContain("check the output");
 
     // The same hours with a high verified rate pick reconciliation, so the bonus made the difference.
-    expect(recommend(input({ lines }))!.item.id).toBe("skill-bank-rec");
+    expect(recommend(input({ lines }))!.item.id).toBe(reconSkill.id);
   });
 
   it("uses the adjustable hours-back factor", () => {

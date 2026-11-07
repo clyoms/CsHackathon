@@ -1,5 +1,6 @@
 ---
 id: plugin-deadline-reminder
+risk: low
 kind: plugin
 title: Deadline reminder
 plainSummary: Reminds you what to hand to AI each week, counting down to your next filing deadline.

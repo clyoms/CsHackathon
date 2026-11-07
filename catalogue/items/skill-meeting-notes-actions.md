@@ -1,5 +1,6 @@
 ---
 id: skill-meeting-notes-actions
+risk: low
 kind: skill
 title: Meeting notes to action list
 plainSummary: Turns rough meeting notes into a list of who does what, by when.
