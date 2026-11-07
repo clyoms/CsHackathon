@@ -21,10 +21,11 @@ export async function handleAthena(req: AthenaRequest, world: World, opts: Athen
   // The key is read per request, never at module load.
   const hasKey = opts.client !== undefined ? opts.client !== null : Boolean(process.env.ANTHROPIC_API_KEY);
   const tokensUsed = res.meter.tokensIn + res.meter.tokensOut;
+  const offline = res.fallback || !hasKey;
   let offlineReason: string | undefined;
-  if (res.fallback) {
-    offlineReason = hasKey ? "Claude call failed (see the 'Athena fell back' warning above)" : "no ANTHROPIC_API_KEY on the server";
-    console.warn(`[athena] offline answer: ${offlineReason}`);
-  }
-  return { ...res, offline: res.fallback, offlineReason, tokensUsed };
+  if (!hasKey) offlineReason = "no ANTHROPIC_API_KEY on the server";
+  else if (res.fallback) offlineReason = "Claude call failed (see the 'Athena fell back' warning above)";
+  if (offlineReason) console.warn(`[athena] offline answer: ${offlineReason}`);
+  else if (!res.result.needed) console.info("[athena] no questions needed, Claude not called");
+  return { ...res, offline, offlineReason, tokensUsed };
 }
