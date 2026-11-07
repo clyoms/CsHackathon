@@ -5,7 +5,8 @@ import sample from "@/engine/meter/sample-response.json";
 import { POST as askPOST } from "./route";
 import { POST as athenaPOST } from "../athena/route";
 import { handleAsk, sourceName } from "./handler";
-import { fixtureWorld } from "./world";
+import { recommend } from "@/engine/recommend";
+import { fixtureWorld, linesForAnswers, realWorld } from "./world";
 
 const post = (body: unknown) =>
   new Request("http://localhost/api", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
@@ -50,16 +51,32 @@ describe("POST /api/ask with no key", () => {
     expect(body.answer.split(/\s+/).length).toBeLessThanOrEqual(80);
   });
 
-  it("gives Aoife hours and euros from the engine, and the deadline with its source", async () => {
+  it("gives Aoife hours and euros from the engine on real data, and the deadline with its source", async () => {
+    // The route runs on the real world. A non-client Athena answer keeps all of Aoife's work.
+    const world = realWorld("2026-11-07");
+    const aoife = world.staff.find((s) => s.id === askRequestFixture.staffId)!;
+    const expected = recommend({ ...world, staff: aoife, lines: world.timesheets })!;
     const body = AskResponse.parse(await (await askPOST(post(askRequestFixture))).json());
     const hours = body.numbers.find((n) => n.label === "Hours back before the deadline")!;
-    // Fixture: 3.5 h × 0.9664 = 3.3824 AI-ready, × 0.3 = 1.01472 h back (shown as 1), × €85 = €86.25.
-    expect(hours.value).toBe(1);
-    expect(body.numbers.find((n) => n.label === "Euros back")?.value).toBe(86.25);
-    expect(body.answer).toContain(`about ${hours.value} hour back`);
+    expect(hours.value).toBe(expected.hoursBackEstimate);
+    expect(body.numbers.find((n) => n.label === "Euros back")?.value).toBe(expected.eurosBack);
+    expect(body.answer).toContain(`about ${hours.value} hours back`);
+    expect(body.answer).toContain(expected.item.title);
     const days = body.numbers.find((n) => n.unit === "days")!;
     expect(days).toMatchObject({ value: 11, synthetic: false, source: "https://www.revenue.ie/en/tax-professionals/ebrief/2026/no-0342026.aspx" });
     expect(body.answer).toContain("(Revenue)");
+    expect(body.answer).toContain("18 November");
+  });
+
+  it("narrows to the client Aoife picks, using the same lines as the employee page", async () => {
+    const world = realWorld("2026-11-07");
+    const answers = [{ question: "Which client is this for?", answer: "Murphy Engineering Ltd" }];
+    const { chosen, lines } = linesForAnswers(world, "s-aoife", answers);
+    expect(chosen?.id).toBe("e-murphy");
+    expect(lines.every((l) => l.engagementId === "e-murphy")).toBe(true);
+    const all = linesForAnswers(world, "s-aoife", [{ question: "Which client is this for?", answer: "All my clients" }]);
+    expect(all.chosen).toBeUndefined();
+    expect(all.lines).toHaveLength(world.timesheets.length);
   });
 
   it("marks every number synthetic or gives it a source", async () => {

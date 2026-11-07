@@ -8,7 +8,7 @@ import type { SourcedNumber } from "@/contract/types";
 import { MODEL, NO_PRICE, loadPrice, readingFromUsage, type EuroPrice } from "@/engine/meter";
 import { HOURS_BACK_ASSUMPTION, estimateTasks, rankByMoneyLost } from "@/engine/productivity";
 import { LOW_VERIFY_RATE, daysBetween, recommend, verifiedRate } from "@/engine/recommend";
-import { engagementsFor, type World } from "./world";
+import { linesForAnswers, type World } from "./world";
 
 export const MAX_ANSWER_WORDS = 80;
 const SYNTHETIC_SOURCE = "synthetic Frame data";
@@ -42,6 +42,9 @@ const r1 = (n: number) => Math.round(n * 10) / 10;
 const r2 = (n: number) => Math.round(n * 100) / 100;
 const words = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
 const euro = (n: number) => `€${n.toLocaleString("en-IE", { minimumFractionDigits: 0, maximumFractionDigits: 2 })}`;
+/** "18 November" from "2026-11-18". */
+const dayMonth = (iso: string) =>
+  new Intl.DateTimeFormat("en-IE", { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
 
 export interface Findings {
   numbers: SourcedNumber[];
@@ -62,9 +65,7 @@ function employeeFindings(req: AskRequest, world: World): Findings {
   if (!staff) throw new AskInputError(`unknown staffId: ${req.staffId}`);
 
   // If Athena asked which client, keep only that client's lines.
-  const mine = engagementsFor(world, staff.id);
-  const chosen = mine.find((e) => req.athenaAnswers.some((a) => a.answer === e.client));
-  const lines = chosen ? world.timesheets.filter((l) => l.engagementId === chosen.id) : world.timesheets;
+  const { chosen, lines } = linesForAnswers(world, staff.id, req.athenaAnswers);
 
   const rec = recommend({
     staff,
@@ -97,7 +98,7 @@ function employeeFindings(req: AskRequest, world: World): Findings {
   const template =
     `Start with the ${rec.item.title} ${rec.item.kind}${client}. ` +
     `It could give you about ${rec.hoursBackEstimate} hour${rec.hoursBackEstimate === 1 ? "" : "s"} back (${euro(rec.eurosBack)}, ${SYNTHETIC_SOURCE}) ` +
-    `before ${rec.deadline.label} on ${rec.deadline.date}, ${days} days away (${sourceName(rec.deadline.source)}).${check} ` +
+    `before ${rec.deadline.label} on ${dayMonth(rec.deadline.date)}, ${days} days away (${sourceName(rec.deadline.source)}).${check} ` +
     `Hours estimate assumes 30% of AI-ready hours come back.`;
   return { numbers, template };
 }

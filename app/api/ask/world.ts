@@ -1,6 +1,8 @@
-// The data the API routes run the engines over.
-// For now this is built from contract/fixtures.ts. The halfway task swaps getWorld() to the
-// real data in data/public, data/frame and catalogue, without touching the route handlers.
+// The data the API routes and the views run the engines over.
+// getWorld() reads the real files: data/public (real), data/frame (synthetic) and catalogue.
+// fixtureWorld() keeps the small contract-fixture world for tests. Server only (reads files).
+import { loadCatalogue } from "@/catalogue";
+import type { AthenaAnswer } from "@/contract/api";
 import {
   catalogueItemFixture,
   deadlineFixture,
@@ -19,6 +21,8 @@ import type {
   TimesheetLine,
   UsageRecord,
 } from "@/contract/types";
+import { loadFrameData } from "@/data/frame";
+import { loadDeadlines, loadTaskScores } from "@/data/public";
 
 export interface World {
   staff: Staff[];
@@ -50,13 +54,44 @@ export function fixtureWorld(today: string = todayIso()): World {
   };
 }
 
-/** The world the routes use. Replace the body to wire real data. */
+/** The real world: every record validated by its loader. */
+export function realWorld(today: string = todayIso()): World {
+  const frame = loadFrameData();
+  return {
+    staff: frame.staff,
+    engagements: frame.engagements,
+    timesheets: frame.timesheets,
+    deadlines: loadDeadlines(),
+    taskScores: loadTaskScores(),
+    catalogue: loadCatalogue(),
+    usage: frame.usage,
+    today,
+  };
+}
+
+/** The world the routes and views use. */
 export function getWorld(): World {
-  return fixtureWorld();
+  return realWorld();
 }
 
 /** Engagements a person has logged time on. */
 export function engagementsFor(world: World, staffId: string): Engagement[] {
   const ids = new Set(world.timesheets.filter((l) => l.staffId === staffId).map((l) => l.engagementId));
   return world.engagements.filter((e) => ids.has(e.id));
+}
+
+/**
+ * The timesheet lines a recommendation should use, given the person's answers to Athena.
+ * An answer that names one of their clients narrows to that client. Any other answer
+ * (such as "All my clients") keeps all their work. Shared by /api/ask and the employee page,
+ * so the answer card and the written answer use the same numbers.
+ */
+export function linesForAnswers(
+  world: World,
+  staffId: string,
+  answers: AthenaAnswer[],
+): { chosen: Engagement | undefined; lines: TimesheetLine[] } {
+  const chosen = engagementsFor(world, staffId).find((e) => answers.some((a) => a.answer === e.client));
+  const lines = chosen ? world.timesheets.filter((l) => l.engagementId === chosen.id) : world.timesheets;
+  return { chosen, lines };
 }
