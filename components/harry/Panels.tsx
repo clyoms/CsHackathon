@@ -26,16 +26,16 @@ export function AdoptionTable({ teams }: { teams: TeamAdoption[] }) {
       <tbody>
         {teams.map((t) => (
           <tr key={t.team}>
-            <td>{t.team}</td>
-            <td className={styles.num}>
+            <td data-label="Team">{t.team}</td>
+            <td className={styles.num} data-label="Active users">
               <Num synthetic>
                 {t.activeUsers} of {t.staff}
               </Num>
             </td>
-            <td className={styles.num}>
+            <td className={styles.num} data-label="Prompts">
               <Num synthetic>{int(t.prompts)}</Num>
             </td>
-            <td className={styles.num}>
+            <td className={styles.num} data-label="Checked">
               <Num synthetic>{t.verifiedRate === null ? "n/a" : pct(t.verifiedRate)}</Num>
             </td>
           </tr>
