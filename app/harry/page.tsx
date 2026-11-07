@@ -5,7 +5,8 @@ import { AskBox } from "@/components/harry/AskBox";
 import { adoptionByTeam, benchmarks, costPanel, frameActiveShare } from "@/components/harry/data";
 import styles from "@/components/harry/harry.module.css";
 import { LiteracyLog } from "@/components/harry/LiteracyLog";
-import { AdoptionTable, BenchmarkBars, CostStats, Panel } from "@/components/harry/Panels";
+import { BenchmarkChart, CheckedChart } from "@/components/harry/Charts";
+import { AdoptionTable, CostStats, Panel } from "@/components/harry/Panels";
 import { literacyFromRecommendations, meterFromUsage } from "@/components/harry/real";
 import type { Recommendation } from "@/contract/types";
 import { loadCsoAdoption, loadEurostatAdoption } from "@/data/public";
@@ -31,8 +32,8 @@ export default function HarryPage() {
 
   return (
     <main className={styles.page}>
-      <p>
-        <Link href="/">← Frame Next</Link>
+      <p className={styles.back}>
+        <Link href="/">← Who are you today?</Link>
       </p>
       <h1>Harry view</h1>
       <p className={styles.lede}>How the firm uses AI, what it costs per task, and the record of AI literacy measures.</p>
@@ -42,14 +43,15 @@ export default function HarryPage() {
           title="Adoption by team"
           explain="Active users, prompts and the share of AI outputs people checked, from usage records (synthetic). How people check matters more than how much they use AI."
         >
+          <CheckedChart teams={teams} />
           <AdoptionTable teams={teams} />
         </Panel>
 
         <Panel
           title="Frame against Ireland and the EU"
-          explain="CSO and Eurostat count enterprises that use any AI. Frame's bar counts staff, so read it as a rough guide, not a like-for-like match. Hover a figure for its source."
+          explain="CSO and Eurostat count enterprises that use any AI. Frame's bar counts staff, so read it as a rough guide, not a like-for-like match. Hover a bar for its source."
         >
-          <BenchmarkBars frameShare={share} benchmarks={marks} />
+          <BenchmarkChart frameShare={share} benchmarks={marks} />
         </Panel>
 
         <Panel
