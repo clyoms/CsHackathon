@@ -1,0 +1,272 @@
+<title>Frame v3 Wireframes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one long sheet of eight option boards; each board = idea, home wireframe, inner-page wireframe, trade-offs */
+:root{
+  --bg:#EEF0F3; --sheet:#FFFFFF; --ink:#16191F; --muted:#525A66; --line:#C9CED6; --box:#E3E6EB; --box2:#D3D8DF;
+  --emp:#0E7C66; --par:#B4540A; --lead:#5B3FC4; --pick:#16191F; --on-pick:#FFFFFF;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1216; --sheet:#171B21; --ink:#E9ECF1; --muted:#A3ACB8; --line:#39414C; --box:#232931; --box2:#2E3540;
+  --emp:#3CC7A6; --par:#F29A4A; --lead:#A894FF; --pick:#E9ECF1; --on-pick:#0F1216; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1216; --sheet:#171B21; --ink:#E9ECF1; --muted:#A3ACB8; --line:#39414C; --box:#232931; --box2:#2E3540;
+  --emp:#3CC7A6; --par:#F29A4A; --lead:#A894FF; --pick:#E9ECF1; --on-pick:#0F1216; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.lede{max-width:66ch;color:var(--muted);margin:10px 0 0}
+.key{display:flex;flex-wrap:wrap;gap:10px 18px;margin-top:16px;font-size:14px}
+.key span{display:inline-flex;align-items:center;gap:8px}
+.dot{width:14px;height:14px;border-radius:4px;display:inline-block}
+.e{background:var(--emp)} .p{background:var(--par)} .l{background:var(--lead)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:18px}
+.rules div{background:var(--sheet);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px}
+.rules b{display:block;font-family:var(--display);font-size:15px}
+.opt{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:16px}
+.opt header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.opt h2{font-size:1.6rem;font-weight:700}
+.tag{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.idea{margin:0;max-width:75ch}
+.frames{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.frames>figure{margin:0;min-width:0}
+figcaption{font-size:13px;color:var(--muted);margin-bottom:6px}
+.wf{border:1.5px solid var(--line);border-radius:10px;background:var(--bg);aspect-ratio:16/10;max-width:100%;overflow:hidden;position:relative;display:grid;font-size:10px;line-height:1.25;color:var(--muted)}
+.b{background:var(--box);border-radius:5px;min-width:0;min-height:0;padding:5px;overflow:hidden}
+.b2{background:var(--box2)}
+.t{font-family:var(--display);font-weight:700;color:var(--ink)}
+.big{font-size:15px}
+.huge{font-size:22px;letter-spacing:-.02em}
+.ce{border-left:4px solid var(--emp)} .cp{border-left:4px solid var(--par)} .cl{border-left:4px solid var(--lead)}
+.fe{background:var(--emp);color:#fff} .fp{background:var(--par);color:#fff} .fl{background:var(--lead);color:#fff}
+.fe .t,.fp .t,.fl .t{color:#fff}
+.bar{height:6px;border-radius:3px;background:var(--box2)}
+.btn{background:var(--pick);color:var(--on-pick);border-radius:4px;padding:2px 6px;display:inline-block;font-weight:700}
+.pros{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:14px}
+.pros div{border-top:2px solid var(--line);padding-top:8px}
+.pros b{font-family:var(--display)}
+.verdict{background:var(--box);border-radius:10px;padding:14px 16px}
+.verdict ol{margin:6px 0 0;padding-left:20px}
+@media (max-width:760px){.frames,.pros{grid-template-columns:1fr}.wf{aspect-ratio:4/3}}
+</style>
+
+<div class="wrap">
+<section>
+  <h1>Frame v3: eight layouts to pick from</h1>
+  <p class="lede">Grey boxes only. Pick a structure first, then we style it. Each board shows the home page and one inside page (the employee page). Colour here only marks the role, so you can see how each layout tells you where you are.</p>
+  <div class="key">
+    <span><i class="dot e"></i>Employee</span>
+    <span><i class="dot p"></i>Partner</span>
+    <span><i class="dot l"></i>AI Lead</span>
+  </div>
+  <div class="rules">
+    <div><b>Every option keeps</b>Full-width home, no side rule. Each role owns one colour on every page.</div>
+    <div><b>Every option has</b>Skills library and AI literacy reachable in one click from any page.</div>
+    <div><b>Every option drops</b>Demo-data labels. "Harry" becomes AI Lead.</div>
+  </div>
+</section>
+
+<!-- 1 -->
+<article class="opt" id="o1">
+  <header><h2>1. Role doors</h2><span class="tag">Split screen</span></header>
+  <p class="idea">The home page is three tall full-height panels, one per role. Hover or tap widens a panel and shows its promise and live number. Inside, a thin bar in the role colour runs across the top.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-columns:1fr 1.6fr 1fr;gap:4px;padding:4px">
+        <div class="b fe"><div class="t big">Employee</div>What do I hand to AI?</div>
+        <div class="b fp"><div class="t huge">Partner</div>Which jobs lose money<div class="t huge" style="margin-top:20px">€8,677</div>lost on one client<br><span class="btn" style="margin-top:8px">Open</span></div>
+        <div class="b fl"><div class="t big">AI Lead</div>Who uses AI, at what cost</div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-rows:14px auto 1fr;gap:6px;padding:0 0 6px">
+        <div class="fe" style="padding:1px 6px">Employee · Skills · Literacy · switch role</div>
+        <div class="b" style="margin:0 10%"><div class="t big">Ask anything about your work</div><div class="bar" style="margin:6px 0"></div>Try: "What can AI do before 18 Nov?" <span class="btn">Try this prompt</span></div>
+        <div class="b ce" style="margin:0 10%"><div class="t">Result</div>Skill · hours back · € worth · countdown</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Strong first moment for judges. Role choice is the whole screen.</div><div><b>Risk</b><br>Skills and Literacy are hidden until you pick a role.</div><div><b>Skill match</b><br>Exaggerated minimalism</div></div>
+</article>
+
+<!-- 2 -->
+<article class="opt" id="o2">
+  <header><h2>2. Persistent role sidebar</h2><span class="tag">App shell</span></header>
+  <p class="idea">A left sidebar on every page, grouped by role. The active role's block is filled with its colour. Home is a welcome with three large cards. Feels like a real product people log into.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-columns:22% 1fr;gap:6px;padding:6px">
+        <div class="b" style="display:grid;gap:4px;align-content:start"><div class="t">Frame</div><div class="b b2 ce">Employee</div><div class="b b2 cp">Partner</div><div class="b b2 cl">AI Lead</div><div style="height:6px"></div><div class="b b2">Skills library</div><div class="b b2">AI literacy</div></div>
+        <div style="display:grid;grid-template-rows:auto 1fr;gap:6px"><div class="t big">Good morning. Who are you today?</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><div class="b ce"><div class="t">Employee</div>15.7 h back</div><div class="b cp"><div class="t">Partner</div>€8,677 lost</div><div class="b cl"><div class="t">AI Lead</div>39% checked</div></div></div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-columns:22% 1fr;gap:6px;padding:6px">
+        <div class="b" style="display:grid;gap:4px;align-content:start"><div class="t">Frame</div><div class="b fe">Employee</div><div class="b b2">Partner</div><div class="b b2">AI Lead</div><div style="height:6px"></div><div class="b b2">Skills library</div><div class="b b2">AI literacy</div></div>
+        <div style="display:grid;grid-template-rows:auto auto 1fr;gap:6px"><div class="b"><div class="t">Ask about your work</div><div class="bar" style="margin-top:6px"></div></div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="b b2">Prompt 1 ▸ Try</span><span class="b b2">Prompt 2 ▸ Try</span><span class="b b2">Prompt 3 ▸ Try</span></div>
+          <div class="b ce"><div class="t">Result</div>Skill · hours · € · countdown</div></div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Clearest "where am I". Easiest to build and keep consistent.</div><div><b>Risk</b><br>Safe. Can look like any admin tool unless styling is bold.</div><div><b>Skill match</b><br>Data-dense dashboard</div></div>
+</article>
+
+<!-- 3 -->
+<article class="opt" id="o3">
+  <header><h2>3. Bento command centre</h2><span class="tag">Tile grid</span></header>
+  <p class="idea">Home is a grid of tiles in mixed sizes. Each role gets a big tile with its live number. Smaller tiles show the next deadline, a skill of the week and literacy progress. Inside pages use the same tiles.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-columns:repeat(4,1fr);grid-template-rows:1fr 1fr 1fr;gap:5px;padding:6px">
+        <div class="b fe" style="grid-column:span 2;grid-row:span 2"><div class="t big">Employee</div>Find the one task to hand to AI<div class="t huge" style="margin-top:12px">15.7 h</div></div>
+        <div class="b fp" style="grid-column:span 2"><div class="t">Partner</div>€8,677 lost on Walsh</div>
+        <div class="b fl"><div class="t">AI Lead</div>39%</div>
+        <div class="b"><div class="t">Next deadline</div>18 Nov · 11 days</div>
+        <div class="b" style="grid-column:span 2"><div class="t">Skill of the week</div>Bank reconciliation</div>
+        <div class="b" style="grid-column:span 2"><div class="t">AI literacy</div><div class="bar" style="margin-top:4px;background:linear-gradient(90deg,var(--lead) 40%,var(--box2) 40%)"></div></div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-columns:repeat(4,1fr);grid-template-rows:14px 1fr 1fr;gap:5px;padding:6px">
+        <div style="grid-column:span 4;color:var(--emp);font-weight:700">● Employee  ‹ home</div>
+        <div class="b" style="grid-column:span 3"><div class="t big">Ask about your work</div><div class="bar" style="margin-top:6px"></div></div>
+        <div class="b"><div class="t">Try a prompt</div>3 samples</div>
+        <div class="b ce" style="grid-column:span 2"><div class="t">Result</div>Skill · €</div>
+        <div class="b"><div class="t">Countdown</div>11 days</div>
+        <div class="b"><div class="t">What's next</div>2 items</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Shows lots at once without feeling busy. Easy to rearrange.</div><div><b>Risk</b><br>Bento grids are very common in 2026 SaaS pages.</div><div><b>Skill match</b><br>Bento box grid</div></div>
+</article>
+
+<!-- 4 -->
+<article class="opt" id="o4">
+  <header><h2>4. One question first</h2><span class="tag">Search-led</span></header>
+  <p class="idea">Home is one giant box: "What do you need today?" Type, and Athena routes you to the right role page. Three role chips sit under the box for people who would rather click. Inside pages keep the box at the top.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-rows:1fr auto auto 1fr;gap:8px;padding:8px 14%">
+        <div></div>
+        <div class="t huge" style="text-align:center">What do you need today?</div>
+        <div class="b" style="padding:10px"><div class="bar"></div></div>
+        <div style="display:flex;justify-content:center;gap:6px;align-items:start;flex-wrap:wrap"><span class="b fe">I'm an employee</span><span class="b fp">I'm a partner</span><span class="b fl">I'm the AI lead</span><span class="b b2">Learn AI</span></div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-rows:auto auto 1fr;gap:6px;padding:8px 10%">
+        <div class="b ce" style="padding:8px"><div class="t">Your question</div><div class="bar" style="margin-top:4px"></div></div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap"><span class="b b2">Try ▸ VAT for Byrne</span><span class="b b2">Try ▸ safest start</span></div>
+        <div class="b"><div class="t big">Result card</div>Skill · hours back · € · countdown · Export</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Shows off Athena from second one. Simplest for non-technical staff.</div><div><b>Risk</b><br>Partner and AI Lead need data views, which a box does not show.</div><div><b>Skill match</b><br>Exaggerated minimalism</div></div>
+</article>
+
+<!-- 5 -->
+<article class="opt" id="o5">
+  <header><h2>5. Deadline calendar</h2><span class="tag">Timeline</span></header>
+  <p class="idea">A wide calendar strip across the top of every page, showing the next six weeks of Irish tax deadlines. Below it, three role lanes. Whatever you click, the calendar stays, so the firm's real pressure is always in view.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-rows:auto 1fr 1fr 1fr;gap:5px;padding:6px">
+        <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:2px"><div class="b b2">M</div><div class="b b2">T</div><div class="b fp">31</div><div class="b b2">T</div><div class="b b2">F</div><div class="b b2">M</div><div class="b b2">T</div><div class="b fe">18</div><div class="b b2">T</div><div class="b b2">F</div><div class="b b2">M</div><div class="b b2">T</div></div>
+        <div class="b ce" style="display:flex;justify-content:space-between"><span class="t">Employee lane</span><span>15.7 h before 18 Nov ›</span></div>
+        <div class="b cp" style="display:flex;justify-content:space-between"><span class="t">Partner lane</span><span>€8,677 at risk ›</span></div>
+        <div class="b cl" style="display:flex;justify-content:space-between"><span class="t">AI Lead lane</span><span>39% checked ›</span></div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-rows:auto auto 1fr;gap:5px;padding:6px">
+        <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:2px"><div class="b b2">M</div><div class="b b2">T</div><div class="b b2">31</div><div class="b b2">T</div><div class="b b2">F</div><div class="b b2">M</div><div class="b b2">T</div><div class="b fe">18</div><div class="b b2">T</div><div class="b b2">F</div><div class="b b2">M</div><div class="b b2">T</div></div>
+        <div class="b"><div class="t">Ask about your work</div><div class="bar" style="margin-top:4px"></div>Try this prompt ▸</div>
+        <div class="b ce"><div class="t">Result pinned to 18 Nov</div>Skill · hours · €</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Only an accounting firm would have this. Ties every number to a date.</div><div><b>Risk</b><br>Calendar strip needs care on a phone (scrolls inside itself).</div><div><b>Skill match</b><br>Data-dense dashboard</div></div>
+</article>
+
+<!-- 6 -->
+<article class="opt" id="o6">
+  <header><h2>6. Bold blocks</h2><span class="tag">Neubrutalist</span></header>
+  <p class="idea">Thick black outlines, hard offset shadows, flat colour blocks, oversized type. Role cards look like stacked index cards. It is loud, playful and nothing like a bank portal.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-rows:auto 1fr;gap:8px;padding:10px">
+        <div class="t huge">WHO ARE YOU TODAY?</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+          <div class="b fe" style="border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);border-radius:0"><div class="t big">EMPLOYEE</div><div class="t huge">15.7h</div></div>
+          <div class="b fp" style="border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);border-radius:0"><div class="t big">PARTNER</div><div class="t huge">€8.7k</div></div>
+          <div class="b fl" style="border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);border-radius:0"><div class="t big">AI LEAD</div><div class="t huge">39%</div></div>
+        </div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-rows:auto auto 1fr;gap:8px;padding:10px">
+        <div style="display:flex;gap:6px"><span class="b fe" style="border:2px solid var(--ink);border-radius:0">EMPLOYEE</span><span class="b" style="border:2px solid var(--ink);border-radius:0">SKILLS</span><span class="b" style="border:2px solid var(--ink);border-radius:0">LEARN</span></div>
+        <div class="b" style="border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);border-radius:0;padding:8px"><div class="t">ASK</div><div class="bar" style="margin-top:4px"></div></div>
+        <div class="b" style="border:2px solid var(--ink);box-shadow:4px 4px 0 var(--emp);border-radius:0"><div class="t">RESULT</div>Skill · hours · €</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Stands out most. Judges will remember it.</div><div><b>Risk</b><br>May feel too playful for partners at a tax firm.</div><div><b>Skill match</b><br>Neubrutalism</div></div>
+</article>
+
+<!-- 7 -->
+<article class="opt" id="o7">
+  <header><h2>7. Journey map</h2><span class="tag">Guided path</span></header>
+  <p class="idea">Home shows one path from left to right: Learn (AI literacy), Try (employee prompt), Prove (skills library), Track (AI Lead), Decide (partner). Each role starts at its own stop. The literacy course is the front door, not an extra.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-rows:auto 1fr auto;gap:6px;padding:8px">
+        <div class="t big">From first prompt to firm-wide results</div>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;align-items:center">
+          <div class="b fl" style="aspect-ratio:1;border-radius:50%;display:grid;place-items:center"><span class="t">Learn</span></div>
+          <div class="b fe" style="aspect-ratio:1;border-radius:50%;display:grid;place-items:center"><span class="t">Try</span></div>
+          <div class="b b2" style="aspect-ratio:1;border-radius:50%;display:grid;place-items:center"><span class="t">Skills</span></div>
+          <div class="b fl" style="aspect-ratio:1;border-radius:50%;display:grid;place-items:center"><span class="t">Track</span></div>
+          <div class="b fp" style="aspect-ratio:1;border-radius:50%;display:grid;place-items:center"><span class="t">Decide</span></div>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap"><span class="b ce">Start as employee</span><span class="b cp">Start as partner</span><span class="b cl">Start as AI lead</span></div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf" style="grid-template-rows:auto auto 1fr;gap:6px;padding:8px">
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px"><div class="bar"></div><div class="bar" style="background:var(--emp)"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+        <div class="b"><div class="t">Step 2 · Try: ask about your work</div><div class="bar" style="margin-top:4px"></div>Try this prompt ▸</div>
+        <div class="b ce"><div class="t">Result</div>Skill · hours · € · Next step: open skill ›</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Tells the whole pitch story. Puts the new 4D course up front.</div><div><b>Risk</b><br>Repeat visitors may find the path slow.</div><div><b>Skill match</b><br>Progress indicators, landing pattern</div></div>
+</article>
+
+<!-- 8 -->
+<article class="opt" id="o8">
+  <header><h2>8. Role colour worlds</h2><span class="tag">Themed pages</span></header>
+  <p class="idea">The top nav is shared, but each role's page takes over the whole background with its own colour and its own big number in the corner. Changing role feels like walking into a different room. Home is a large three-row stack you scroll through.</p>
+  <div class="frames">
+    <figure><figcaption>Home</figcaption>
+      <div class="wf" style="grid-template-rows:14px 1fr 1fr 1fr;gap:0">
+        <div style="padding:1px 6px;background:var(--sheet)">Frame · Skills · Literacy</div>
+        <div class="fe" style="padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><span class="t big">Employee · hand one task to AI</span><span class="t huge">15.7 h</span></div>
+        <div class="fp" style="padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><span class="t big">Partner · find the leaking jobs</span><span class="t huge">€8,677</span></div>
+        <div class="fl" style="padding:6px 10px;display:flex;justify-content:space-between;align-items:center"><span class="t big">AI Lead · track use and cost</span><span class="t huge">39%</span></div>
+      </div></figure>
+    <figure><figcaption>Employee page</figcaption>
+      <div class="wf fe" style="grid-template-rows:14px auto 1fr;gap:6px;padding:0 0 8px">
+        <div style="padding:1px 6px;background:var(--sheet);color:var(--muted)">Frame · Employee ▾ · Skills · Literacy</div>
+        <div class="b" style="margin:0 10%;background:var(--sheet)"><div class="t" style="color:var(--ink)">Ask about your work</div><div class="bar" style="margin-top:4px"></div>Try this prompt ▸</div>
+        <div class="b" style="margin:0 10%;background:var(--sheet)"><div class="t" style="color:var(--ink)">Result</div>Skill · hours · €</div>
+      </div></figure>
+  </div>
+  <div class="pros"><div><b>Good</b><br>Impossible to forget which role you are in. Big, confident colour.</div><div><b>Risk</b><br>Three strong colours must pass contrast checks in light and dark.</div><div><b>Skill match</b><br>Exaggerated minimalism plus vibrant blocks</div></div>
+</article>
+
+<section class="verdict">
+  <h3>My pick, if you want one</h3>
+  <ol>
+    <li><b>Option 2 (sidebar) as the structure</b>, because it answers "where am I" on every page and Skills and Literacy are always one click away.</li>
+    <li><b>Option 8's colour worlds on top</b>, so each role page fills with its colour and it stops looking plain.</li>
+    <li><b>Option 5's calendar strip</b> on the partner and employee pages, because it is the one detail only a tax firm would have.</li>
+  </ol>
+  <p style="margin:8px 0 0">Reply with a number, or a mix such as "2 + 8 + 5". That locks the structure before any styling starts.</p>
+</section>
+</div>
