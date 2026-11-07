@@ -257,3 +257,49 @@
   .page { padding-top: var(--space-4); font-size: 18px; }
   .figures div { border-left: 0; border-top: 1px solid var(--rule); padding: var(--space-2) 0; }
 }
+
+/* Sample prompts under the question box. Buttons reuse .secondary; these rules only lay them out. */
+.prompts { margin-top: var(--space-4); }
+
+.promptsHeading {
+  font-size: 1rem;
+  margin: 0 0 var(--space-2);
+}
+
+.promptList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.promptItem {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.promptLabel {
+  flex: 1 0 100%;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.promptText {
+  flex: 1 1 16rem;
+  min-width: 0;
+  font-size: 0.95rem;
+}
+
+.promptItem button { min-height: 44px; }
+
+.literacyLink {
+  margin: var(--space-3) 0 0;
+  font-size: 0.95rem;
+}
+
+.literacyLink a { color: var(--green); }
