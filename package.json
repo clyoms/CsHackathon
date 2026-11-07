@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "vitest run"
+    "test": "vitest run",
+    "logic": "node scripts/logic-check/run.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

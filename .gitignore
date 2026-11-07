@@ -15,3 +15,7 @@ next-env.d.ts
 npm-debug.log*
 .DS_Store
 Thumbs.db
+
+# logic check reports (npm run logic)
+logic-report.json
+logic-report.md
