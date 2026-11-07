@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: Working-paper summary
 plainSummary: Summarises a set of audit or accounts working papers into one page a manager can review fast.
+howThisHelps: Saves an audit manager review time by giving one page that points to the working papers that need a closer look.
 targetsOnetTasks:
   - Compile statistical, financial, accounting, or auditing reports and tables pertaining to such matters as cash receipts, expenditures, accounts payable and receivable, and profits and losses.
   - Prepare detailed reports on audit findings.

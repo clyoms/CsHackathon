@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: Messaging framework
 plainSummary: Helps you decide how to talk about a service, an AI rollout or a client event: who it's for, what you promise, the proof.
+howThisHelps: Saves a partner or marketing lead a few drafts when announcing a new service or AI rollout to clients.
 targetsOnetTasks:
   - Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.
   - Answer questions and provide future tax planning to clients.

@@ -4,6 +4,7 @@ risk: low
 kind: plugin
 title: Deadline reminder
 plainSummary: Reminds you what to hand to AI each week, counting down to your next filing deadline.
+howThisHelps: Saves a tax assistant from last-minute rushes by showing each week what to hand to AI before the next Revenue deadline.
 targetsOnetTasks:
   - Schedule appointments with clients.
   - Prepare or assist in preparing simple to complex tax returns for individuals or small businesses.

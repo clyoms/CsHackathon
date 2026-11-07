@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: Bank reconciliation
 plainSummary: Matches a bank statement to the ledger and lists only the lines that do not match.
+howThisHelps: Saves a tax assistant about an hour per bank account each month by listing only the lines that do not match.
 targetsOnetTasks:
   - Reconcile records of bank transactions.
   - Review accounts for discrepancies and reconcile differences.

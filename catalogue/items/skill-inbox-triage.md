@@ -4,6 +4,7 @@ risk: low
 kind: skill
 title: Inbox triage
 plainSummary: Sorts your unread email into Reply today, Defer or Ignore, with one reason each, so you stop re-reading the same messages.
+howThisHelps: Saves anyone in the firm some time each morning by sorting unread email so client and Revenue messages come first.
 targetsOnetTasks:
   - Perform general office duties, such as filing, answering telephones, and handling routine correspondence.
   - Answer questions and provide future tax planning to clients.

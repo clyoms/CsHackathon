@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: Meeting summary from a transcript
 plainSummary: Turns a Teams transcript of a client or engagement meeting into decisions, actions with owners, and risks, ready to send round.
+howThisHelps: Saves an engagement manager most of the write-up time after a client meeting by turning the Teams transcript into decisions and actions.
 targetsOnetTasks:
   - Confer with company officials about financial and regulatory matters.
   - Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.
