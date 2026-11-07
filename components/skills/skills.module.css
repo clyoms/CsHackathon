@@ -1,0 +1,133 @@
+.page {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: var(--space-5) var(--gutter);
+}
+
+.kicker {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.kicker a { color: var(--muted); }
+
+.title {
+  font-size: clamp(2.2rem, 7vw, 3.2rem);
+  margin: var(--space-2) 0;
+}
+
+.lead {
+  margin: 0 0 var(--space-4);
+  color: var(--muted);
+  max-width: 38rem;
+}
+
+.heading {
+  margin: var(--space-5) 0 0;
+  font-size: 1.5rem;
+}
+
+.count {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  border-top: 2px solid var(--green);
+}
+
+.item {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.name {
+  margin: 0;
+  font-size: 1.35rem;
+  color: var(--ink);
+}
+
+.risk {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0 0.5em;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.low { color: var(--green); }
+.medium { color: var(--muted); }
+.high { color: var(--accent); }
+
+.summary { margin: var(--space-2) 0 0; }
+
+.verify {
+  margin: var(--space-2) 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.verify strong { color: var(--ink); font-weight: 600; }
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  margin-top: var(--space-3);
+}
+
+.button {
+  font: inherit;
+  background: transparent;
+  color: var(--green);
+  border: 2px solid var(--green);
+  border-radius: var(--radius);
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  transition: background-color var(--ease), color var(--ease);
+}
+.button:hover { background: var(--green); color: var(--paper); }
+
+.status {
+  margin: var(--space-2) 0 0;
+  min-height: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.status:empty { margin: 0; }
+
+.body { margin-top: var(--space-3); }
+.body summary { cursor: pointer; color: var(--green); }
+.body pre {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-3);
+  max-height: 24rem;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .page { padding-top: var(--space-4); }
+  .heading { margin-top: var(--space-4); }
+}

@@ -34,11 +34,11 @@ export function LiteracyLog({ entries, names }: { entries: LiteracyLogEntry[]; n
         <tbody>
           {entries.map((e, i) => (
             <tr key={`${e.staffId}-${e.date}-${e.itemId}-${i}`}>
-              <td>{e.date}</td>
-              <td>{names[e.staffId] ?? e.staffId}</td>
-              <td>{e.measure}</td>
-              <td>{e.itemId}</td>
-              <td>{e.adopted ? "Yes" : "No"}</td>
+              <td data-label="Date">{e.date}</td>
+              <td data-label="Person">{names[e.staffId] ?? e.staffId}</td>
+              <td data-label="Measure">{e.measure}</td>
+              <td data-label="Item">{e.itemId}</td>
+              <td data-label="Adopted">{e.adopted ? "Yes" : "No"}</td>
             </tr>
           ))}
         </tbody>

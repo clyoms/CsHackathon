@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { RolePicker, type Role } from "@/components/home/RolePicker";
 import { roleNumbers } from "@/components/home/numbers";
 import styles from "@/components/home/home.module.css";
@@ -40,6 +41,9 @@ export default function Home() {
       <h1 className={styles.title}>Who are you today?</h1>
       <p className={styles.lead}>Pick your line. Each one shows what AI could do for you before the next deadline.</p>
       <RolePicker roles={roles} />
+      <p className={styles.library}>
+        <Link href="/skills">Browse the skills library</Link>: every skill, hook and plugin, ready to copy or export.
+      </p>
       <p className={styles.foot}>Numbers marked synthetic come from made-up Frame data for the demo.</p>
     </main>
   );

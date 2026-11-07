@@ -89,6 +89,8 @@
   vertical-align: middle;
 }
 
+.library { margin-top: var(--space-4); }
+
 .foot { margin-top: var(--space-5); color: var(--muted); font-size: 0.9rem; }
 
 @media (max-width: 640px) {
