@@ -1,0 +1,17 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# secrets: humans create this, agents never read it
+.env.local
+.env*.local
+
+# logs and OS files
+npm-debug.log*
+.DS_Store
+Thumbs.db
