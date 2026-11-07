@@ -1,0 +1,21 @@
+{
+  "_note": "Sample Claude Messages API response, shaped like the real one, for meter tests. Not a live call: the usage numbers are made up.",
+  "synthetic": true,
+  "id": "msg_sample_athena_01",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-sonnet-5-5",
+  "stop_reason": "end_turn",
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"questions\":[{\"question\":\"Which part of the Murphy job do you want help with?\",\"options\":[\"Coding bank transactions\",\"Drafting the client query letter\",\"Checking the CT1 figures\"],\"why\":\"Each part needs a different skill.\"}]}"
+    }
+  ],
+  "usage": {
+    "input_tokens": 412,
+    "output_tokens": 96,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 1200
+  }
+}
