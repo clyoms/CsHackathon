@@ -1,26 +1,107 @@
+/* Frame Next design tokens, from docs/design/brief.md (approved, T-7).
+   Ledger paper, counting-house green ink, one vermilion accent for the main action and key numbers.
+   Purple is reserved for the synthetic badge. */
 :root {
-  --bg: #fafaf8;
-  --fg: #1a1a1a;
-  --muted: #5c5c5c;
-  --accent: #1f5fbf;
-  --line: #ddd;
+  --paper: #f6f1e7;
+  --surface: #fffdf8;
+  --ink: #1c2b24;
+  --muted: #4f5b55;
+  --green: #1f4d3f;
+  --accent: #c2410c;
+  --on-accent: #ffffff;
+  --rule: #d8cfbd;
+  --badge-fg: #5b2a9a;
+  --badge-bg: #f1e6ff;
+
+  --font-head: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-body: var(--font-plex), "Segoe UI", Arial, sans-serif;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --radius: 4px;
+  --gutter: 16px;
+  --measure: 72rem;
+  --ease: 150ms ease;
+
+  /* Older names, kept so pages not yet restyled still read the new palette. */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --line: var(--rule);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121a16;
+    --surface: #1a241f;
+    --ink: #ede6d6;
+    --muted: #a9b3ac;
+    --green: #7fb59e;
+    --accent: #ff8a4c;
+    --on-accent: #121a16;
+    --rule: #2c3a33;
+    --badge-fg: #e4d2ff;
+    --badge-bg: #3b2160;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #121a16;
+  --surface: #1a241f;
+  --ink: #ede6d6;
+  --muted: #a9b3ac;
+  --green: #7fb59e;
+  --accent: #ff8a4c;
+  --on-accent: #121a16;
+  --rule: #2c3a33;
+  --badge-fg: #e4d2ff;
+  --badge-bg: #3b2160;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
 
+html { -webkit-text-size-adjust: 100%; }
+
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
   font-size: 18px;
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
-a { color: var(--accent); }
+h1, h2, h3 {
+  font-family: var(--font-head);
+  color: var(--green);
+  line-height: 1.2;
+  font-weight: 650;
+}
 
-.home { max-width: 640px; margin: 4rem auto; padding: 0 1rem; }
-.views { list-style: none; padding: 0; }
-.views li { display: flex; flex-direction: column; padding: 1rem 0; border-bottom: 1px solid var(--line); }
-.views a { font-size: 1.4rem; font-weight: 600; }
-.views span { color: var(--muted); }
+a { color: var(--green); text-underline-offset: 0.15em; }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Figures line up like a trial balance. */
+.num, td, dd, data { font-variant-numeric: tabular-nums; }
+
+/* The accountant's double rule under a total. */
+.total {
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom: 3px double var(--accent);
+  padding-bottom: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
