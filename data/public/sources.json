@@ -1,0 +1,22 @@
+{
+  "job_exposure.csv": {
+    "source": "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/labor_market_impacts/job_exposure.csv",
+    "fetchedAt": "2026-11-07T11:23:09.578Z"
+  },
+  "task_penetration.csv": {
+    "source": "https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/labor_market_impacts/task_penetration.csv",
+    "fetchedAt": "2026-11-07T11:23:09.578Z"
+  },
+  "holidays-ie.json": {
+    "source": "https://date.nager.at/api/v3/PublicHolidays/2026/IE https://date.nager.at/api/v3/PublicHolidays/2027/IE",
+    "fetchedAt": "2026-11-07T11:23:09.578Z"
+  },
+  "cso-ica237.csv": {
+    "source": "https://ws.cso.ie/public/api.restful/PxStat.Data.Cube_API.ReadDataset/ICA237/CSV/1.0/en",
+    "fetchedAt": "2026-11-07T11:23:09.578Z"
+  },
+  "eurostat-isoc_eb_ain2.json": {
+    "source": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/isoc_eb_ain2?format=JSON&lang=EN&geo=IE&geo=EU27_2020&indic_is=E_AI_TANY&unit=PC_ENT&nace_r2=M69-M71&nace_r2=C10-S951_X_K",
+    "fetchedAt": "2026-11-07T11:23:09.578Z"
+  }
+}
