@@ -10,7 +10,7 @@ const PEOPLE = [
 export function Orbit({ numbers }: { numbers: (string | undefined)[] }) {
   return (
     <div className={styles.orbit}>
-      <svg viewBox="0 0 560 380" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Aoife, the partner and Harry circling the next filing deadline">
+      <svg viewBox="0 0 560 380" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Aoife, the partner and the AI Lead circling the next filing deadline">
         <defs>
           <radialGradient id="orbit-core" cx="50%" cy="50%" r="50%">
             <stop offset="0" stopColor="#f0abfc" />

@@ -4,6 +4,7 @@ risk: low
 kind: hook
 title: Check the output
 plainSummary: Before you use an AI answer with numbers in it, it asks you to confirm three figures yourself.
+howThisHelps: Saves a reviewer from sending a client a wrong figure by making the preparer confirm the key numbers before an AI answer is used.
 targetsOnetTasks:
   - Check data input or verify totals on forms prepared by others to detect errors in arithmetic, data entry, or procedures.
   - Check figures, postings, and documents for correct entry, mathematical accuracy, and proper codes.

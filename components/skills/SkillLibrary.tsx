@@ -58,6 +58,11 @@ export function SkillLibrary({ items }: { items: LibraryItem[] }) {
                     <span className={`${styles.risk} ${styles[item.risk]}`}>{item.risk} risk</span>
                   </div>
                   <p className={styles.summary}>{item.plainSummary}</p>
+                  {item.howThisHelps && (
+                    <p className={styles.helps}>
+                      <strong>How this helps:</strong> {item.howThisHelps}
+                    </p>
+                  )}
                   {item.verifyStep && (
                     <p className={styles.verify}>
                       <strong>Check:</strong> {item.verifyStep}

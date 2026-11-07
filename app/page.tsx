@@ -29,12 +29,12 @@ export default function Home() {
       tone: "orchid",
     },
     {
-      href: "/harry",
-      monogram: "H",
-      name: "Harry",
+      href: "/ai-lead",
+      monogram: "AI",
+      name: "AI Lead",
       role: "AI and Automation Analyst",
       promise: "Track how the firm uses AI and what it costs.",
-      number: n.harry,
+      number: n.aiLead,
       tone: "indigo",
     },
   ];
@@ -53,7 +53,7 @@ export default function Home() {
         <nav aria-label="Main" className={styles.links}>
           <Link href="/employee">Employee</Link>
           <Link href="/partner">Partner</Link>
-          <Link href="/harry">Harry</Link>
+          <Link href="/ai-lead">AI Lead</Link>
           <Link href="/skills" className={styles.pill}>
             Skills library
           </Link>
@@ -83,7 +83,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <Orbit numbers={[n.employee?.value, n.partner?.value, n.harry?.value]} />
+          <Orbit numbers={[n.employee?.value, n.partner?.value, n.aiLead?.value]} />
         </section>
 
         <section aria-labelledby="pick" className={styles.pick}>
@@ -95,9 +95,6 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
-        <span>
-          Numbers marked <span className={styles.amber}>synthetic</span> come from made-up Frame data for the demo.
-        </span>
         <span>Real numbers show their source on hover.</span>
       </footer>
     </div>

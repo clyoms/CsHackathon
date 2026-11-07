@@ -44,12 +44,7 @@ export function RolePicker({ roles }: { roles: Role[] }) {
                 <span className={styles.figure}>
                   <span className={styles.value}>{r.number.value}</span>
                   <span className={styles.caption}>
-                    {r.number.caption}{" "}
-                    {r.number.synthetic && (
-                      <span className={styles.badge} title="Made-up number for the demo, from synthetic Frame data">
-                        synthetic
-                      </span>
-                    )}
+                    {r.number.caption}
                   </span>
                 </span>
               ) : (

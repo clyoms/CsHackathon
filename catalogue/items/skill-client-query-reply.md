@@ -4,6 +4,7 @@ risk: high
 kind: skill
 title: Client query reply
 plainSummary: Drafts a clear, friendly reply to a client's tax question for you to check and send.
+howThisHelps: Saves a tax senior most of the drafting time on routine client tax questions, leaving only the checking and sending.
 targetsOnetTasks:
   - Furnish taxpayers with sufficient information and advice to ensure correct tax form completion.
   - Answer questions and provide future tax planning to clients.

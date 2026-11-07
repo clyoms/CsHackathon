@@ -3,14 +3,16 @@
 // Questions come from POST /api/athena and the written answer from POST /api/ask.
 // The engine's recommendation for each possible client answer arrives as props from the server.
 import Link from "next/link";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { AskResponse, AthenaAnswer, AthenaResponse } from "@/contract/api";
 import type { AthenaQuestion, LiteracyLogEntry, MeterReading, Recommendation, Staff } from "@/contract/types";
 import { recordAdopted } from "@/engine/literacy";
 import type { AthenaOutcome, Usage } from "@/engine/contract";
 import { ALL_CLIENTS, namesClient, type Choices } from "./choices";
 import { UPLOAD_HINT, copyText, downloadSkill } from "./exportSkill";
-import { SourceLink, SyntheticBadge } from "./Tags";
+import { PromptLibrary } from "./PromptLibrary";
+import { SAMPLE_PROMPTS, fillQuestionBox, type SamplePrompt } from "./prompts";
+import { SourceLink } from "./Tags";
 import styles from "./employee.module.css";
 
 export interface EmployeeFlowProps {
@@ -79,6 +81,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
   const clients = Object.keys(choices).filter((c) => c !== ALL_CLIENTS);
   const [step, setStep] = useState<Step>("ask");
   const [request, setRequest] = useState("");
+  const askRef = useRef<HTMLInputElement>(null);
   const [questions, setQuestions] = useState<AthenaQuestion[]>([]);
   const [answers, setAnswers] = useState<AthenaAnswer[]>([]);
   const [written, setWritten] = useState<(AskResponse & Extra) | null>(null);
@@ -168,6 +171,10 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
     setExported(downloadSkill(recommendation.item));
   }
 
+  function pickPrompt(prompt: SamplePrompt) {
+    fillQuestionBox(prompt, { setText: setRequest, focus: () => askRef.current?.focus() });
+  }
+
   function tryIt() {
     if (!recommendation) return;
     setLog((l) => recordAdopted(l, staff.id, recommendation.item.id, todayIso()));
@@ -194,6 +201,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
         </label>
         <input
           id="ask"
+          ref={askRef}
           className={styles.input}
           value={request}
           onChange={(e) => setRequest(e.target.value)}
@@ -204,6 +212,12 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
           Ask
         </button>
       </form>
+
+      {step === "ask" && <PromptLibrary prompts={SAMPLE_PROMPTS} onPick={pickPrompt} />}
+
+      <p className={styles.literacyLink}>
+        <Link href="/literacy">Learn the 4D basics</Link>
+      </p>
 
       {step === "thinking" && (
         <p className={styles.muted} aria-live="polite">
@@ -275,7 +289,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
         )}{" "}
         <span>AI used for this task:</span> <span>{meter.tokens.toLocaleString("en-IE")} tokens</span>
         {" · "}
-        <span>{meter.euros === null ? "cost not set yet" : euro.format(meter.euros)}</span>
+        <span>{meter.euros === null ? "Cost: not priced yet" : `Cost: ${euro.format(meter.euros)}`}</span>
       </footer>
     </main>
   );
@@ -320,13 +334,13 @@ function AnswerCard({ recommendation, cardDeadline, written, today, copied, expo
             <div>
               <dt>Time back</dt>
               <dd>
-                About {recommendation.hoursBackEstimate} hours {recommendation.synthetic && <SyntheticBadge />}
+                About {recommendation.hoursBackEstimate} hours
               </dd>
             </div>
             <div>
               <dt>Worth</dt>
               <dd>
-                {euro.format(recommendation.eurosBack)} {recommendation.synthetic && <SyntheticBadge />}
+                {euro.format(recommendation.eurosBack)}
               </dd>
             </div>
           </>

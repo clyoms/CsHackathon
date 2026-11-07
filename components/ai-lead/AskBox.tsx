@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AskResponse, type ApiError } from "@/contract/api";
 import { Num } from "./Num";
-import styles from "./harry.module.css";
+import styles from "./ai-lead.module.css";
 
 const QUESTION = "Which teams improve when they adopt a skill?";
 
@@ -49,7 +49,7 @@ export function AskBox() {
             {result.numbers.map((n) => (
               <li key={n.label}>
                 {n.label}:{" "}
-                <Num synthetic={n.synthetic} source={n.synthetic ? null : n.source}>
+                <Num source={n.synthetic ? null : n.source}>
                   {n.value} {n.unit}
                 </Num>
               </li>

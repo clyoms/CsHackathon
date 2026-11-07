@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: Transaction classification
 plainSummary: Sorts a bank export into ledger codes so you only check the unusual ones.
+howThisHelps: Saves a bookkeeper most of the coding time on a bank export, leaving only the unusual lines to check by hand.
 targetsOnetTasks:
   - Classify, record, and summarize numerical and financial data to compile and keep financial records, using journals and ledgers or computers.
   - Establish tables of accounts and assign entries to proper accounts.

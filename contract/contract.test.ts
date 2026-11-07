@@ -18,6 +18,7 @@ const pairs: [string, ZodType, unknown][] = [
   ["AthenaResult", T.AthenaResult, F.athenaResultFixture],
   ["MeterReading", T.MeterReading, F.meterReadingFixture],
   ["LiteracyLogEntry", T.LiteracyLogEntry, F.literacyLogEntryFixture],
+  ["LiteracyLogEntry lesson", T.LiteracyLogEntry, F.lessonLogEntryFixture],
   ...F.sourcedNumberFixtures.map((n, i): [string, ZodType, unknown] => [`SourcedNumber ${i}`, T.SourcedNumber, n]),
   ["AthenaRequest", A.AthenaRequest, F.athenaRequestFixture],
   ["AthenaResponse", A.AthenaResponse, F.athenaResponseFixture],
@@ -60,6 +61,16 @@ describe("ground rules", () => {
     const { checked: _c, ...rest } = F.deadlineFixture;
     expect(T.Deadline.parse(rest).checked).toBe(true);
     expect(A.AskRequest.parse({ question: "q", view: "partner" }).athenaAnswers).toEqual([]);
+  });
+
+  it("rejects an unknown literacy measure", () => {
+    expect(T.LiteracyLogEntry.safeParse({ ...F.lessonLogEntryFixture, measure: "watched" }).success).toBe(false);
+  });
+
+  it("requires howThisHelps on a catalogue item, and allows it empty", () => {
+    const { howThisHelps: _h, ...rest } = F.catalogueItemFixture;
+    expect(T.CatalogueItem.safeParse(rest).success).toBe(false);
+    expect(T.CatalogueItem.safeParse({ ...rest, howThisHelps: "" }).success).toBe(true);
   });
 
   it("marks every made-up Frame fixture synthetic", () => {

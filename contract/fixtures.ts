@@ -98,6 +98,7 @@ export const catalogueItemFixture: CatalogueItem = {
   body:
     "You are helping an Irish accounting firm. Take the bank transactions I paste and give each a nominal ledger code from the chart of accounts I paste. Return a table: date, description, amount, code, confidence. Flag anything below 80% confidence.",
   verifyStep: "Pick three flagged lines and check the code against the source document.",
+  howThisHelps: "Saves a tax assistant the hours spent coding each bank line by hand before a VAT return.",
 };
 
 // Derived from synthetic timesheets, so synthetic.
@@ -138,6 +139,15 @@ export const literacyLogEntryFixture: LiteracyLogEntry = {
   measure: "shown",
   itemId: catalogueItemFixture.id,
   adopted: false,
+};
+
+/** A finished 4D literacy lesson: itemId is the lesson id and adopted is true. */
+export const lessonLogEntryFixture: LiteracyLogEntry = {
+  staffId: staffFixture.id,
+  date: "2026-11-07",
+  measure: "lesson",
+  itemId: "4d-delegation",
+  adopted: true,
 };
 
 export const sourcedNumberFixtures: SourcedNumber[] = [

@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: CT1 review checklist
 plainSummary: Checks a draft corporation tax return against the accounts and lists anything that does not tie.
+howThisHelps: Saves a reviewer much of the tick-and-tie time on a CT1 by flagging only the figures that do not agree with the accounts.
 targetsOnetTasks:
   - Check data input or verify totals on forms prepared by others to detect errors in arithmetic, data entry, or procedures.
   - Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.

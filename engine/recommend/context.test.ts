@@ -73,6 +73,7 @@ describe("catalogue growth", () => {
       targetsOnetTasks: [catalogue[0].targetsOnetTasks[0]],
       body: "Compare each payroll journal line with the payslip totals and list any differences.",
       verifyStep: "Tick three lines against the payslips.",
+      howThisHelps: "",
     };
     const grown = [...catalogue, extra];
     expect(scoreItems(base({ catalogue: grown }))).toHaveLength(catalogue.length + 1);
