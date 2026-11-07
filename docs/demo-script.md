@@ -18,7 +18,7 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 ## 1. Home (10 seconds)
 
-**Click:** nothing yet. Point at the three links.
+**Click:** nothing yet. Point at the three role cards. The skills library link under them lists every skill, ready to copy or export.
 
 **Say:** "Frame Next tells each person at FRAME which AI habit to adopt this week, and what it saves before the next deadline. Three views: Aoife, a tax assistant; a partner; and Harry, who runs AI adoption."
 
@@ -44,9 +44,11 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 **Say:** "She copies the skill straight into Claude. 'I'll try it' records the adoption for Harry's literacy log."
 
+**Optional click:** Export skill. It downloads `bank-reconciliation.zip`, a folder with SKILL.md that Claude takes as it is (Customize, Skills, Upload a skill).
+
 ## 3. Partner view (45 seconds)
 
-**Click:** ← Frame Next, then Partner.
+**Click:** ← Who are you today?, then Partner.
 
 **See:** 10 engagements, sorted by money lost. **Walsh Holdings** has lost **€8,677**: 330.5 h against 260 budgeted, €97 an hour. Murphy and Byrne are also over budget.
 
@@ -64,7 +66,7 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 ## 4. Harry view (40 seconds)
 
-**Click:** ← Frame Next, then Harry.
+**Click:** ← Who are you today?, then Harry.
 
 **Say:** "Harry needs the firm-wide picture."
 

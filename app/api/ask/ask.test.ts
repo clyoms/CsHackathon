@@ -85,6 +85,9 @@ describe("POST /api/ask with no key", () => {
     const all = linesForAnswers(world, "s-aoife", [{ question: "Which client is this for?", answer: "All my clients" }]);
     expect(all.chosen).toBeUndefined();
     expect(all.lines).toHaveLength(world.timesheets.length);
+    // Live Claude adds the work type to the name.
+    const live = linesForAnswers(world, "s-aoife", [{ question: "Which client is this for?", answer: "Murphy Engineering Ltd (CT1)" }]);
+    expect(live.chosen?.id).toBe("e-murphy");
   });
 
   it("marks every number synthetic or gives it a source", async () => {
@@ -209,6 +212,14 @@ describe("employee acceptance prompts with no key (T-14)", () => {
     ]);
     expect(body.answer).not.toMatch(/30%|estimate assumes/i);
     expect(body.card.deadline).toMatchObject({ dueDate: "2026-11-18", daysLeft: 11 });
+  });
+
+  it("shows no countdown when the question names no date or filing task", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const body = await ask("I don't trust AI, what's the safest thing to start with?", [
+      { question: "Which client is this for?", answer: "All my clients" },
+    ]);
+    expect(body.card.deadline).toBeNull();
   });
 });
 
