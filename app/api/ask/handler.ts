@@ -4,8 +4,8 @@
 // template filled from the same numbers, and the meter reads zero tokens.
 import Anthropic from "@anthropic-ai/sdk";
 import { AskResponse, type AskRequest } from "@/contract/api";
-import type { Recommendation, SourcedNumber } from "@/contract/types";
-import { loadRisk } from "@/catalogue";
+import type { CatalogueItem, Recommendation, SourcedNumber } from "@/contract/types";
+import { DEFAULT_RISK, loadRisk, type Risk } from "@/catalogue";
 import type { AthenaOutcome, Deadline } from "@/engine/contract";
 import { extractContext } from "@/engine/athena/triage";
 import { parseNamedDeadline, pickDeadline, taskTopic } from "@/engine/deadline";
@@ -52,6 +52,13 @@ const euro = (n: number) => `€${n.toLocaleString("en-IE", { minimumFractionDig
 const dayMonth = (iso: string) =>
   new Intl.DateTimeFormat("en-IE", { day: "numeric", month: "long", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
 
+/** The card's item carries its risk, so the page and the logic check can read it without the catalogue files. */
+export type CardRecommendation = Recommendation & { item: CatalogueItem & { risk: Risk } };
+export interface Card {
+  recommendation: CardRecommendation;
+  deadline: Deadline | null;
+}
+
 export interface Findings {
   numbers: SourcedNumber[];
   /** Fixed answer built from the numbers, used with no key. At most 80 words. */
@@ -59,7 +66,7 @@ export interface Findings {
   /** Employee view only: what Athena's answers led to. */
   outcome?: AthenaOutcome;
   /** Employee view only: the chosen item and the deadline to count down to. */
-  card?: { recommendation: Recommendation; deadline: Deadline | null };
+  card?: Card;
 }
 
 /** Runs the engine that matches the view and returns its numbers. */
@@ -90,7 +97,8 @@ function employeeFindings(req: AskRequest, world: World): Findings {
       : context.task
         ? { ...context, goal: undefined }
         : context;
-  const rec = recommend({ ...world, staff, lines, context: recContext, risk: loadRisk() });
+  const risk = loadRisk();
+  const rec = recommend({ ...world, staff, lines, context: recContext, risk });
   // The user's own date wins. A named task with its own deadline (VAT, CT1) comes next.
   const named = parseNamedDeadline([req.question, ...answers].join(" "), world.today);
   // If the person's date is a known filing date (18 November is ROS pay and file), use that deadline and its source.
@@ -118,7 +126,8 @@ function employeeFindings(req: AskRequest, world: World): Findings {
 
   const scoreSource = world.taskScores.find((t) => rec.item.targetsOnetTasks.includes(t.onetTask))?.source;
   const numbers: SourcedNumber[] = [
-    { label: "Hours back before the deadline", value: rec.hoursBackEstimate, unit: "hours", source: scoreSource, synthetic: true },
+    // "before the deadline" only when a countdown shows, or Claude repeats it with no deadline in sight.
+    { label: deadline ? "Hours back before the deadline" : "Hours back", value: rec.hoursBackEstimate, unit: "hours", source: scoreSource, synthetic: true },
     { label: "Euros back", value: rec.eurosBack, unit: "EUR", synthetic: true },
     { label: "AI-ready hours", value: rec.aiReadyHours, unit: "hours", source: scoreSource, synthetic: true },
   ];
@@ -138,7 +147,8 @@ function employeeFindings(req: AskRequest, world: World): Findings {
     `Start with the ${rec.item.title} ${rec.item.kind}${client}. ` +
     `It could give you about ${rec.hoursBackEstimate} hour${rec.hoursBackEstimate === 1 ? "" : "s"} back (${euro(rec.eurosBack)}, ${SYNTHETIC_SOURCE})` +
     `${before}.${check}`;
-  return { numbers, template, outcome: { kind: "skill" }, card: { recommendation: rec, deadline } };
+  const item = { ...rec.item, risk: risk[rec.item.id] ?? DEFAULT_RISK };
+  return { numbers, template, outcome: { kind: "skill" }, card: { recommendation: { ...rec, item }, deadline } };
 }
 
 function countdownText(days: number): string {
@@ -215,6 +225,7 @@ const SYSTEM = [
   "Use only the numbers given. Never add, estimate or round a number differently.",
   "After each number you use, name its source in brackets, using the source name given.",
   "Use the first number in the list, exactly as written. Do not use bullet points or headings.",
+  'Mention a deadline only when one is given. If none is given, never write "the deadline" or "your deadline".',
 ].join(" ");
 
 function defaultClient(): Pick<Anthropic, "messages"> | null {
@@ -238,6 +249,7 @@ async function writeWithClaude(
     f.card?.deadline?.source === "user"
       ? `Deadline the person named: ${f.card.deadline.label}, ${dayMonth(f.card.deadline.dueDate)}, ${f.card.deadline.daysLeft} days away (their own date, no source).`
       : "",
+    f.card && !f.card.deadline ? "Deadline: none. Do not mention a deadline." : "",
     `A correct answer in the right style, for reference:\n${f.template}`,
   ]
     .filter(Boolean)
@@ -267,7 +279,7 @@ export type AskApiResponse = AskResponse & {
   offlineReason?: string;
   tokensUsed: number;
   outcome?: AthenaOutcome;
-  card?: { recommendation: Recommendation; deadline: Deadline | null };
+  card?: Card;
 };
 
 export async function handleAsk(req: AskRequest, deps: AskDeps): Promise<AskApiResponse> {

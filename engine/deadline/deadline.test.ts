@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseNamedDeadline, pickDeadline, taskTopic } from "./index";
+import { editDistance, parseNamedDeadline, pickDeadline, taskTopic } from "./index";
 
 const TODAY = "2026-11-07"; // a Saturday
 
@@ -40,6 +40,25 @@ describe("parseNamedDeadline", () => {
 
   it("treats a weekday equal to today as today", () => {
     expect(parseNamedDeadline("by Saturday", TODAY)).toMatchObject({ dueDate: TODAY, daysLeft: 0 });
+  });
+
+  it("reads a weekday typed with one slip after a date word", () => {
+    expect(parseNamedDeadline("can ai do my vat retrun for byrne foods by firday", TODAY)).toMatchObject({
+      label: "Your deadline, Friday",
+      dueDate: "2026-11-13",
+      daysLeft: 6,
+    });
+    expect(parseNamedDeadline("on wedensday please", TODAY)?.dueDate).toBe("2026-11-11");
+    expect(parseNamedDeadline("before thursdy", TODAY)?.dueDate).toBe("2026-11-12");
+    // Not a weekday, or no date word in front of it.
+    expect(parseNamedDeadline("sort it by fridge", TODAY)).toBeNull();
+    expect(parseNamedDeadline("firday notes", TODAY)).toBeNull();
+  });
+
+  it("counts a swap of neighbouring letters as one edit", () => {
+    expect(editDistance("firday", "friday")).toBe(1);
+    expect(editDistance("friday", "friday")).toBe(0);
+    expect(editDistance("fridge", "friday")).toBe(2);
   });
 
   it("returns null when no date is named", () => {

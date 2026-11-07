@@ -128,6 +128,30 @@ describe("ask with a stubbed Claude client", () => {
     expect(body.answer).not.toBe(long);
   });
 
+  it("never tells Claude about a deadline when no countdown shows", async () => {
+    const create = vi.fn().mockResolvedValue({ stop_reason: "end_turn", content: [{ type: "text", text: "Short answer." }], usage: sample.usage });
+    const body = await handleAsk(
+      { question: "Summarise the working papers on the Lee Clinics audit file", view: "employee", staffId: "s-sinead", athenaAnswers: [] },
+      { world: realWorld("2026-11-07"), client: { messages: { create } } as never },
+    );
+    expect(body.card?.deadline).toBeNull();
+    const content: string = create.mock.calls[0][0].messages[0].content;
+    expect(content).not.toMatch(/before the deadline/i);
+    expect(content).toContain("Hours back:");
+    expect(content).toContain("Deadline: none. Do not mention a deadline.");
+    expect(create.mock.calls[0][0].system).toMatch(/Mention a deadline only when one is given/);
+  });
+
+  it("puts the item's risk on the card", async () => {
+    const body = await handleAsk(
+      { question: "I'm worried AI will get the numbers wrong. What's a safe first step?", view: "employee", staffId: "s-niamh", athenaAnswers: [] },
+      { world: realWorld("2026-11-07"), client: null },
+    );
+    const item = body.card!.recommendation.item;
+    expect(item.risk).toBe(loadRisk()[item.id]);
+    expect(item.risk).toBe("low");
+  });
+
   it("uses the client chosen in Athena's answer", async () => {
     const body = await handleAsk(
       { ...req, athenaAnswers: [{ question: "Which client is this for?", answer: "Murphy Engineering Ltd" }] },

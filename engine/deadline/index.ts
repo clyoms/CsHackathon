@@ -46,6 +46,33 @@ function nextDayOfMonth(today: string, day: number): string | null {
 
 const MONTH_RE = "(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)";
 
+/** Edit distance where swapping two neighbouring letters counts as one edit ("firday" is one edit from "friday"). */
+export function editDistance(a: string, b: string): number {
+  const d: number[][] = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[a.length][b.length];
+}
+
+/**
+ * A weekday typed with one slip ("by firday", "on wedensday"), after a date word.
+ * Returns a match shaped like the exact weekday match: [whole, weekday].
+ */
+function misspeltWeekday(t: string): [string, string] | null {
+  const re = /\b(?:on|by|before|until|till|due|this|next)\s+([a-z]{5,10})\b/g;
+  for (const m of t.matchAll(re)) {
+    const day = WEEKDAYS.find((w) => editDistance(m[1], w) === 1);
+    if (day) return [m[0], day];
+  }
+  return null;
+}
+
 /** Finds a date or weekday in the text. Returns null when none is named. */
 export function parseNamedDeadline(text: string, today: string): Deadline | null {
   const t = text.toLowerCase();
@@ -57,7 +84,7 @@ export function parseNamedDeadline(text: string, today: string): Deadline | null
   const monthDay = t.match(new RegExp(`\\b${MONTH_RE}\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b`));
   // A weekday or bare ordinal counts only after a date word, so "Monday meeting notes"
   // and "my 1st draft" are not deadlines.
-  const weekday = t.match(/\b(?:on|by|before|until|till|for|due|this|next)\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/);
+  const weekday = t.match(/\b(?:on|by|before|until|till|for|due|this|next)\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/) ?? misspeltWeekday(t);
   const ordinal =
     t.match(/\b(?:on|by|before|until|till|for|due)\s+(?:the\s+)?(\d{1,2})(st|nd|rd|th)\b/) ??
     t.match(/\bthe\s+(\d{1,2})(st|nd|rd|th)(?=\s*(?:$|[.,;:!?]|of the month))/);
