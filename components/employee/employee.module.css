@@ -1,14 +1,16 @@
+/* Aoife's page on the ledger design (docs/design/brief.md). The simplest page: one question box,
+   one result. The accent is kept for the Ask button and the key numbers only. */
 .page {
-  max-width: 720px;
+  max-width: 44rem;
   margin: 0 auto;
-  padding: 2rem 16px 4rem;
+  padding: var(--space-5) var(--gutter) 4rem;
   font-size: 20px;
 }
 
 .header h1 {
-  font-size: 1.8rem;
-  line-height: 1.25;
-  margin: 0.25rem 0 1.5rem;
+  font-size: clamp(1.8rem, 6vw, 2.4rem);
+  line-height: 1.2;
+  margin: var(--space-1) 0 var(--space-4);
 }
 
 .hello {
@@ -18,52 +20,58 @@
 
 .ask {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .input {
-  flex: 1 1 18rem;
+  flex: 1 1 16rem;
   min-width: 0;
   font: inherit;
   padding: 0.8rem 1rem;
-  border: 2px solid var(--line);
-  border-radius: 10px;
-  background: #fff;
-  color: var(--fg);
+  border: 0;
+  border-bottom: 2px solid var(--green);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
 }
 
-.input:focus {
-  outline: none;
-  border-color: var(--accent);
+.input::placeholder { color: var(--muted); opacity: 1; }
+
+.input:focus-visible {
+  outline: 3px solid var(--green);
+  outline-offset: 2px;
 }
 
 .primary,
 .secondary,
 .option {
   font: inherit;
-  border-radius: 10px;
+  border-radius: var(--radius);
   padding: 0.75rem 1.25rem;
   cursor: pointer;
+  transition: background-color var(--ease), color var(--ease), border-color var(--ease);
 }
 
+/* The one main action. */
 .primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   border: 2px solid var(--accent);
   font-weight: 600;
 }
 
 .secondary,
 .option {
-  background: #fff;
-  color: var(--accent);
-  border: 2px solid var(--accent);
+  background: transparent;
+  color: var(--green);
+  border: 2px solid var(--green);
 }
 
 .option:hover,
 .secondary:hover:not(:disabled) {
-  background: #eef3fb;
+  background: var(--green);
+  color: var(--paper);
 }
 
 .primary:disabled,
@@ -72,34 +80,37 @@
   cursor: default;
 }
 
+/* A result reads like one entry in a ledger. */
 .card {
-  margin-top: 1.5rem;
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 14px;
+  margin-top: var(--space-4);
+  padding: var(--space-4) 0;
+  border-top: 2px solid var(--green);
+  border-bottom: 1px solid var(--rule);
+  background: transparent;
+  animation: rise 300ms ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
 }
 
 .card h2 {
-  font-size: 1.5rem;
-  margin: 0.25rem 0 0.5rem;
+  font-size: 1.6rem;
+  margin: var(--space-1) 0 var(--space-2);
 }
 
 .step {
   margin: 0;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--muted);
 }
 
-.summary {
-  font-size: 1.1rem;
-}
+.summary { font-size: 1.05rem; }
 
-.muted {
-  color: var(--muted);
-}
+.muted { color: var(--muted); }
 
 .small {
   font-size: 0.85rem;
@@ -109,25 +120,23 @@
 .options {
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  margin-top: 1rem;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
-.option {
-  text-align: left;
-}
+.option { text-align: left; }
 
 .figures {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  gap: 1rem;
-  margin: 1.25rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0;
+  margin: var(--space-4) 0;
 }
 
 .figures div {
-  padding: 0.9rem 1rem;
-  background: var(--bg);
-  border-radius: 10px;
+  padding: var(--space-2) var(--space-3);
+  border-left: 1px solid var(--rule);
+  min-width: 0;
 }
 
 .figures dt {
@@ -135,71 +144,93 @@
   color: var(--muted);
 }
 
+/* Key numbers: accent with the accountant's double rule. */
 .figures dd {
-  margin: 0.2rem 0 0;
-  font-size: 1.3rem;
-  font-weight: 600;
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+}
+
+.figures dd:first-of-type {
+  display: inline-block;
+  border-bottom: 3px double var(--accent);
+  padding-bottom: 2px;
 }
 
 .figures dd.small {
+  display: block;
+  border: 0;
+  font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 400;
+  color: var(--muted);
 }
 
+/* One line: check the output before you rely on it. */
 .verify {
-  padding: 0.9rem 1rem;
-  background: #fff7e0;
-  border-left: 4px solid #c99700;
-  border-radius: 6px;
+  margin: var(--space-3) 0;
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--green);
+  color: var(--ink);
+  font-size: 0.95rem;
 }
 
 .actions {
   display: flex;
-  gap: 0.75rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: var(--space-3);
 }
 
-.body {
-  margin-top: 1.25rem;
-}
+.body { margin-top: var(--space-4); }
 
 .body summary {
   cursor: pointer;
-  color: var(--accent);
+  color: var(--green);
 }
 
 .body pre {
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
   font-family: inherit;
-  font-size: 0.95rem;
-  background: var(--bg);
-  padding: 1rem;
-  border-radius: 8px;
+  font-size: 0.9rem;
+  background: var(--surface);
+  border-left: 1px solid var(--rule);
+  padding: var(--space-3);
 }
 
+/* Synthetic badge: the only purple on the site. Also used for the offline label. */
 .badge {
   display: inline-block;
   vertical-align: middle;
+  font-family: var(--font-body);
   font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
-  background: #f1e6ff;
-  color: #5b2a9a;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
   cursor: help;
 }
 
 .source {
+  font-family: var(--font-body);
   font-size: 0.7rem;
   font-weight: 400;
+  color: var(--green);
   vertical-align: middle;
 }
 
 .meter {
-  margin-top: 2rem;
+  margin-top: var(--space-5);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--rule);
   font-size: 0.85rem;
   color: var(--muted);
 }
@@ -211,4 +242,9 @@
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .page { padding-top: var(--space-4); font-size: 18px; }
+  .figures div { border-left: 0; border-top: 1px solid var(--rule); padding: var(--space-2) 0; }
 }
