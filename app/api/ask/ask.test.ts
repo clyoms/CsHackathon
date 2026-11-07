@@ -139,6 +139,15 @@ describe("offline label (A1)", () => {
     expect(warn.mock.calls.flat().join(" ")).toMatch(/\[ask\] offline answer/);
   });
 
+  it("marks Athena offline with no key even when no questions are needed", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const body = { ...athenaRequestFixture, request: "Reconcile the Murphy bank account and give me a table of unmatched items" };
+    const a = await (await athenaPOST(post(body))).json();
+    expect(a.offline).toBe(true);
+    expect(a.offlineReason).toMatch(/ANTHROPIC_API_KEY/);
+    expect(warn).toHaveBeenCalled();
+  });
+
   it("reports offline=false and real tokens when Claude answers", async () => {
     const create = vi.fn().mockResolvedValue({ stop_reason: "end_turn", content: [{ type: "text", text: "Short answer." }], usage: sample.usage });
     const world = fixtureWorld();
