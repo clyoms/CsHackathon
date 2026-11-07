@@ -1,0 +1,12 @@
+[
+  {"id":"e-murphy","client":"Murphy Engineering Ltd","type":"Corporation tax return (CT1)","fee":12000,"budgetHours":110,"deadlineId":"ie-ct1-2026-11","synthetic":true},
+  {"id":"e-byrne","client":"Byrne Foods","type":"VAT returns and bookkeeping","fee":8500,"budgetHours":90,"deadlineId":"ie-vat-2026-11","synthetic":true},
+  {"id":"e-walsh","client":"Walsh Holdings","type":"Statutory audit","fee":32000,"budgetHours":260,"deadlineId":"ie-ct1-2027-01","synthetic":true},
+  {"id":"e-kelly","client":"Kelly Family","type":"Personal tax returns (Form 11)","fee":9000,"budgetHours":60,"deadlineId":"ie-ros-2026","synthetic":true},
+  {"id":"e-oconnor","client":"O'Connor Pharmacy Group","type":"Management accounts","fee":18000,"budgetHours":150,"deadlineId":"ie-vat-2026-11","synthetic":true},
+  {"id":"e-quinn","client":"Quinn Tech DAC","type":"Corporation tax return (CT1)","fee":15000,"budgetHours":120,"deadlineId":"ie-ct1-2026-11","synthetic":true},
+  {"id":"e-harbour","client":"Harbour Point Partners LP","type":"US partnership return (Form 1065)","fee":30000,"budgetHours":200,"deadlineId":"us-1065-2027-03","synthetic":true},
+  {"id":"e-hudson","client":"Hudson Family Office","type":"US individual returns and estimated tax","fee":22000,"budgetHours":140,"deadlineId":"us-est-2027-01","synthetic":true},
+  {"id":"e-sevenmile","client":"Seven Mile Holdings","type":"Cayman annual return and accounts","fee":26000,"budgetHours":180,"deadlineId":"ky-annual-2027-06","synthetic":true},
+  {"id":"e-lee","client":"Lee Clinics Ltd","type":"Statutory audit","fee":38000,"budgetHours":300,"deadlineId":"ie-ct1-2027-01","synthetic":true}
+]

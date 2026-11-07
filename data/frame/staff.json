@@ -1,0 +1,14 @@
+[
+  {"id":"s-aoife","name":"Aoife","role":"Junior Tax Assistant","team":"Tax","office":"Cork","chargeRate":85,"synthetic":true},
+  {"id":"s-harry","name":"Harry","role":"AI and Automation Analyst","team":"Business Finance","office":"Cork","chargeRate":120,"synthetic":true},
+  {"id":"s-conor","name":"Conor","role":"Tax Manager","team":"Tax","office":"Cork","chargeRate":175,"synthetic":true},
+  {"id":"s-niamh","name":"Niamh","role":"Tax Senior","team":"Tax","office":"Dublin","chargeRate":130,"synthetic":true},
+  {"id":"s-daniel","name":"Daniel","role":"US Tax Senior","team":"Tax","office":"New York","chargeRate":160,"synthetic":true},
+  {"id":"s-maeve","name":"Maeve","role":"Audit Manager","team":"Audit","office":"Dublin","chargeRate":170,"synthetic":true},
+  {"id":"s-sinead","name":"Sinéad","role":"Audit Senior","team":"Audit","office":"Cork","chargeRate":125,"synthetic":true},
+  {"id":"s-eoin","name":"Eoin","role":"Audit Assistant","team":"Audit","office":"Dublin","chargeRate":80,"synthetic":true},
+  {"id":"s-ciaran","name":"Ciarán","role":"Business Finance Accountant","team":"Business Finance","office":"Cork","chargeRate":110,"synthetic":true},
+  {"id":"s-rachel","name":"Rachel","role":"Bookkeeper","team":"Business Finance","office":"Dublin","chargeRate":70,"synthetic":true},
+  {"id":"s-keisha","name":"Keisha","role":"Private Wealth Associate","team":"Private Wealth","office":"Grand Cayman","chargeRate":140,"synthetic":true},
+  {"id":"s-tom","name":"Tom","role":"Private Wealth Manager","team":"Private Wealth","office":"New York","chargeRate":190,"synthetic":true}
+]

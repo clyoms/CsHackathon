@@ -1,4 +1,5 @@
 task,penetration
+Access computerized financial information to answer general questions as well as those related to specific accounts.,0.0
 Act as a liaison between a ship's captain and shore personnel to ensure that schedules and budgets are maintained and that the ship is operated safely and efficiently.,0.0
 "Act as liaisons between ships' captains and shore personnel to ensure that schedules and budgets are maintained, and that ships are operated safely and efficiently.",0.0
 "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",0.0
@@ -6,6 +7,7 @@ Act as a liaison between a ship's captain and shore personnel to ensure that sch
 "Advise clients or colleagues on topics such as climate control systems, energy modeling, data logging, sustainable design, or energy auditing.",0.0
 "Advise food service managers and organizations on sanitation, safety procedures, menu development, budgeting, and planning to assist with establishment, operation, and evaluation of food service facilities and nutrition programs.",0.0
 "Analyze and evaluate security operations to identify risks or opportunities for improvement through auditing, review, or assessment.",0.9768
+"Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice.",0.8571
 Analyze credit data and financial statements to determine the degree of risk involved in extending credit or lending money.,0.9359
 "Analyze expenditures and other financial information to develop plans, policies, or budgets for increasing profits or improving services.",0.8697
 Analyze financial activities of establishments or departments and provide input into budget planning and preparation processes.,0.0
@@ -39,22 +41,29 @@ Authorize payment of invoices or return of merchandise.,0.0
 Balance cash and payroll accounts.,0.0
 Budget and schedule security design work.,0.0
 "Calculate and prepare checks for utilities, taxes, and other payments.",0.0
+"Calculate costs of materials, overhead, and other expenses, based on estimates, quotations and price lists.",0.0
 "Calculate costs of orders, and charge or forward invoices to appropriate accounts.",0.0
 "Calculate design specifications or cost, material, and resource estimates, and prepare project schedules and budgets.",0.0
+Calculate form preparation fees according to return complexity and processing time required.,0.0
 "Calculate or monitor budgets for maintenance or development of collections, grounds, or infrastructure.",0.0
 "Calculate purchase subtotals, taxes, and shipping costs for submission to customers.",0.0
 "Calculate revenue, sales, and expenses, using financial accounting or spreadsheet software.",0.0
 Calculate tax bills for properties by multiplying assessed values by jurisdiction tax rates.,0.0
 "Calculate total payments received during a time period, and reconcile this with total sales.",0.0
 "Calculate, prepare, and issue bills, invoices, account statements, and other financial statements according to established procedures.",0.0
+"Check data input or verify totals on forms prepared by others to detect errors in arithmetic, data entry, or procedures.",0.903
+"Check figures, postings, and documents for correct entry, mathematical accuracy, and proper codes.",0.0
 "Check tax forms to verify that names and taxpayer identification numbers are correct, that computations have been performed correctly, or that amounts match those on supporting documentation.",0.0
 "Classify, record, and summarize numerical and financial data to compile and keep financial records, using journals and ledgers or computers.",0.9664
+Code documents according to company procedures.,0.0
 "Collaborate on projects with other professionals, such as lawyers, accountants, or public relations experts.",0.0
 "Collaborate with other departments to integrate logistics with business systems or processes, such as customer sales, order management, accounting, or shipping.",0.0
 "Collaborate with social service and health care professionals to advise individuals and families on home management practices, such as budget planning, meal preparation, and time management.",0.0
+"Collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies.",0.9099
 "Collect and deposit money into accounts, disburse funds from cash accounts to pay bills or invoices, keep records of collections and disbursements, and ensure accounts are balanced.",0.0
 "Collect coins and bills from machines, prepare invoices, and settle accounts with concessionaires.",0.0
 Collect taxes from individuals or businesses according to prescribed laws and regulations.,0.0
+Compare computer printouts to manually maintained journals to determine if they match.,0.0
 Compare disputed merchandise with original requisitions and information from invoices and prepare invoices for returned goods.,0.0
 Compare merchandise invoices to items actually received to ensure that shipments are correct.,0.0
 Compare previously prepared bank statements with canceled checks and reconcile discrepancies.,0.0
@@ -65,6 +74,7 @@ Compile and analyze accounting records and other data to determine the financial
 "Complete and mail bills, contracts, policies, invoices, or checks.",0.0
 "Complete and submit tax forms and returns, workers' compensation forms, pension contribution forms, and other government documents.",0.0
 "Complete general financial activities, such as processing accounts payable, reviewing invoices, collecting cash payments, or issuing receipts.",0.0
+"Comply with federal, state, and company policies, procedures, and regulations.",0.0
 Compute deductions for income and social security taxes.,0.0
 "Compute or estimate cash, payroll, transportation, or personnel requirements.",0.0
 "Compute or estimate cash, payroll, transportation, personnel, or storage requirements.",0.0
@@ -93,6 +103,7 @@ Conduct store audits to identify problem areas or procedural deficiencies.,0.0
 "Confer with client to determine factors affecting planning of interior environments, such as budget, architectural preferences, purpose, and function.",0.0
 "Confer with clients and staff to gather information about exhibit space, proposed themes and content, timelines, budgets, materials, or promotion requirements.",0.0
 "Confer with clients to determine objectives, budget, background information, and presentation approaches, styles, and techniques.",0.7955
+Confer with company officials about financial and regulatory matters.,0.0
 "Confer with directors and production staff to discuss issues, such as production and casting problems, budgets, policies, and news coverage.",0.0
 "Confer with taxpayers or their representatives to discuss the issues, laws, and regulations involved in returns, and to resolve problems with returns.",0.0
 "Confer with the board of directors to formulate and interpret policies, to determine budget requirements, and to plan overall operations.",0.0
@@ -149,6 +160,7 @@ Develop work schedules according to budgets and workloads.,0.0
 "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.",0.9107
 "Develop, maintain, or analyze budgets, preparing periodic reports that compare budgeted costs to actual costs.",0.0
 Direct activities of accounting or operations departments.,0.0
+"Direct activities of personnel engaged in filing, recording, compiling, and transmitting financial records.",0.0
 "Direct and coordinate construction, erection, or decoration activities to ensure that sets or exhibits meet design, budget, and schedule requirements.",0.0
 "Direct and participate in formal and informal meetings with bank directors, trustees, senior management, counsels, outside accountants, and consultants to gather information and discuss findings.",0.0
 "Direct and supervise employees engaged in sales, inventory-taking, reconciling cash receipts, or in performing services for customers.",0.0
@@ -168,6 +180,7 @@ Enter tax return information into computers for processing.,0.0
 "Establish budgets, and work within budgetary limits.",0.0
 Establish regulatory priorities or budgets and allocate resources and workloads.,0.0
 Establish spa budgets and financial goals.,0.0
+Establish tables of accounts and assign entries to proper accounts.,0.9373
 "Estimate labor, material, or construction costs for budget preparation purposes.",0.855
 Evaluate data pertaining to costs to plan budgets.,0.0
 "Evaluate feasibility of design ideas, based on factors such as appearance, safety, function, serviceability, budget, production costs/methods, and market characteristics.",0.0
@@ -176,12 +189,15 @@ Evaluate data pertaining to costs to plan budgets.,0.0
 "Evaluate the financial aspects of product development, such as budgets, expenditures, research and development appropriations, or return-on-investment and profit-loss projections.",0.0
 Examine accounting systems and records to determine whether accounting methods used were appropriate and in compliance with statutory provisions.,0.0
 Examine and analyze tax assets and liabilities to determine resolution of delinquent tax problems.,0.0
+"Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",0.0
 "Examine budget estimates for completeness, accuracy, and conformance with procedures and regulations.",0.0
 "Examine city directories and public records to verify residence property ownership, bankruptcies, liens, arrest record, or unpaid taxes of applicants.",0.0
 "Examine individual titles to determine if restrictions, such as delinquent taxes, will affect titles and limit property use.",0.0
 Examine inventory to verify journal and ledger entries.,0.0
 Examine invoices and shipping manifests for conformity to tariff and customs regulations.,0.0
+Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations.,0.954
 "Examine shipment contents and compare with records, such as manifests, invoices, or orders, to verify accuracy.",0.0
+"Examine whether the organization's objectives are reflected in its management activities, and whether employees understand the objectives.",0.0
 Explain federal and state tax laws to individuals and companies.,0.7303
 Explain real and personal property taxes to property owners.,0.0
 Explain the tax advantages of contributions to potential donors.,0.0
@@ -202,6 +218,7 @@ Initiate or conduct airport-wide coordination of snow removal on runways and tax
 "Initiate, schedule, or conduct annual audits or compliance checks of program implementation by local government.",0.0
 "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",0.0
 "Inspect and count items received and check them against invoices or other documents, recording shortages and rejecting damaged goods.",0.0
+"Inspect cash on hand, notes receivable and payable, negotiable securities, and canceled checks to confirm records are accurate.",0.0
 "Install systems of recording costs or other financial and budgetary data or provide advice on such systems, based on examination of current financial records.",0.573
 Interpret budget directives and establish policies for carrying out directives.,0.0
 "Interview clients to determine clients' assets, liabilities, cash flow, insurance coverage, tax status, or financial objectives.",0.0
@@ -216,6 +233,7 @@ Keep records of invoices and support documents.,1.0
 Lead staff training and development in budgeting and financial management areas.,0.0
 "Maintain awareness of current income tax regulations, local zoning, building and tax laws, and growth possibilities of a property's area.",0.0
 "Maintain current knowledge of organizational policies and procedures, federal and state policies and directives, and current accounting standards.",0.6943
+Maintain inventory records.,0.0
 "Maintain knowledge of tax code changes, and of accounting procedures and theory to properly evaluate financial information.",0.6988
 "Maintain required records of work hours, budgets, payrolls, and other information.",0.0
 "Make presentations to legislative or other government committees regarding policies, programs, or budgets.",0.0
@@ -239,6 +257,7 @@ Mediate discussions between employer and employee representatives in attempt to 
 Monitor costs incurred by project staff to identify budget issues.,0.0
 Monitor employees' work schedules and attendance for payroll purposes.,0.0
 Monitor regulatory or tax law changes to ensure fund compliance or to capitalize on development opportunities.,0.0
+Monitor status of loans and accounts to ensure that payments are up to date.,0.0
 Monitor suppliers to ensure that they efficiently and effectively provide needed goods or services within budgetary limits.,0.0
 Monitor training costs and prepare budget reports to justify expenditures.,0.0
 "Monitor work of contractors and subcontractors to ensure projects conform to plans, specifications, schedules, or budgets.",0.0
@@ -246,6 +265,7 @@ Monitor training costs and prepare budget reports to justify expenditures.,0.0
 Notify insurance agent and accounting department of policy cancellation.,0.0
 "Notify taxpayers of any overpayment or underpayment, and either issue a refund or request further payment.",0.0
 "Obtain and compile copies of loan applicants' credit histories, corporate financial statements, and other financial information.",0.0
+"Operate 10-key calculators, typewriters, and copy machines to perform calculations and produce documents.",0.0
 "Operate computers programmed with accounting software to record, store, and analyze information.",1.0
 "Operate office equipment, such as voice mail messaging systems, and use word processing, spreadsheet, or other software applications to prepare reports, invoices, financial statements, letters, case histories, or medical records.",0.0
 Oversee departmental budget.,0.0
@@ -275,7 +295,9 @@ Participate in preparation and management of research budgets and monetary disbu
 "Perform both supervisory and management functions, such as accounting, marketing, and personnel work.",0.0
 "Perform budgeting duties, such as assisting in budget preparation, expenditure review, or budget administration.",0.0
 Perform cash audits and deposit investigations to fully account for store cash.,0.0
+"Perform financial calculations, such as amounts due, interest charges, balances, discounts, equity, and principal.",0.8694
 "Perform financial tasks, such as estimating costs and preparing and managing budgets.",0.0
+"Perform general office duties, such as filing, answering telephones, and handling routine correspondence.",0.0
 "Perform management activities, such as budgeting, scheduling, planning, and marketing.",0.0
 "Perform managerial functions, such as preparing proposals and budgets, analyzing labor costs, and writing reports.",0.0
 "Perform payroll functions, such as maintaining timekeeping information and processing and submitting payroll.",0.0
@@ -292,6 +314,7 @@ Plan budgets and authorize payments and merchandise returns.,0.0
 "Plan, administer, and control budgets, maintain financial records, and produce financial reports.",0.0
 "Post charges, such as those for rooms, food, liquor, or telephone calls, to ledgers, manually or by using computers.",0.0
 Prepare actors for auditions by providing scripts and information about roles and casting requirements.,0.0
+Prepare adjusting journal entries.,0.0
 "Prepare and administer budgets for food, equipment, and supplies.",0.0
 "Prepare and administer budgets, approve and review expenditures, and prepare financial reports.",0.0
 "Prepare and balance period-end reports, and reconcile issued payrolls to bank statements.",0.0
@@ -311,6 +334,7 @@ Prepare and process payroll information.,0.0
 "Prepare and submit budget requests and recommendations, or grant proposals to solicit program funding.",0.0
 Prepare and submit budget requests or grant proposals to solicit program funding.,0.0
 Prepare audit reports containing energy analysis results or recommendations for energy cost savings.,0.0
+"Prepare bank deposits by compiling data from cashiers, verifying and balancing receipts, and sending cash, checks, or other forms of payment to banks.",0.0
 "Prepare budget or cost estimates for equipment, construction, or installation projects or control expenditures.",0.0
 Prepare budgets and approve budget expenditures.,0.0
 Prepare budgets and manage expenditures of department funds.,0.0
@@ -339,11 +363,13 @@ Prepare or assist in preparing simple to complex tax returns for individuals or 
 Prepare periodic accounting statements for clients.,0.0
 "Prepare project budgets, schedules, or specifications for labor or materials.",0.0
 "Prepare project plans for equipment or facility improvements, including time lines, budgetary estimates, or capital spending requests.",0.0
+Prepare purchase orders and expense reports.,0.0
 "Prepare reports, sketches, working drawings, specifications, proposals, and budgets for proposed sites or systems.",0.0
 Prepare sales and inventory reports for management and budget departments.,0.0
 "Prepare service estimates based on labor, material, and machine costs and maintain budgets for individual projects.",0.0
 "Prepare solar installation project proposals, quotes, budgets, or schedules.",0.0
 Prepare training budget for department or organization.,0.0
+Prepare trial balances of books.,0.0
 Prepare wind field operational budgets.,0.0
 "Prepare, analyze, or verify annual reports, financial statements, and other records, using accepted accounting and statistical procedures to assess financial condition and facilitate financial planning.",0.0
 "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",0.8929
@@ -361,6 +387,7 @@ Provide direction and assistance to other organizational units regarding account
 "Provide managers with budget recommendations and take responsibility for budgetary line items related to costumes, storage, or makeup needs.",0.0
 "Quote duty and tax rates on goods to be imported, based on federal tariffs and excise taxes.",0.0
 "Receive and store incoming supplies, verify quantities against invoices, check for outdated medications in current inventory, and inform supervisors of stock needs and shortages.",0.0
+"Receive, record, and bank cash, checks, and vouchers.",0.0
 "Recommend Web site improvements, and develop budgets to support recommendations.",0.0
 "Recommend educational materials or resources to clients on matters, such as financial planning, budgeting, or credit.",0.0
 "Recommend strategies for clients to meet their financial goals, such as borrowing money through loans or loan programs, declaring bankruptcy, making budget adjustments, or enrolling in debt management plans.",0.9015
@@ -371,6 +398,7 @@ Reconcile records of bank transactions.,0.0
 "Record shipment data, such as weight, charges, space availability, damages, or discrepancies, for reporting, accounting, or recordkeeping purposes.",0.0
 "Report project status, such as budget, resources, technical issues, or customer satisfaction, to managers.",0.0
 "Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.",0.0
+Report to management regarding the finances of establishment.,0.0
 Report to taxicab services or garages to receive vehicle assignments.,0.0
 Represent clients before taxing authorities and provide support during litigation involving financial issues.,0.0
 "Request or compile necessary import documentation, such as customs invoices, certificates of origin, and cargo-control documents.",0.0
@@ -380,6 +408,7 @@ Resolve discrepancies in accounting records.,0.8645
 Review accounts for discrepancies and reconcile differences.,0.0
 Review audit reports of internal and external auditors to monitor adequacy of scope of reports or to discover specific weaknesses in internal routines.,0.0
 "Review changes to financial, family, or employment situations to determine whether changes to existing debt management plans, spending plans, or budgets are needed.",0.0
+"Review data about material assets, net worth, liabilities, capital stock, surplus, income, or expenditures.",0.0
 Review filed tax returns to determine whether claimed tax credits and deductions are allowed by law.,0.0
 "Review financial records, such as income statements and documentation of expenditures to determine forms needed to prepare tax returns.",0.0
 "Review financial statements, sales or activity reports, or other performance data to identify opportunities for cost reductions or service improvements.",0.9164
@@ -394,6 +423,7 @@ Review operating budgets to analyze trends affecting budget needs.,0.0
 Review selected tax returns to determine the nature and extent of audits to be performed on them.,0.0
 "Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office.",0.0
 "Review time sheets, work charts, wage computation, and other information to detect and reconcile payroll discrepancies.",0.0
+Schedule appointments with clients.,0.7239
 "Search computer databases, credit reports, public records, tax or legal filings, or other resources to locate persons or to compile information for investigations.",0.0
 Secure a taxpayer's agreement to discharge a tax assessment or submit contested determinations to other administrative or judicial conferees for appeals hearings.,0.0
 Send notices to taxpayers when accounts are delinquent.,0.0
