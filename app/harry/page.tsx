@@ -1,0 +1,77 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { getWorld } from "@/app/api/ask/world";
+import { AskBox } from "@/components/harry/AskBox";
+import { adoptionByTeam, benchmarks, costPanel, frameActiveShare } from "@/components/harry/data";
+import styles from "@/components/harry/harry.module.css";
+import { LiteracyLog } from "@/components/harry/LiteracyLog";
+import { AdoptionTable, BenchmarkBars, CostStats, Panel } from "@/components/harry/Panels";
+import { literacyFromRecommendations, meterFromUsage } from "@/components/harry/real";
+import type { Recommendation } from "@/contract/types";
+import { loadCsoAdoption, loadEurostatAdoption } from "@/data/public";
+import { MODEL, loadPrice } from "@/engine/meter";
+import { recommend } from "@/engine/recommend";
+
+export const metadata: Metadata = { title: "Harry view · Frame Next" };
+// The literacy log is dated today, so render on each request.
+export const dynamic = "force-dynamic";
+
+export default function HarryPage() {
+  // Real data: data/frame staff and usage (synthetic), data/public benchmarks (real), catalogue.
+  const world = getWorld();
+  const teams = adoptionByTeam(world.staff, world.usage);
+  const share = frameActiveShare(world.staff, world.usage);
+  const marks = benchmarks(loadCsoAdoption(), loadEurostatAdoption());
+  const cost = costPanel(meterFromUsage(world.usage, loadPrice(MODEL)));
+  const recs = world.staff
+    .map((staff) => recommend({ ...world, staff, lines: world.timesheets }))
+    .filter((r): r is Recommendation => r !== null);
+  const literacyLog = literacyFromRecommendations(recs, world.today);
+  const names = Object.fromEntries(world.staff.map((s) => [s.id, s.name]));
+
+  return (
+    <main className={styles.page}>
+      <p>
+        <Link href="/">← Frame Next</Link>
+      </p>
+      <h1>Harry view</h1>
+      <p className={styles.lede}>How the firm uses AI, what it costs per task, and the record of AI literacy measures.</p>
+
+      <div className={styles.grid}>
+        <Panel
+          title="Adoption by team"
+          explain="Active users, prompts and the share of AI outputs people checked, from usage records (synthetic). How people check matters more than how much they use AI."
+        >
+          <AdoptionTable teams={teams} />
+        </Panel>
+
+        <Panel
+          title="Frame against Ireland and the EU"
+          explain="CSO and Eurostat count enterprises that use any AI. Frame's bar counts staff, so read it as a rough guide, not a like-for-like match. Hover a figure for its source."
+        >
+          <BenchmarkBars frameShare={share} benchmarks={marks} />
+        </Panel>
+
+        <Panel
+          title="Cost per task"
+          explain="One task is one person's AI work in one category on one day, from usage records (synthetic). Euros show once a human fills data/public/prices.json. A few heavy tasks take a large share."
+        >
+          <CostStats cost={cost} />
+        </Panel>
+
+        <Panel
+          title="AI literacy log"
+          explain="Each recommendation the engine shows today is logged as evidence of AI literacy measures under EU AI Act Article 4 (synthetic people). This demo has no database, so “I’ll try it” clicks are not stored here yet. Export it as a CSV."
+        >
+          <LiteracyLog entries={literacyLog} names={names} />
+        </Panel>
+      </div>
+
+      <section className={styles.section}>
+        <h2>Ask</h2>
+        <p className={styles.explain}>Answers use only the numbers the engine gives and name the source of each one.</p>
+        <AskBox />
+      </section>
+    </main>
+  );
+}

@@ -1,0 +1,8 @@
+{
+  "note": "A human fills these from Anthropic's pricing page. Prices are per million tokens. Agents never invent a price. Null anywhere means the UI shows tokens only. USD converts to euros only when usdToEur is a number.",
+  "currency": "USD",
+  "usdToEur": 0.89566,
+  "models": {
+    "claude-sonnet-5-5": { "inputPerMTok": 2, "outputPerMTok": 10 }
+  }
+}
