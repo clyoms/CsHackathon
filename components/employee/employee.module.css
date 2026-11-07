@@ -64,9 +64,9 @@
 
 /* The one main action. */
 .primary {
-  background: var(--accent);
-  color: var(--on-accent);
-  border: 2px solid var(--accent);
+  background: var(--primary);
+  color: var(--on-primary);
+  border: 2px solid var(--primary);
   font-weight: 600;
 }
 
@@ -166,7 +166,8 @@
 
 .figures dd:first-of-type {
   display: inline-block;
-  border-bottom: 3px double var(--accent);
+  border-bottom: 0;
+
   padding-bottom: 2px;
 }
 
@@ -258,48 +259,48 @@
   .figures div { border-left: 0; border-top: 1px solid var(--rule); padding: var(--space-2) 0; }
 }
 
-/* Sample prompts under the question box. Buttons reuse .secondary; these rules only lay them out. */
-.prompts { margin-top: var(--space-4); }
-
-.promptsHeading {
-  font-size: 1rem;
-  margin: 0 0 var(--space-2);
+/* ---------- Nightshift Violet layer ---------- */
+.page { font-size: 18px; }
+.header { text-align: center; }
+.header h1 { font-size: clamp(2rem, 6vw, 3.1rem); line-height: 1.05; letter-spacing: -0.03em; }
+.hello { color: var(--green); font-weight: 500; }
+.ask {
+  padding: 8px;
+  border-radius: 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 12%, transparent);
 }
-
-.promptList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.input { border: 0; border-radius: 12px; background: transparent; }
+.input:focus-visible { outline-offset: 0; }
+.primary { border-radius: var(--radius); box-shadow: 0 10px 28px color-mix(in srgb, var(--primary) 40%, transparent); }
+.primary:hover:not(:disabled) { background: var(--primary-hover); border-color: var(--primary-hover); }
+.secondary,
+.option {
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  color: var(--ink);
 }
-
-.promptItem {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-1) var(--space-2);
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--rule);
+.option:hover,
+.secondary:hover:not(:disabled) { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.card {
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
-
-.promptLabel {
-  flex: 1 0 100%;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--muted);
+section.card {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    linear-gradient(140deg, #8b5cf6, var(--rule) 45%, #d946ef) border-box;
 }
-
-.promptText {
-  flex: 1 1 16rem;
-  min-width: 0;
-  font-size: 0.95rem;
+.figures { gap: 12px; }
+.figures div { padding: var(--space-3); border: 1px solid var(--rule); border-radius: 18px; background: var(--surface-2); }
+.figures dd { font-size: 1.9rem; }
+.badge { border: 1px dashed var(--badge-fg); }
+@media (max-width: 640px) {
+  .card { padding: var(--space-3); }
 }
-
-.promptItem button { min-height: 44px; }
-
-.literacyLink {
-  margin: var(--space-3) 0 0;
-  font-size: 0.95rem;
-}
-
-.literacyLink a { color: var(--green); }
