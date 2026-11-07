@@ -1,5 +1,6 @@
 ---
 id: skill-write-a-good-brief
+risk: low
 kind: skill
 title: Write a good brief (Athena starter)
 plainSummary: Helps you write a clear request to AI, so it gets the job right the first time.

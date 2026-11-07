@@ -1,5 +1,6 @@
 ---
 id: skill-ct1-review-checklist
+risk: medium
 kind: skill
 title: CT1 review checklist
 plainSummary: Checks a draft corporation tax return against the accounts and lists anything that does not tie.

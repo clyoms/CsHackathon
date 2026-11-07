@@ -1,5 +1,6 @@
 ---
 id: skill-working-paper-summary
+risk: medium
 kind: skill
 title: Working-paper summary
 plainSummary: Summarises a set of audit or accounts working papers into one page a manager can review fast.

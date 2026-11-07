@@ -72,6 +72,34 @@ export function loadCatalogue(dir: string = ITEMS_DIR): CatalogueItem[] {
   return items;
 }
 
+export type Risk = "low" | "medium" | "high";
+export const RISKS: readonly Risk[] = ["low", "medium", "high"];
+/** Used when an item file has no risk line. */
+export const DEFAULT_RISK: Risk = "medium";
+
+/** Reads the optional `risk: low | medium | high` front matter line. The contract schema drops it, so it is kept here. */
+export function parseRisk(text: string, fileName = "item"): Risk {
+  const head = text.replace(/\r\n/g, "\n").match(/^---\n([\s\S]*?)\n---/)?.[1] ?? "";
+  const value = head.match(/^risk:\s*(\S+)\s*$/m)?.[1];
+  if (value === undefined) return DEFAULT_RISK;
+  if (!RISKS.includes(value as Risk)) throw new Error(`${fileName}: risk must be low, medium or high, not "${value}"`);
+  return value as Risk;
+}
+
+let riskCache: Record<string, Risk> | null = null;
+
+/** Risk of every catalogue item, by id. Any number of items. */
+export function loadRisk(dir: string = ITEMS_DIR): Record<string, Risk> {
+  if (dir === ITEMS_DIR && riskCache) return riskCache;
+  const out: Record<string, Risk> = {};
+  for (const f of readdirSync(dir).filter((x) => x.endsWith(".md"))) {
+    const text = readFileSync(path.join(dir, f), "utf8");
+    out[parseItem(text, f).id] = parseRisk(text, f);
+  }
+  if (dir === ITEMS_DIR) riskCache = out;
+  return out;
+}
+
 export function catalogueItem(id: string): CatalogueItem | undefined {
   return loadCatalogue().find((i) => i.id === id);
 }

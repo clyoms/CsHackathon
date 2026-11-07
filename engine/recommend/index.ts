@@ -18,6 +18,7 @@ import type {
   TimesheetLine,
   UsageRecord,
 } from "@/contract/types";
+import type { AthenaContext } from "@/engine/contract";
 
 /** Assumption shown in the UI: share of AI-ready hours a person actually gets back. */
 export const DEFAULT_HOURS_BACK_FACTOR = 0.3;
@@ -41,6 +42,36 @@ export interface RecommendInput {
   /** Today's date, YYYY-MM-DD. Passed in so results are repeatable. */
   today: string;
   hoursBackFactor?: number;
+  /** What Athena learned: client, task, goal, risk tolerance. Optional. */
+  context?: AthenaContext;
+  /** Risk of each item by id (from catalogue loadRisk). Missing items count as "medium". */
+  risk?: Record<string, ItemRisk>;
+}
+
+export type ItemRisk = "low" | "medium" | "high";
+const RISK_RANK: Record<ItemRisk, number> = { low: 0, medium: 1, high: 2 };
+
+// Words that say nothing about which item fits, so they never count as a match.
+const STOPWORDS = new Set(
+  "the and for with from this that what which should can could would will into onto about my our your their his her its ai help me do get make work task tasks job jobs thing things start safest safe first client clients all some any return before after by on in of to a an is it be i".split(
+    " ",
+  ),
+);
+
+/** Content words of a phrase, lower case. */
+export function contentWords(text: string): string[] {
+  return (text.toLowerCase().match(/[a-z0-9]+/g) ?? []).filter((w) => w.length >= 2 && !STOPWORDS.has(w));
+}
+
+/** How many task words match a word of the item (same first five letters, or the whole short word). */
+export function taskMatchCount(item: CatalogueItem, taskWords: string[]): number {
+  const hay = contentWords([item.id, item.title, item.plainSummary, ...item.targetsOnetTasks].join(" "));
+  const stem = (w: string) => w.slice(0, 5);
+  return taskWords.filter((t) => hay.some((h) => (t.length < 5 ? h === t : stem(h) === stem(t)))).length;
+}
+
+export function itemMatchesTask(item: CatalogueItem, taskWords: string[]): boolean {
+  return taskMatchCount(item, taskWords) > 0;
 }
 
 export interface ItemScore {
@@ -83,7 +114,13 @@ export function scoreItems(input: RecommendInput): ItemScore[] {
   const penetration = new Map(input.taskScores.map((t) => [t.onetTask, t.penetration]));
   const engagements = new Map(input.engagements.map((e) => [e.id, e]));
   const deadlines = new Map(input.deadlines.map((d) => [d.id, d]));
-  const lines = input.lines.filter((l) => l.staffId === staff.id);
+  let lines = input.lines.filter((l) => l.staffId === staff.id);
+  // If Athena named a client, keep only that client's lines (when there are any).
+  const client = input.context?.client?.trim().toLowerCase();
+  if (client) {
+    const forClient = lines.filter((l) => engagements.get(l.engagementId)?.client.toLowerCase().includes(client));
+    if (forClient.length > 0) lines = forClient;
+  }
   const rate = verifiedRate(input.usage, staff.id);
   const lowVerify = rate !== null && rate < LOW_VERIFY_RATE;
 
@@ -153,13 +190,40 @@ export function reasonFor(s: ItemScore, lowVerify: boolean): string {
 }
 
 /**
- * The best next automation for one person, or null when no item targets any task they logged
- * with AI-ready hours above zero. Ties go to the item listed first in the catalogue.
+ * Picks the item to recommend from the scores and Athena's context. No item is preferred by name.
+ * - A named task keeps only items that fit it. None fit: null, so the caller says "no matching skill".
+ * - Low risk tolerance keeps items with a check step and takes the lowest risk, then the best score.
+ * - Otherwise the best score above zero wins. Ties go to the item listed first.
+ */
+export function pickItem(scores: ItemScore[], context: AthenaContext | undefined, risk: Record<string, ItemRisk> = {}): ItemScore | null {
+  let pool = scores;
+  const taskWords = contentWords([context?.task ?? "", context?.goal ?? ""].join(" "));
+  if (taskWords.length > 0) {
+    // Keep the items that match the most task words.
+    const counts = pool.map((s) => taskMatchCount(s.item, taskWords));
+    const most = Math.max(0, ...counts);
+    if (most === 0) return null;
+    pool = pool.filter((_, i) => counts[i] === most);
+  }
+  if (context?.riskTolerance === "low") {
+    const checked = pool.filter((s) => s.item.verifyStep.trim() !== "");
+    if (checked.length === 0) return null;
+    const rank = (s: ItemScore) => RISK_RANK[risk[s.item.id] ?? "medium"];
+    return checked.reduce((best, s) => (rank(s) < rank(best) || (rank(s) === rank(best) && s.score > best.score) ? s : best));
+  }
+  let best: ItemScore | null = null;
+  for (const s of pool) if (s.score > 0 && (best === null || s.score > best.score)) best = s;
+  // A named task with matching items but no logged hours still gets its best fit.
+  if (!best && taskWords.length > 0) best = pool[0] ?? null;
+  return best;
+}
+
+/**
+ * The best next automation for one person, or null when nothing fits: no item targets their
+ * logged work, or no item fits the task Athena named.
  */
 export function recommend(input: RecommendInput): Recommendation | null {
-  const scores = scoreItems(input);
-  let best: ItemScore | null = null;
-  for (const s of scores) if (s.score > 0 && (best === null || s.score > best.score)) best = s;
+  const best = pickItem(scoreItems(input), input.context, input.risk);
   if (!best) return null;
 
   // A recommendation must name a deadline. Fall back to the person's nearest upcoming one.

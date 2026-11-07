@@ -1,5 +1,6 @@
 ---
 id: hook-check-the-output
+risk: low
 kind: hook
 title: Check the output
 plainSummary: Before you use an AI answer with numbers in it, it asks you to confirm three figures yourself.

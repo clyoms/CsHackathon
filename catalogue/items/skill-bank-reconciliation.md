@@ -1,5 +1,6 @@
 ---
 id: skill-bank-reconciliation
+risk: medium
 kind: skill
 title: Bank reconciliation
 plainSummary: Matches a bank statement to the ledger and lists only the lines that do not match.

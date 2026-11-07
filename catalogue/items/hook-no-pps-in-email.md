@@ -1,5 +1,6 @@
 ---
 id: hook-no-pps-in-email
+risk: low
 kind: hook
 title: No PPS number in a client email
 plainSummary: Stops an email from going out if it contains a PPS number.
