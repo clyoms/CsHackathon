@@ -8,6 +8,7 @@
 //   targetsOnetTasks:
 //     - <exact O*NET task statement>
 //   verifyStep: ...
+//   howThisHelps: ...        (optional; "" when missing)
 //   ---
 //   <body: the full text a person copies>
 //
@@ -47,7 +48,8 @@ export function parseItem(text: string, fileName = "item"): CatalogueItem {
     }
   }
 
-  const parsed = CatalogueItem.safeParse({ ...fields, body: body.trim() });
+  // howThisHelps is optional in the file and empty when missing.
+  const parsed = CatalogueItem.safeParse({ howThisHelps: "", ...fields, body: body.trim() });
   if (!parsed.success) {
     throw new Error(`${fileName}: ${parsed.error.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`);
   }

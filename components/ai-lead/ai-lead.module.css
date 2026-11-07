@@ -1,4 +1,4 @@
-/* Harry's page on the ledger design (docs/design/brief.md). Tokens come from app/globals.css. */
+/* the AI Lead page on the ledger design (docs/design/brief.md). Tokens come from app/globals.css. */
 .page {
   max-width: 72rem;
   margin: 0 auto;
@@ -165,23 +165,6 @@
   color: var(--muted);
   font-size: 0.85rem;
   margin-top: var(--space-1);
-}
-
-/* Synthetic badge: the only purple on the site. */
-.badge {
-  display: inline-block;
-  margin-left: 0.35rem;
-  padding: 0 0.45em;
-  border-radius: 999px;
-  font-family: var(--font-body);
-  font-size: 0.68rem;
-  font-weight: 600;
-  line-height: 1.6;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  background: var(--badge-bg);
-  color: var(--badge-fg);
-  vertical-align: middle;
 }
 
 .sourced {

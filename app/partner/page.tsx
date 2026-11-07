@@ -36,7 +36,7 @@ export default function PartnerPage() {
         <div>
           <dt>Fee lost to over-runs</dt>
           <dd className={styles.statValue}>
-            <Num synthetic detail={`Sum over the ${overRows.length} jobs over budget: hours over × each job's budgeted rate.`}>
+            <Num detail={`Sum over the ${overRows.length} jobs over budget: hours over × each job's budgeted rate.`}>
               <span className={styles.total}>{euro(totalLost)}</span>
             </Num>
           </dd>
@@ -44,7 +44,7 @@ export default function PartnerPage() {
         <div>
           <dt>Jobs over budget</dt>
           <dd className={styles.statValue}>
-            <Num synthetic detail={`${hours(hoursOver)} logged beyond budget across these jobs.`}>
+            <Num detail={`${hours(hoursOver)} logged beyond budget across these jobs.`}>
               <span className={styles.total}>{overRows.length} of {view.rows.length}</span>
             </Num>
           </dd>
@@ -52,7 +52,7 @@ export default function PartnerPage() {
         <div>
           <dt>AI-ready hours</dt>
           <dd className={styles.statValue}>
-            <Num synthetic detail="Each task's logged hours × its Anthropic Economic Index usage share, summed over every job.">
+            <Num detail="Each task's logged hours × its Anthropic Economic Index usage share, summed over every job.">
               <span className={styles.total}>{hours(aiReady)}</span>
             </Num>
           </dd>
@@ -78,7 +78,7 @@ export default function PartnerPage() {
       <section className={styles.section}>
         <h2>Engagements, by money lost</h2>
         <p className={styles.explain}>
-          Click a client to see its tasks. Hours, fees and rates are synthetic. AI usage shares come from the Anthropic Economic
+          Click a client to see its tasks. AI usage shares come from the Anthropic Economic
           Index (hover for the source). {HOURS_BACK_ASSUMPTION}
         </p>
         <EngagementTable rows={view.rows} />

@@ -1,9 +1,9 @@
-// Harry view test world, built from contract/fixtures.ts plus more synthetic rows.
+// AI Lead view test world, built from contract/fixtures.ts plus more synthetic rows.
 // Every row here is made up. The final task swaps this for data/frame and the live literacy log.
 import { literacyLogEntryFixture, staffFixture, usageRecordFixture } from "@/contract/fixtures";
 import type { LiteracyLogEntry, MeterReading, Staff, UsageRecord } from "@/contract/types";
 
-export interface HarryWorld {
+export interface AiLeadWorld {
   staff: Staff[];
   usage: UsageRecord[];
   /** One reading per task run through the meter. */
@@ -71,6 +71,6 @@ const literacyLog: LiteracyLogEntry[] = [
   { staffId: "s-rachel", date: "2026-11-05", measure: "shown", itemId: "skill-bank-reconciliation", adopted: false },
 ];
 
-export function harryFixtureWorld(): HarryWorld {
+export function aiLeadFixtureWorld(): AiLeadWorld {
   return { staff, usage, meter: meterReadings(), literacyLog };
 }

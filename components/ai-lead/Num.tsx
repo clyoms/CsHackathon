@@ -1,7 +1,7 @@
-import styles from "./harry.module.css";
+import styles from "./ai-lead.module.css";
 
-/** A synthetic number gets a "synthetic" badge. A real number shows its source on hover. */
-export function Num({ children, synthetic, source }: { children: React.ReactNode; synthetic?: boolean; source?: string | null }) {
+/** A number on the AI Lead page. A real number shows its source on hover. */
+export function Num({ children, source }: { children: React.ReactNode; source?: string | null }) {
   return (
     <span>
       {source ? (
@@ -11,7 +11,6 @@ export function Num({ children, synthetic, source }: { children: React.ReactNode
       ) : (
         children
       )}
-      {synthetic ? <span className={styles.badge}>synthetic</span> : null}
     </span>
   );
 }

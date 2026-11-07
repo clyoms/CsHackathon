@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getWorld } from "@/app/api/ask/world";
-import { AskBox } from "@/components/harry/AskBox";
-import { adoptionByTeam, benchmarks, costPanel, frameActiveShare } from "@/components/harry/data";
-import styles from "@/components/harry/harry.module.css";
-import { LiteracyLog } from "@/components/harry/LiteracyLog";
-import { BenchmarkChart, CheckedChart } from "@/components/harry/Charts";
-import { AdoptionTable, CostStats, Panel } from "@/components/harry/Panels";
-import { literacyFromRecommendations, meterFromUsage } from "@/components/harry/real";
+import { AskBox } from "@/components/ai-lead/AskBox";
+import { adoptionByTeam, benchmarks, costPanel, frameActiveShare } from "@/components/ai-lead/data";
+import styles from "@/components/ai-lead/ai-lead.module.css";
+import { LiteracyLog } from "@/components/ai-lead/LiteracyLog";
+import { BenchmarkChart, CheckedChart } from "@/components/ai-lead/Charts";
+import { AdoptionTable, CostStats, Panel } from "@/components/ai-lead/Panels";
+import { literacyFromRecommendations, meterFromUsage } from "@/components/ai-lead/real";
 import type { Recommendation } from "@/contract/types";
 import { loadCsoAdoption, loadEurostatAdoption } from "@/data/public";
 import { MODEL, loadPrice } from "@/engine/meter";
 import { recommend } from "@/engine/recommend";
 
-export const metadata: Metadata = { title: "Harry view · Frame Next" };
+export const metadata: Metadata = { title: "AI Lead view · Frame Next" };
 // The literacy log is dated today, so render on each request.
 export const dynamic = "force-dynamic";
 
-export default function HarryPage() {
+export default function AiLeadPage() {
   // Real data: data/frame staff and usage (synthetic), data/public benchmarks (real), catalogue.
   const world = getWorld();
   const teams = adoptionByTeam(world.staff, world.usage);
@@ -35,13 +35,13 @@ export default function HarryPage() {
       <p className={styles.back}>
         <Link href="/">← Who are you today?</Link>
       </p>
-      <h1>Harry view</h1>
+      <h1>AI Lead view</h1>
       <p className={styles.lede}>How the firm uses AI, what it costs per task, and the record of AI literacy measures.</p>
 
       <div className={styles.grid}>
         <Panel
           title="Adoption by team"
-          explain="Active users, prompts and the share of AI outputs people checked, from usage records (synthetic). How people check matters more than how much they use AI."
+          explain="Active users, prompts and the share of AI outputs people checked, from usage records. How people check matters more than how much they use AI."
         >
           <CheckedChart teams={teams} />
           <AdoptionTable teams={teams} />
@@ -56,14 +56,14 @@ export default function HarryPage() {
 
         <Panel
           title="Cost per task"
-          explain="One task is one person's AI work in one category on one day, from usage records (synthetic). Euros show once a human fills data/public/prices.json. A few heavy tasks take a large share."
+          explain="One task is one person's AI work in one category on one day, from usage records. Euros show once a human fills data/public/prices.json. A few heavy tasks take a large share."
         >
           <CostStats cost={cost} />
         </Panel>
 
         <Panel
           title="AI literacy log"
-          explain="Each recommendation the engine shows today is logged as evidence of AI literacy measures under EU AI Act Article 4 (synthetic people). This demo has no database, so “I’ll try it” clicks are not stored here yet. Export it as a CSV."
+          explain="Each recommendation the engine shows today is logged as evidence of AI literacy measures under EU AI Act Article 4. This demo has no database, so “I’ll try it” clicks are not stored here yet. Export it as a CSV."
         >
           <LiteracyLog entries={literacyLog} names={names} />
         </Panel>

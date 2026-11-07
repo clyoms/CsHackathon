@@ -45,6 +45,14 @@ describe("catalogue", () => {
     expect(parseRisk("---\nid: x\n---\n")).toBe("medium");
   });
 
+  it("reads howThisHelps from the front matter, and defaults it to empty", () => {
+    const head = (extra: string) =>
+      `---\nid: skill-x\nkind: skill\ntitle: X\nplainSummary: Does x.\ntargetsOnetTasks:\n  - ${ONET_CLASSIFY_TASK}\nverifyStep: Check x.\n${extra}---\nBody text.\n`;
+    expect(parseItem(head("howThisHelps: Saves a tax assistant an hour.\n")).howThisHelps).toBe("Saves a tax assistant an hour.");
+    expect(parseItem(head("")).howThisHelps).toBe("");
+    for (const item of items) expect(typeof item.howThisHelps, item.id).toBe("string");
+  });
+
   it("gives every item a short plain summary, a body and a verify step", () => {
     for (const item of items) {
       expect(item.plainSummary.split(/\s+/).length, item.id).toBeLessThanOrEqual(25);

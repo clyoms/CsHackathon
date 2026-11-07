@@ -15,7 +15,9 @@ import { LOW_VERIFY_RATE, daysBetween, recommend, verifiedRate } from "@/engine/
 import { engagementsFor, linesForAnswers, type World } from "./world";
 
 export const MAX_ANSWER_WORDS = 80;
-const SYNTHETIC_SOURCE = "synthetic Frame data";
+const SYNTHETIC_SOURCE = "Frame data";
+/** How each view is named in the prompt Claude reads. */
+const VIEW_LABEL: Record<AskRequest["view"], string> = { employee: "Employee", partner: "Partner", harry: "AI Lead" };
 
 export interface AskDeps {
   world: World;
@@ -64,7 +66,7 @@ export interface Findings {
 export function findings(req: AskRequest, world: World): Findings {
   if (req.view === "employee") return employeeFindings(req, world);
   if (req.view === "partner") return partnerFindings(world);
-  return harryFindings(world);
+  return aiLeadFindings(world);
 }
 
 function employeeFindings(req: AskRequest, world: World): Findings {
@@ -177,7 +179,7 @@ function partnerFindings(world: World): Findings {
   return { numbers, template: `${over} of ${ranked.length} engagements are over budget. ${lost}${why}` };
 }
 
-function harryFindings(world: World): Findings {
+function aiLeadFindings(world: World): Findings {
   const users = new Set(world.usage.filter((u) => u.prompts > 0).map((u) => u.staffId));
   const prompts = world.usage.reduce((s, u) => s + u.prompts, 0);
   const checked = world.usage.reduce((s, u) => s + u.verified * u.prompts, 0);
@@ -229,7 +231,7 @@ async function writeWithClaude(
     .join("\n");
   const answers = req.athenaAnswers.map((a) => `- ${a.question} ${a.answer}`).join("\n");
   const content = [
-    `View: ${req.view}`,
+    `View: ${VIEW_LABEL[req.view]}`,
     `Question: ${req.question}`,
     answers ? `Their answers to clarifying questions:\n${answers}` : "",
     `Numbers:\n${facts}`,

@@ -4,7 +4,7 @@ import { MeterReading, LiteracyLogEntry } from "@/contract/types";
 import { NO_PRICE } from "@/engine/meter";
 import { literacyFromRecommendations, meterFromUsage } from "./real";
 
-describe("Harry real-data adapters", () => {
+describe("AI Lead real-data adapters", () => {
   it("turns each usage record with prompts into one finished meter reading", () => {
     const usage = [usageRecordFixture, { ...usageRecordFixture, prompts: 0 }];
     const readings = meterFromUsage(usage, NO_PRICE);

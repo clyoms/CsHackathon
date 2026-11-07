@@ -1,6 +1,6 @@
 # Frame Next: demo script (3 minutes)
 
-The click path for the pitch, and what to say at each step. Numbers below are what the app showed on 7 Nov 2026 with no API key. Made-up Frame numbers carry a purple **synthetic** badge on screen; real numbers show their source on hover. Say so when you point at them.
+The click path for the pitch, and what to say at each step. Numbers below are what the app showed on 7 Nov 2026 with no API key. Real numbers show their source on hover; numbers with no source come from made-up Frame data. Say so when you point at them.
 
 ## Before you start (5 minutes before)
 
@@ -20,7 +20,7 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 **Click:** nothing yet. Point at the three role cards. The skills library link under them lists every skill, ready to copy or export.
 
-**Say:** "Frame Next tells each person at FRAME which AI habit to adopt this week, and what it saves before the next deadline. Three views: Aoife, a tax assistant; a partner; and Harry, who runs AI adoption."
+**Say:** "Frame Next tells each person at FRAME which AI habit to adopt this week, and what it saves before the next deadline. Three views: Aoife, a tax assistant; a partner; and the AI Lead, who runs AI adoption."
 
 ## 2. Employee view: Aoife (70 seconds)
 
@@ -32,17 +32,17 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 **Click:** All my clients.
 
-**See:** "Try this skill: Bank reconciliation". About **15.7 hours** and **€1,336.89** back (synthetic), with ROS pay and file (extended) **11 days to go**, Wednesday 18 November.
+**See:** "Try this skill: Bank reconciliation". About **15.7 hours** and **€1,336.89** back, with ROS pay and file (extended) **11 days to go**, Wednesday 18 November.
 
 **Say:**
 - "One skill, not a menu. The engine took her eight weeks of timesheets, matched each line to an O\*NET task, and weighted it by how much people already use AI for that task. That's the Anthropic Economic Index, real data."
 - "The 18 November date is real." *Hover or click* **source**: it opens Revenue's eBrief 034/26.
-- "Hours and euros are synthetic, because we have no real Frame data. The badge says so."
+- "Hours and euros come from made-up Frame data, because we have no real Frame data. They carry no source link, unlike the real numbers."
 - "She checks only 18% of AI output today, so the engine favours items with a check step." *Point at the yellow box.*
 
 **Click:** Copy skill, then I'll try it.
 
-**Say:** "She copies the skill straight into Claude. 'I'll try it' records the adoption for Harry's literacy log."
+**Say:** "She copies the skill straight into Claude. 'I'll try it' records the adoption for the AI Lead's literacy log."
 
 **Optional click:** Export skill. It downloads `bank-reconciliation.zip`, a folder with SKILL.md that Claude takes as it is (Customize, Skills, Upload a skill).
 
@@ -64,11 +64,11 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 **Optional click:** type `Which jobs are losing money, and why?` and press Enter. The answer reads "3 of 10 engagements are over budget. Walsh Holdings has lost €8,676.92…" and names the source of each number.
 
-## 4. Harry view (40 seconds)
+## 4. AI Lead view (40 seconds)
 
-**Click:** ← Who are you today?, then Harry.
+**Click:** ← Who are you today?, then AI Lead.
 
-**Say:** "Harry needs the firm-wide picture."
+**Say:** "The AI Lead needs the firm-wide picture."
 
 **Point, top to bottom:**
 - **Adoption by team:** Tax uses AI the most (2,884 prompts) but checks only **39%** of outputs. That's where verify training goes first.
@@ -80,7 +80,7 @@ In PowerShell, run `$env:FRAME_TODAY = "2026-11-07"; npm start` instead.
 
 ## 5. Close (15 seconds)
 
-**Say:** "Real public data, honest about what's synthetic, one habit per person, with hours and euros attached. Every Claude call has a no-key fallback, so it never breaks on stage."
+**Say:** "Real public data, honest about what's made up, one habit per person, with hours and euros attached. Every Claude call has a no-key fallback, so it never breaks on stage."
 
 ## If something goes wrong
 
