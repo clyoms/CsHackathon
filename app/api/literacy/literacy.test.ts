@@ -28,6 +28,17 @@ beforeEach(() => {
 });
 afterEach(() => rmSync(dir, { recursive: true, force: true }));
 
+describe("I'll try it", () => {
+  it("saves an adopted entry dated today, and rejects an unknown person", () => {
+    const world = fixtureWorld();
+    const staffId = world.staff[0].id;
+    const res = handleLiteracyPost({ staffId, itemId: "skill-bank-reconciliation", measure: "adopted" }, world, store);
+    expect(res.status).toBe(200);
+    expect(store.read()).toEqual([expect.objectContaining({ staffId, measure: "adopted", adopted: true, date: world.today })]);
+    expect(handleLiteracyPost({ staffId: "nobody", itemId: "x", measure: "adopted" }, world, store).status).toBe(400);
+  });
+});
+
 describe("lessons", () => {
   it("has the four 4D lessons, each with a read and an exercise", () => {
     expect(LESSONS.map((l) => l.id)).toEqual([...LESSON_IDS]);

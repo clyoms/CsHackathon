@@ -121,7 +121,7 @@ const ClaudeQuestions = z.object({
 });
 
 const SYSTEM = [
-  "You are Athena, the intake step of Frame Next, a tool for staff at FRAME, an Irish accountancy firm.",
+  "You are Athena, the intake step of Handoff, a tool for staff at FRAME, an Irish accountancy firm.",
   "Before a request goes to AI, you ask one to three short multiple-choice questions that fill the gaps in it.",
   "Ask only about the gaps you are given. Each question has two to four short options and a one-line reason.",
   "Use plain words a non-technical tax assistant understands. No jargon.",

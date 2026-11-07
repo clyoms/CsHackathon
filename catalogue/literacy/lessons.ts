@@ -99,7 +99,7 @@ export const LESSONS: readonly Lesson[] = [
     read: [
       "Diligence is about responsibility. When AI helps with a piece of work, the work is still yours and the firm's. You choose which tools are suitable for client data, you are open with colleagues and clients about where AI was used, and you check the output before it goes anywhere that matters.",
       "It covers the whole life of the work. Before: is this the right tool, and is the client data allowed in it under the firm's policy and GDPR? During: are you keeping a note of what AI did? After: has a person checked it, and would you be happy to explain how it was made to a client, a reviewer or Revenue?",
-      "A simple way to practise diligence is to write the check step before you start, not after. Decide in advance what a person must confirm before anything is filed, sent or signed. Under the EU AI Act, firms also need staff to have enough AI literacy for the tools they use, and a record like this course log helps show it.",
+      "A simple way to practise diligence is to write the check step before you start, not after. Decide in advance what a person must confirm before anything is filed, sent or signed. Under the EU AI Act, firms must take measures to promote AI literacy among staff, and a record like this course log helps show it.",
     ],
     exercise: {
       scenario: "AI has drafted a client's CT1 computation and the corporation tax figure for the return due on ROS. The partner wants to file this week.",
