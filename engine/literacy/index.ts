@@ -29,3 +29,26 @@ export function toCsv(log: LiteracyLog): string {
     { newline: "\n" },
   ).replace(/\n$/, ""); // Papa leaves a trailing newline when there are no rows
 }
+
+/** Record that a person finished a 4D literacy lesson. itemId is the lesson id. */
+export function recordLesson(log: LiteracyLog, staffId: string, lessonId: string, date: string): LiteracyLog {
+  return appendEntry(log, { staffId, date, measure: "lesson", itemId: lessonId, adopted: true });
+}
+
+/** Only the lesson entries, in log order. */
+export function lessonEntries(log: LiteracyLog): LiteracyLogEntry[] {
+  return log.filter((e) => e.measure === "lesson");
+}
+
+/** A new log sorted newest date first. Entries on the same date keep their order, later ones first. */
+export function newestFirst(log: LiteracyLog): LiteracyLogEntry[] {
+  return log
+    .map((e, i) => ({ e, i }))
+    .sort((a, b) => (a.e.date === b.e.date ? b.i - a.i : a.e.date < b.e.date ? 1 : -1))
+    .map(({ e }) => e);
+}
+
+/** The lesson ids a person has finished, once each. */
+export function lessonsDone(log: LiteracyLog, staffId: string): string[] {
+  return [...new Set(lessonEntries(log).filter((e) => e.staffId === staffId).map((e) => e.itemId))];
+}
