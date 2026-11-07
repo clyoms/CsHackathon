@@ -4,6 +4,7 @@ risk: low
 kind: skill
 title: Commitment tracker
 plainSummary: Finds the promises you made in your sent email this week and shows which ones you have not started yet.
+howThisHelps: Saves a busy senior from missed promises by listing what they told clients and colleagues they would do this week.
 targetsOnetTasks:
   - Perform general office duties, such as filing, answering telephones, and handling routine correspondence.
   - Schedule appointments with clients.

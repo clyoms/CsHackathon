@@ -77,6 +77,8 @@
 .high { color: var(--accent); }
 
 .summary { margin: var(--space-2) 0 0; }
+.helps { margin: var(--space-2) 0 0; font-size: 0.95rem; }
+.helps strong { font-weight: 600; }
 
 .verify {
   margin: var(--space-2) 0 0;

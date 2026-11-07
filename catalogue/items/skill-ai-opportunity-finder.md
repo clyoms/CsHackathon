@@ -4,6 +4,7 @@ risk: low
 kind: skill
 title: AI opportunity finder
 plainSummary: Maps one of your team's processes step by step, finds where AI could help, and ranks the ideas into quick wins and bigger bets.
+howThisHelps: Saves a practice manager a few hours of workshops by mapping one process and ranking where AI could help most.
 targetsOnetTasks:
   - Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.
   - Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.

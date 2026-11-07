@@ -4,6 +4,7 @@ risk: low
 kind: skill
 title: Meeting notes to action list
 plainSummary: Turns rough meeting notes into a list of who does what, by when.
+howThisHelps: Saves whoever took the notes the job of writing up actions, so owners and dates go round the same day.
 targetsOnetTasks:
   - Confer with company officials about financial and regulatory matters.
   - Schedule appointments with clients.

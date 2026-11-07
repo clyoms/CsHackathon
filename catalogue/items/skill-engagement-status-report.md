@@ -4,6 +4,7 @@ risk: medium
 kind: skill
 title: Engagement monthly status report
 plainSummary: Builds a one-page monthly status report for one client engagement: your notes, hours against budget, and the next deadlines.
+howThisHelps: Saves an engagement manager about an hour a month per client by pulling notes, hours and deadlines onto one page.
 targetsOnetTasks:
   - Develop, maintain, or analyze budgets, preparing periodic reports that compare budgeted costs to actual costs.
   - Compile statistical, financial, accounting, or auditing reports and tables pertaining to such matters as cash receipts, expenditures, accounts payable and receivable, and profits and losses.

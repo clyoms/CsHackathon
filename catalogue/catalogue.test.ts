@@ -53,6 +53,13 @@ describe("catalogue", () => {
     for (const item of items) expect(typeof item.howThisHelps, item.id).toBe("string");
   });
 
+  it("gives every item a plain howThisHelps sentence under 25 words", () => {
+    for (const item of items) {
+      expect(item.howThisHelps.trim().length, item.id).toBeGreaterThan(0);
+      expect(item.howThisHelps.split(/\s+/).length, item.id).toBeLessThan(25);
+    }
+  });
+
   it("gives every item a short plain summary, a body and a verify step", () => {
     for (const item of items) {
       expect(item.plainSummary.split(/\s+/).length, item.id).toBeLessThanOrEqual(25);

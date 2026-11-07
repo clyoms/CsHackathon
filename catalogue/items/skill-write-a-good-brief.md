@@ -4,6 +4,7 @@ risk: low
 kind: skill
 title: Write a good brief (Athena starter)
 plainSummary: Helps you write a clear request to AI, so it gets the job right the first time.
+howThisHelps: Saves a junior accountant rework by getting the request to AI right first time, so fewer answers need redoing.
 targetsOnetTasks:
   - Review financial records, such as income statements and documentation of expenditures to determine forms needed to prepare tax returns.
   - Furnish taxpayers with sufficient information and advice to ensure correct tax form completion.

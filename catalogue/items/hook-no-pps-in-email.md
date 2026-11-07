@@ -4,6 +4,7 @@ risk: low
 kind: hook
 title: No PPS number in a client email
 plainSummary: Stops an email from going out if it contains a PPS number.
+howThisHelps: Protects the firm and its clients by catching a PPS number before an email leaves, so nobody has to report a data breach.
 targetsOnetTasks:
   - Comply with federal, state, and company policies, procedures, and regulations.
   - Furnish taxpayers with sufficient information and advice to ensure correct tax form completion.
