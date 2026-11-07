@@ -126,6 +126,28 @@ describe("ask with a stubbed Claude client", () => {
   });
 });
 
+describe("offline label (A1)", () => {
+  it("marks both routes offline with a reason and logs it when no key is set", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const a = await (await athenaPOST(post(athenaRequestFixture))).json();
+    expect(a.offline).toBe(true);
+    expect(a.offlineReason).toMatch(/ANTHROPIC_API_KEY/);
+    expect(a.tokensUsed).toBe(0);
+    const b = await (await askPOST(post(askRequestFixture))).json();
+    expect(b.offline).toBe(true);
+    expect(b.offlineReason).toMatch(/ANTHROPIC_API_KEY/);
+    expect(warn.mock.calls.flat().join(" ")).toMatch(/\[ask\] offline answer/);
+  });
+
+  it("reports offline=false and real tokens when Claude answers", async () => {
+    const create = vi.fn().mockResolvedValue({ stop_reason: "end_turn", content: [{ type: "text", text: "Short answer." }], usage: sample.usage });
+    const world = fixtureWorld();
+    const body = await handleAsk(askRequestFixture as AskRequest, { world, client: { messages: { create } } as never });
+    expect(body.offline).toBe(false);
+    expect(body.tokensUsed).toBeGreaterThan(0);
+  });
+});
+
 describe("sourceName", () => {
   it("names known sources", () => {
     expect(sourceName("https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/x.csv")).toBe("Anthropic Economic Index");

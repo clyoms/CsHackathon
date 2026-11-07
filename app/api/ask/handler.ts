@@ -216,20 +216,31 @@ async function writeWithClaude(
   return { answer, usage: response.usage };
 }
 
-export async function handleAsk(req: AskRequest, deps: AskDeps): Promise<AskResponse> {
+/** Matches Usage in engine/contract.ts (T-2). Switch to that import once it is merged. */
+export type AskApiResponse = AskResponse & { offline: boolean; offlineReason?: string; tokensUsed: number };
+
+export async function handleAsk(req: AskRequest, deps: AskDeps): Promise<AskApiResponse> {
   const price = deps.price ?? NO_PRICE;
   const f = findings(req, deps.world);
+  // The key is read per request, never at module load.
   const client = deps.client === undefined ? defaultClient() : deps.client;
 
-  if (client && f.numbers.length > 0) {
+  let offlineReason: string;
+  if (!client) offlineReason = "no ANTHROPIC_API_KEY on the server";
+  else if (f.numbers.length === 0) offlineReason = "no engine numbers to write about, so Claude was not called";
+  else {
     try {
       const { answer, usage } = await writeWithClaude(client, req, f);
-      return AskResponse.parse({ answer, numbers: f.numbers, meter: readingFromUsage("ask", usage, price, true), fallback: false });
+      const meter = readingFromUsage("ask", usage, price, true);
+      const res = AskResponse.parse({ answer, numbers: f.numbers, meter, fallback: false });
+      return { ...res, offline: false, tokensUsed: meter.tokensIn + meter.tokensOut };
     } catch (err) {
-      console.warn("Ask fell back to the template answer:", err instanceof Error ? err.message : err);
+      offlineReason = `Claude call failed: ${err instanceof Error ? err.message : String(err)}`;
     }
   }
-  return AskResponse.parse({ answer: f.template, numbers: f.numbers, meter: readingFromUsage("ask", null, price, true), fallback: true });
+  console.warn(`[ask] offline answer: ${offlineReason}`);
+  const res = AskResponse.parse({ answer: f.template, numbers: f.numbers, meter: readingFromUsage("ask", null, price, true), fallback: true });
+  return { ...res, offline: true, offlineReason, tokensUsed: 0 };
 }
 
 /** The price the routes use: data/public/prices.json, or unknown. */
