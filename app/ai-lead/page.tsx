@@ -10,6 +10,8 @@ import { AdoptionTable, CostStats, Panel } from "@/components/ai-lead/Panels";
 import { literacyFromRecommendations, meterFromUsage } from "@/components/ai-lead/real";
 import type { Recommendation } from "@/contract/types";
 import { loadCsoAdoption, loadEurostatAdoption } from "@/data/public";
+import { lessonEntries, newestFirst } from "@/engine/literacy";
+import { getLessonStore } from "@/engine/literacy/store";
 import { MODEL, loadPrice } from "@/engine/meter";
 import { recommend } from "@/engine/recommend";
 
@@ -27,7 +29,9 @@ export default function AiLeadPage() {
   const recs = world.staff
     .map((staff) => recommend({ ...world, staff, lines: world.timesheets }))
     .filter((r): r is Recommendation => r !== null);
-  const literacyLog = literacyFromRecommendations(recs, world.today);
+  // Lessons people finished (saved by /api/literacy) beside today's recommendations, newest first.
+  const lessons = lessonEntries(getLessonStore().read());
+  const literacyLog = newestFirst([...literacyFromRecommendations(recs, world.today), ...lessons]);
   const names = Object.fromEntries(world.staff.map((s) => [s.id, s.name]));
 
   return (
@@ -63,9 +67,12 @@ export default function AiLeadPage() {
 
         <Panel
           title="AI literacy log"
-          explain="Each recommendation the engine shows today is logged as evidence of AI literacy measures under EU AI Act Article 4. This demo has no database, so “I’ll try it” clicks are not stored here yet. Export it as a CSV."
+          explain="Each recommendation the engine shows today and each finished 4D lesson is logged as evidence of AI literacy measures under EU AI Act Article 4. “I’ll try it” clicks are not stored here yet. Export it as a CSV."
         >
           <LiteracyLog entries={literacyLog} names={names} />
+          <p className={styles.explain}>
+            <Link href="/literacy">Open the 4D literacy course</Link>
+          </p>
         </Panel>
       </div>
 

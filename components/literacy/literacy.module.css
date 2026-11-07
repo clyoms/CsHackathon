@@ -1,0 +1,15 @@
+/* Only what the lessons need on top of the skills library classes. */
+.read p { margin: var(--space-2) 0 0; max-width: 42rem; }
+
+.exercise {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+.exercise h3 { margin: 0; font-size: 1.05rem; }
+.exercise p { margin: var(--space-2) 0 0; }
+.exercise ul { margin: var(--space-2) 0 0; padding-left: 1.2rem; }
+
+.progress { margin: 0 0 var(--space-2); font-weight: 600; }

@@ -19,3 +19,6 @@ Thumbs.db
 # logic check reports (npm run logic)
 logic-report.json
 logic-report.md
+
+# runtime state written by the app (literacy log)
+data/runtime/
