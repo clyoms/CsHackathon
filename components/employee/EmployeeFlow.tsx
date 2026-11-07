@@ -20,7 +20,19 @@ export interface EmployeeFlowProps {
 }
 
 /** Fields the routes may add on top of the base response: the offline label and Athena's outcome. */
-type Extra = Partial<Usage> & { outcome?: AthenaOutcome };
+type Extra = Partial<Usage> & {
+  outcome?: AthenaOutcome;
+  /** From /api/ask: the item picked from Athena's answers and the deadline to count down to. */
+  card?: { recommendation: Recommendation; deadline: CardDeadline };
+};
+
+/** Deadline from engine/contract.ts as the API sends it. */
+interface CardDeadline {
+  label: string;
+  dueDate: string;
+  daysLeft: number;
+  source: "user" | "catalogue";
+}
 
 type Step = "ask" | "thinking" | "questions" | "answer";
 
@@ -81,7 +93,10 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
   useEffect(() => setToday(todayIso()), []);
 
   const chosenClient = answers.map((a) => a.answer).find((a) => clients.includes(a));
-  const recommendation = (chosenClient && choices[chosenClient]) || choices[ALL_CLIENTS];
+  // The API's card follows Athena's answers (task, risk, named date). The page's own choice is
+  // only a fallback for when the API gives none.
+  const recommendation = written?.card?.recommendation ?? ((chosenClient && choices[chosenClient]) || choices[ALL_CLIENTS]);
+  const cardDeadline = written?.card?.deadline ?? null;
 
   async function finish(withAnswers: AthenaAnswer[]) {
     setAnswers(withAnswers);
@@ -253,6 +268,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
       {step === "answer" && !outcome && recommendation && (
         <AnswerCard
           recommendation={recommendation}
+          cardDeadline={cardDeadline}
           written={written}
           today={today}
           copied={copied}
@@ -280,6 +296,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
 
 interface AnswerCardProps {
   recommendation: Recommendation;
+  cardDeadline: CardDeadline | null;
   written: AskResponse | null;
   today: string | null;
   copied: "idle" | "done" | "failed";
@@ -290,8 +307,17 @@ interface AnswerCardProps {
   onTry: () => void;
 }
 
-function AnswerCard({ recommendation, written, today, copied, exported, adopted, onCopy, onExport, onTry }: AnswerCardProps) {
-  const { item, deadline } = recommendation;
+function AnswerCard({ recommendation, cardDeadline, written, today, copied, exported, adopted, onCopy, onExport, onTry }: AnswerCardProps) {
+  const { item } = recommendation;
+  // A date the person named has no source page. A catalogue date keeps its source link.
+  const known = cardDeadline ? undefined : recommendation.deadline;
+  const deadline = cardDeadline
+    ? { label: cardDeadline.label, date: cardDeadline.dueDate, source: undefined as string | undefined, checked: true }
+    : { label: known!.label, date: known!.date, source: known!.source as string | undefined, checked: known!.checked };
+  if (cardDeadline?.source === "catalogue" && cardDeadline.dueDate === recommendation.deadline.date) {
+    deadline.source = recommendation.deadline.source;
+    deadline.checked = recommendation.deadline.checked;
+  }
   const days = today === null ? null : daysUntil(deadline.date, today);
   const dateText = longDate.format(new Date(`${deadline.date}T00:00:00Z`));
 
@@ -317,7 +343,7 @@ function AnswerCard({ recommendation, written, today, copied, exported, adopted,
         <div>
           <dt>{deadline.label}</dt>
           <dd>
-            {days === null ? dateText : countdown(days)} <SourceLink href={deadline.source} />
+            {days === null ? dateText : countdown(days)} {deadline.source && <SourceLink href={deadline.source} />}
           </dd>
           <dd className={styles.small}>
             {dateText}

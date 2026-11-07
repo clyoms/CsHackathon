@@ -6,7 +6,9 @@ import { POST as askPOST } from "./route";
 import { POST as athenaPOST } from "../athena/route";
 import { handleAsk, sourceName } from "./handler";
 import { recommend } from "@/engine/recommend";
-import { fixtureWorld, linesForAnswers, realWorld } from "./world";
+import { engagementsFor, fixtureWorld, linesForAnswers, realWorld } from "./world";
+import { extractContext } from "@/engine/athena/triage";
+import { loadRisk } from "@/catalogue";
 
 const post = (body: unknown) =>
   new Request("http://localhost/api", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
@@ -55,7 +57,13 @@ describe("POST /api/ask with no key", () => {
     // The route runs on the real world. A non-client Athena answer keeps all of Aoife's work.
     const world = realWorld("2026-11-07");
     const aoife = world.staff.find((s) => s.id === askRequestFixture.staffId)!;
-    const expected = recommend({ ...world, staff: aoife, lines: world.timesheets })!;
+    // The route now passes Athena's context (task, client, risk) to the recommender, so the test does too.
+    const context = extractContext(
+      askRequestFixture.question,
+      askRequestFixture.athenaAnswers.map((a) => a.answer),
+      engagementsFor(world, aoife.id),
+    );
+    const expected = recommend({ ...world, staff: aoife, lines: world.timesheets, context, risk: loadRisk() })!;
     const body = AskResponse.parse(await (await askPOST(post(askRequestFixture))).json());
     const hours = body.numbers.find((n) => n.label === "Hours back before the deadline")!;
     expect(hours.value).toBe(expected.hoursBackEstimate);
@@ -154,6 +162,53 @@ describe("offline label (A1)", () => {
     const body = await handleAsk(askRequestFixture as AskRequest, { world, client: { messages: { create } } as never });
     expect(body.offline).toBe(false);
     expect(body.tokensUsed).toBeGreaterThan(0);
+  });
+});
+
+describe("employee acceptance prompts with no key (T-14)", () => {
+  const ask = async (question: string, answers: { question: string; answer: string }[] = []) =>
+    (await askPOST(post({ question, view: "employee", staffId: "s-aoife", athenaAnswers: answers }))).json();
+
+  it("declines the weather in one line with no numbers", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const a = await (await athenaPOST(post({ staffId: "s-aoife", request: "What's the weather in Cork?" }))).json();
+    expect(a.outcome).toEqual({ kind: "decline", message: "Frame Next helps with work tasks." });
+    expect(a.result.questions).toHaveLength(0);
+  });
+
+  it("counts down to Friday for a VAT return and never picks an item that is not about VAT", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const body = await ask("Can AI do my VAT return for Byrne Foods by Friday?", [
+      { question: "What do you want back?", answer: "A table I can paste" },
+    ]);
+    if (body.outcome?.kind === "no_match") {
+      expect(body.outcome.message).toMatch(/no matching skill/);
+      expect(body.outcome.message).toMatch(/6 days to go/);
+      expect(body.numbers).toHaveLength(0);
+    } else {
+      expect(body.card.deadline).toMatchObject({ dueDate: "2026-11-13", daysLeft: 6 });
+      expect(`${body.card.recommendation.item.title} ${body.card.recommendation.item.plainSummary}`).toMatch(/vat/i);
+    }
+  });
+
+  it("gives the lowest-risk item with a check step to someone who does not trust AI", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const risk = loadRisk();
+    const body = await ask("I don't trust AI, what's the safest thing to start with?", [
+      { question: "Which client is this for?", answer: "All my clients" },
+    ]);
+    const item = body.card.recommendation.item;
+    expect(item.verifyStep.trim()).not.toBe("");
+    expect(risk[item.id]).toBe("low");
+  });
+
+  it("keeps the estimate line out of the answer", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const body = await ask("What should I hand to AI before 18 November?", [
+      { question: "Which client is this for?", answer: "All my clients" },
+    ]);
+    expect(body.answer).not.toMatch(/30%|estimate assumes/i);
+    expect(body.card.deadline).toMatchObject({ dueDate: "2026-11-18", daysLeft: 11 });
   });
 });
 
