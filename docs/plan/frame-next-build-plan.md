@@ -1,6 +1,6 @@
 # Frame Next: build plan for Relay (7 Nov 2026)
 
-Builders: Chulainn and Charity, one Relay account each. Pitch: Boole 2 from 19:35, 3 minutes plus 2 minutes Q&A.
+Builders: Chulainn and Charlie, one Relay account each. Pitch: Boole 2 from 19:35, 3 minutes plus 2 minutes Q&A.
 Research behind every choice: `docs/research/2026-11-07-frame-hackathon-research.md`.
 
 This file has four parts:
@@ -127,14 +127,14 @@ Each `goal` must stand alone, because a fresh agent reads it with no memory of t
 
 ### Before the board (Chulainn, about 15 minutes)
 
-1. **Give Charity a Relay token.** In the `relay` folder, run the command below with her GitHub login. The token prints once.
+1. **Give Charlie a Relay token.** In the `relay` folder, run the command below with her GitHub login. The token prints once.
 
 ```bash
-node scripts/token.mjs <charity-github-login> "Charity"
+node scripts/token.mjs cdineen867 "Charlie"
 ```
 
-2. **Send her the token privately**, in person or by direct message. Never paste it into a Relay card or a commit.
-3. **Add her to the GitHub repo** `clyoms/CsHackathon` as a collaborator with write access.
+2. **Send him the token privately**, in person or by direct message. Never paste it into a Relay card or a commit.
+3. **Add him to the GitHub repo** `clyoms/CsHackathon` as a collaborator with write access.
 4. **Put the plan on `main`.** Agents read `docs/plan/` and `docs/research/`, so both must be merged before the build. Pushing straight to `main` is blocked, so use a pull request:
 
 ```bash
@@ -147,7 +147,7 @@ git checkout -b docs/frame-next-plan && git add docs && git commit -m "Add Frame
 node scripts/new-plan.mjs
 ```
 
-### Charity's setup (about 10 minutes)
+### Charlie's setup (about 10 minutes)
 
 1. Clone the repo.
 
@@ -155,10 +155,10 @@ node scripts/new-plan.mjs
 git clone https://github.com/clyoms/CsHackathon.git
 ```
 
-2. Set her Relay token as an environment variable called `RELAY_TOKEN`. On Windows PowerShell:
+2. Set his Relay token as an environment variable called `RELAY_TOKEN`. On Windows PowerShell:
 
 ```powershell
-[Environment]::SetEnvironmentVariable("RELAY_TOKEN", "<her token>", "User")
+[Environment]::SetEnvironmentVariable("RELAY_TOKEN", "<his token>", "User")
 ```
 
 3. Restart Claude Code, so it reads the new variable.
@@ -184,9 +184,9 @@ gh auth login
 
 ### Run the build
 
-| Time | Chulainn | Charity |
+| Time | Chulainn | Charlie |
 |---|---|---|
-| 11:30 | Click **Release** on the scaffold. Paste **Prompt B** in a fresh chat | Paste **Prompt B** in a fresh chat. Her agent waits or reviews |
+| 11:30 | Click **Release** on the scaffold. Paste **Prompt B** in a fresh chat | Paste **Prompt B** in a fresh chat. His agent waits or reviews |
 | about 12:10 | Click **Accept** on the scaffold after review. Create `.env.local` | Create `.env.local` |
 | about 12:40 | Contract merged and frozen. Ten tasks open | Same |
 | 12:40 to 15:30 | Watch the board. Let Amber vetoes lapse. Answer `mark_blocked` questions | Same. Start the pitch outline in a doc (Prompt D) |
@@ -237,7 +237,7 @@ Work the Relay board in this repo. Read docs/plan/frame-next-build-plan.md secti
 Read the Relay history for <T-key>: every attempt, checkpoint, dead end and review fix. Tell me in five lines or fewer what keeps failing and the smallest change that would pass the done check. Do not change any files.
 ```
 
-### Prompt D: pitch outline (Charity, in a separate chat outside the repo)
+### Prompt D: pitch outline (Charlie, in a separate chat outside the repo)
 
 ```
 Write a 3-minute pitch outline for Frame Next for the FRAME hackathon track. Judges score innovation, impact, technical depth and demo quality equally. Use docs/research/2026-11-07-frame-hackathon-research.md as the only source of facts. Structure: the problem in Frame's words (15 s), the one sentence (10 s), live demo as Aoife, then partner, then Harry (100 s), how it works and the real data (30 s), limits and next steps (25 s). Then list five likely judge questions with a 20-second answer each. No savings percentages.
