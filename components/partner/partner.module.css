@@ -1,0 +1,229 @@
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+}
+
+.lede {
+  color: var(--muted);
+  margin-top: 0;
+}
+
+.section {
+  margin-top: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.explain {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 0.75rem;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 0.6rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.rowButton {
+  all: unset;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.rowButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.open {
+  background: #f0f4fb;
+}
+
+.loss {
+  color: #a3261f;
+  font-weight: 600;
+}
+
+.detail td {
+  background: #f7f9fc;
+  padding: 1rem;
+}
+
+.detail h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+
+.rec {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+  background: #fff;
+}
+
+.badge {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.5;
+  background: #fff3d6;
+  color: #7a5200;
+  border: 1px solid #f0d58c;
+  vertical-align: middle;
+}
+
+.badgeUnchecked {
+  background: #eef0f3;
+  color: #4b5563;
+  border-color: #d5d9df;
+}
+
+.sourced {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+.bar {
+  height: 6px;
+  background: var(--line);
+  border-radius: 3px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.barOver {
+  background: #a3261f;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(110px, 1fr));
+  gap: 0.5rem;
+  overflow-x: auto;
+}
+
+.week {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.5rem;
+  min-height: 110px;
+  background: #fff;
+  font-size: 0.85rem;
+}
+
+.weekCrunch {
+  border-color: #a3261f;
+  background: #fff6f5;
+}
+
+.weekLabel {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.due {
+  margin-top: 0.35rem;
+}
+
+.due a {
+  font-weight: 600;
+}
+
+.ask {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ask input {
+  flex: 1 1 320px;
+  font: inherit;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.ask button {
+  font: inherit;
+  padding: 0.6rem 1.1rem;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.ask button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.answer {
+  margin-top: 1rem;
+  padding: 1rem;
+  border-left: 4px solid var(--accent);
+  background: #fff;
+}
+
+.numbers {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+}
+
+.numbers li {
+  padding: 0.15rem 0;
+}
+
+.meter {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.error {
+  color: #a3261f;
+}
