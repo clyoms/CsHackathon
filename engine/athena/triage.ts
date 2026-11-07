@@ -15,7 +15,7 @@ import type {
 import type { Engagement } from "@/contract/types";
 import { MODEL } from "@/engine/meter";
 
-export const DECLINE_MESSAGE = "Frame Next helps with work tasks.";
+export const DECLINE_MESSAGE = "Handoff helps with work tasks.";
 
 export const HELP_QUESTIONS = [
   "What task are you working on?",

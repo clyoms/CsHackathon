@@ -1,26 +1,26 @@
-/* Frame Next design tokens: "Nightshift Violet".
-   Deep violet-black ground, lilac ink for headings and links, an orchid accent for key numbers,
-   and a saturated violet for the one main action on each screen.
-   The synthetic badge moved to amber so "made-up number" still looks unlike every real number. */
+/* Handoff design tokens: black and charcoal, with one pale mint accent for key numbers and a green dot for live markers.
+   The synthetic badge stays amber so a made-up number never looks like a real one. */
 :root {
-  --paper: #0d0a1a;
-  --surface: #161127;
-  --surface-2: #1f1836;
-  --ink: #f3f0ff;
-  --muted: #b4abd6;
-  --green: #c4b5fd;          /* headings, links (name kept so older modules still read it) */
-  --accent: #f0abfc;         /* key numbers */
-  --on-accent: #1a0b24;
-  --primary: #7c3aed;        /* main action */
-  --primary-hover: #6d28d9;
-  --on-primary: #ffffff;
-  --rule: #2e2550;
-  --rule-strong: #4c3d85;
+  --paper: #000000;
+  --surface: #0b0b0c;
+  --surface-2: #131315;
+  --ink: #f4f4f5;
+  --muted: #a1a1aa;
+  --green: #e4e4e7;          /* headings, links (name kept so older modules still read it) */
+  --accent: #bbf7d0;         /* key numbers: a pale mint, the only colour on the page */
+  --on-accent: #052e16;
+  --dot: #4ade80;            /* small live markers */
+  --primary: #f4f4f5;        /* main action: a white button */
+  --primary-hover: #d4d4d8;
+  --on-primary: #09090b;
+  --rule: #1f1f22;
+  --rule-strong: #3f3f46;
   --badge-fg: #fcd34d;
-  --badge-bg: rgba(251, 191, 36, 0.12);
-  --glow: rgba(124, 58, 237, 0.38);
-  --glow-2: rgba(217, 70, 239, 0.16);
-  --shadow: 0 18px 50px rgba(5, 2, 15, 0.55);
+  --badge-bg: rgba(251, 191, 36, 0.10);
+  --glow: rgba(255, 255, 255, 0.07);
+  --glow-2: rgba(34, 197, 94, 0.06);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+  --card: linear-gradient(180deg, #111113, #060607);
 
   --font-head: var(--font-grotesk), "Segoe UI", Arial, sans-serif;
   --font-body: var(--font-inter), "Segoe UI", Arial, sans-serif;
@@ -117,3 +117,87 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* ---------- Shared top bar ---------- */
+.site-nav {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: var(--space-3) var(--gutter);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  flex-wrap: wrap;
+}
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.site-brand:hover { color: var(--ink); }
+.site-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--rule-strong);
+  background: linear-gradient(135deg, #27272a, #0b0b0c);
+  display: grid;
+  place-items: center;
+  position: relative;
+  font-size: 0.9rem;
+}
+.site-mark::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+.site-tabs { display: flex; gap: 2px; flex-wrap: wrap; }
+.site-tabs a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+.site-tabs a:hover { color: var(--ink); background: var(--surface-2); }
+.site-tabs a[aria-current="page"] { color: var(--ink); background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--rule-strong); }
+.site-tabs .site-tag { font-size: 0.7rem; padding: 1px 6px; border-radius: 999px; border: 1px solid var(--rule-strong); color: var(--muted); }
+
+/* ---------- What this tells you / next step ---------- */
+.insight {
+  margin-top: var(--space-3);
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  background: #08080a;
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+.insight p { margin: 0; }
+.insight .insight-label {
+  display: inline-block;
+  min-width: 7.5rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.insight .insight-next { color: var(--ink); }
+.insight .insight-next .insight-label { color: var(--dot); }

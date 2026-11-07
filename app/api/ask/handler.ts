@@ -220,7 +220,7 @@ function aiLeadFindings(world: World): Findings {
 }
 
 const SYSTEM = [
-  "You write short answers for staff at FRAME, an Irish accountancy firm, inside a tool called Frame Next.",
+  "You write short answers for staff at FRAME, an Irish accountancy firm, inside a tool called Handoff.",
   `Write a plain answer of at most ${MAX_ANSWER_WORDS} words. Use plain words a non-technical reader understands.`,
   "Use only the numbers given. Never add, estimate or round a number differently.",
   "After each number you use, name its source in brackets, using the source name given.",

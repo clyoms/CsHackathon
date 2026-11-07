@@ -259,7 +259,7 @@
 .week {
   scroll-snap-align: start;
   padding: var(--space-2) var(--space-3);
-  background: var(--surface);
+  background: var(--card);
   border: 1px solid var(--rule);
   border-top: 3px solid var(--rule);
   border-radius: var(--radius);
@@ -309,7 +309,7 @@
   width: 100%;
   border-collapse: collapse;
   font-variant-numeric: tabular-nums;
-  background: var(--surface);
+  background: var(--card);
 }
 
 .table th,
@@ -378,7 +378,7 @@
   margin-top: var(--space-3);
   padding: var(--space-2) var(--space-3);
   border-left: 3px solid var(--accent);
-  background: var(--surface);
+  background: var(--card);
 }
 
 .bar {
@@ -473,7 +473,7 @@
   font: inherit;
   padding: 0.6rem 0.75rem;
   color: var(--ink);
-  background: var(--surface);
+  background: var(--card);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
 }
@@ -503,7 +503,7 @@
   margin-top: var(--space-3);
   padding: var(--space-3);
   border-left: 3px solid var(--accent);
-  background: var(--surface);
+  background: var(--card);
 }
 
 .numbers {
@@ -558,7 +558,7 @@
   padding: var(--space-4);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: var(--card);
 }
 .stats > div:first-child {
   background: linear-gradient(150deg, color-mix(in srgb, var(--primary) 32%, var(--surface)), var(--surface) 72%);
@@ -570,11 +570,11 @@
   padding: var(--space-4);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  background: var(--surface);
+  background: var(--card);
 }
 .section h2 { color: var(--ink); border-bottom: 0; padding-bottom: 0; }
 .week { border-radius: 12px; }
-.weekCrunch { border-color: #a855f7; }
+
 .table tbody tr:hover > td { background: color-mix(in srgb, var(--primary) 8%, transparent); }
 .chartTrack, .barFill, .chartUsed, .chartOver { rx: 4px; }
 .ask input {
@@ -588,3 +588,34 @@
 @media (max-width: 640px) {
   .section { padding: var(--space-3); }
 }
+
+/* ---------- Upcoming deadlines ---------- */
+.deadlines { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: 8px; }
+.deadline {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+  background: #08080a;
+}
+.deadlineSoon { border-color: #166534; }
+.deadlineDate {
+  font-family: var(--font-head);
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.deadlineSoon .deadlineDate { color: var(--dot); }
+.deadlineWhat { display: flex; flex-direction: column; min-width: 0; }
+.deadlineClients { color: var(--muted); font-size: 0.85rem; }
+.deadlineLeft { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; font-size: 0.9rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.deadlineUnconfirmed { font-size: 0.7rem; color: var(--badge-fg); }
+@media (max-width: 520px) {
+  .deadline { grid-template-columns: 4rem minmax(0, 1fr); }
+  .deadlineLeft { grid-column: 2; align-items: flex-start; flex-direction: row; gap: 8px; }
+}
+
+.stats { margin-bottom: 0; }

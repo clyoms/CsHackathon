@@ -1,13 +1,29 @@
 import type { Benchmark, CostPanel as Cost, TeamAdoption } from "./data";
 import { Num, int, pct } from "./Num";
 import styles from "./ai-lead.module.css";
+import { Insight } from "@/components/site/Insight";
 
-export function Panel({ title, explain, children }: { title: string; explain: string; children: React.ReactNode }) {
+export function Panel({
+  title,
+  explain,
+  tells,
+  next,
+  children,
+}: {
+  title: string;
+  explain: string;
+  /** What the numbers say, in one sentence. */
+  tells?: React.ReactNode;
+  /** The one thing to do about it. */
+  next?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <section className={styles.panel} aria-label={title}>
       <h2>{title}</h2>
       <p className={styles.explain}>{explain}</p>
       {children}
+      {tells && next ? <Insight tells={tells} next={next} /> : null}
     </section>
   );
 }
@@ -50,7 +66,7 @@ export function BenchmarkBars({ frameShare, benchmarks }: { frameShare: number; 
   return (
     <div>
       <div className={styles.barRow}>
-        <span>Frame: staff who used AI this period</span>
+        <span>Your firm: staff who used AI this period</span>
         <span className={styles.num}>
           <Num>{pct(frameShare)}</Num>
         </span>
@@ -76,26 +92,36 @@ export function BenchmarkBars({ frameShare, benchmarks }: { frameShare: number; 
 }
 
 export function CostStats({ cost }: { cost: Cost }) {
+  const rows = [
+    {
+      label: "Average tokens per task",
+      value: cost.tokensPerFinishedTask === null ? "n/a" : int(cost.tokensPerFinishedTask),
+      note: "How much AI text one task uses.",
+    },
+    {
+      label: "Average cost per task",
+      value: cost.eurosPerFinishedTask === null ? "Not priced" : `€${cost.eurosPerFinishedTask.toFixed(3)}`,
+      note: cost.eurosPerFinishedTask === null ? "Add the model price to show euros." : "At the model's list price.",
+    },
+    {
+      label: "Heaviest 10% of tasks",
+      value: cost.topTenShare === null ? "n/a" : pct(cost.topTenShare),
+      note: `of all ${cost.measuredIn} used.`,
+    },
+  ];
   return (
-    <div className={styles.stats}>
-      <div className={styles.stat}>
-        <div className={styles.statValue}>
-          <Num>{cost.tokensPerFinishedTask === null ? "n/a" : int(cost.tokensPerFinishedTask)}</Num>
-        </div>
-        <div className={styles.statLabel}>Tokens per finished task</div>
-      </div>
-      <div className={styles.stat}>
-        <div className={styles.statValue}>
-          {cost.eurosPerFinishedTask === null ? "Price not set" : <Num>{`€${cost.eurosPerFinishedTask.toFixed(3)}`}</Num>}
-        </div>
-        <div className={styles.statLabel}>Euros per finished task</div>
-      </div>
-      <div className={styles.stat}>
-        <div className={styles.statValue}>
-          <Num>{cost.topTenShare === null ? "n/a" : pct(cost.topTenShare)}</Num>
-        </div>
-        <div className={styles.statLabel}>Share of {cost.measuredIn} spent on the top 10% of tasks</div>
-      </div>
-    </div>
+    <ul className={styles.costList}>
+      {rows.map((r) => (
+        <li key={r.label} className={styles.costRow}>
+          <span className={styles.costText}>
+            <span>{r.label}</span>
+            <span className={styles.costNote}>{r.note}</span>
+          </span>
+          <span className={styles.costValue}>
+            <Num>{r.value}</Num>
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }

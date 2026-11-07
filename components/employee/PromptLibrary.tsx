@@ -20,7 +20,7 @@ export function PromptLibrary({ prompts, onPick }: PromptLibraryProps) {
             <span className={styles.promptText}>{p.text}</span>
             <button
               type="button"
-              className={styles.secondary}
+              className={styles.promptButton}
               aria-label={`Try this prompt: ${p.label}`}
               onClick={() => onPick(p)}
             >

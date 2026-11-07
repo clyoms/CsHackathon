@@ -1,4 +1,4 @@
-// "Who are you today?": three role cards, each one link with its live number.
+// The admin overview's view cards, each one link with its live number.
 import Link from "next/link";
 import type { RoleNumber } from "./numbers";
 import styles from "./home.module.css";
@@ -10,8 +10,6 @@ export interface Role {
   role: string;
   promise: string;
   number: RoleNumber | null;
-  /** Colour family for the avatar and the number: violet, orchid or indigo. */
-  tone: "violet" | "orchid" | "indigo";
 }
 
 function Arrow() {
@@ -28,7 +26,7 @@ export function RolePicker({ roles }: { roles: Role[] }) {
     <ol className={styles.roles}>
       {roles.map((r) => (
         <li key={r.href}>
-          <Link href={r.href} className={`${styles.card} ${styles[r.tone]}`}>
+          <Link href={r.href} className={styles.card}>
             <span className={styles.head}>
               <span className={styles.avatar} aria-hidden="true">
                 {r.monogram}

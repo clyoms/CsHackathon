@@ -1,6 +1,5 @@
 "use client";
 // The skills library: every catalogue item as a ledger line, with Copy (the text) and Export (a Claude skill file).
-import Link from "next/link";
 import { useState } from "react";
 import type { CatalogueItem } from "@/contract/types";
 import type { Risk } from "@/catalogue";
@@ -34,11 +33,11 @@ export function SkillLibrary({ items }: { items: LibraryItem[] }) {
   return (
     <main className={styles.page}>
       <p className={styles.kicker}>
-        <Link href="/">Frame Next</Link>
+        Library
       </p>
       <h1 className={styles.title}>Skills library</h1>
       <p className={styles.lead}>
-        Every skill, hook and plugin Frame Next can recommend. Copy the text into Claude, or export it as a skill file.
+        Every skill, hook and plugin Handoff can recommend. Copy the text into Claude, or export it as a skill file.
         Check the output every time: each item says how.
       </p>
 

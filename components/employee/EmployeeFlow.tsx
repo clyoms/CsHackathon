@@ -1,5 +1,5 @@
 "use client";
-// Aoife's page: ask a question, answer Athena's questions, get one thing to hand to AI.
+// The employee page: ask a question, answer Athena's questions, get one thing to hand to AI.
 // Questions come from POST /api/athena and the written answer from POST /api/ask.
 // The engine's recommendation for each possible client answer arrives as props from the server.
 import Link from "next/link";
@@ -187,11 +187,8 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
 
   return (
     <main className={styles.page}>
-      <p className={styles.back}>
-        <Link href="/">← Who are you today?</Link>
-      </p>
       <header className={styles.header}>
-        <p className={styles.hello}>Hi {staff.name}</p>
+        <p className={styles.hello}>Employee view</p>
         <h1>What should you hand to AI this week?</h1>
       </header>
 
@@ -250,7 +247,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
 
       {step === "answer" && outcome?.kind === "decline" && (
         <p className={styles.card} aria-live="polite">
-          {outcome.message ?? "Frame Next helps with work tasks."}
+          {outcome.message ?? "Handoff helps with work tasks."}
         </p>
       )}
 

@@ -200,7 +200,7 @@ describe("employee acceptance prompts with no key (T-14)", () => {
   it("declines the weather in one line with no numbers", async () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
     const a = await (await athenaPOST(post({ staffId: "s-aoife", request: "What's the weather in Cork?" }))).json();
-    expect(a.outcome).toEqual({ kind: "decline", message: "Frame Next helps with work tasks." });
+    expect(a.outcome).toEqual({ kind: "decline", message: "Handoff helps with work tasks." });
     expect(a.result.questions).toHaveLength(0);
   });
 
