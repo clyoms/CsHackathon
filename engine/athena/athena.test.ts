@@ -137,6 +137,16 @@ describe("athena triage with no key", () => {
     });
     expect(extractContext("Draft the VAT reply by Friday").namedDate).toBe("by Friday");
   });
+
+  it("reads a request that starts with 'Email <client>' as a client email, even when an answer names the CT1", () => {
+    const c = extractContext("Email Quinn Tech about the documents they still owe us, I need it sent by tomorrow", [
+      "Everything still missing for the CT1 return",
+    ]);
+    expect(c.task).toBe("client query reply");
+    // Other email tasks keep their own skill.
+    expect(extractContext("My inbox is a mess, which unread emails need a reply first?").task).toBe("inbox triage");
+    expect(extractContext("What did I promise clients in my sent emails over the last month?").task).toBe("commitment tracker");
+  });
 });
 
 describe("athena triage with a stubbed Claude client", () => {

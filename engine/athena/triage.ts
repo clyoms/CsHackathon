@@ -92,7 +92,8 @@ const TASKS: [RegExp, string][] = [
   [/\bct1\b|\bcorporation tax\b/i, "CT1 return"],
   [/\bvat\b/i, "VAT return"],
   [/\bform 11\b|\btax return\b/i, "tax return"],
-  [/\bclient (query|email)|\breply\b|\bquery\b/i, "client query reply"],
+  // "Email Quinn Tech about ..." is a client email, even when an answer later names the CT1.
+  [/\bclient (query|email)|\breply\b|\bquery\b|^\s*(e-?mail|write to|chase)\b/i, "client query reply"],
   [/\bmeeting|\bminutes\b/i, "meeting notes"],
   [/\bworking paper/i, "working-paper summary"],
   [/\bpayroll\b/i, "payroll"],
