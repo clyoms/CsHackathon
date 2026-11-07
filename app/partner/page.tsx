@@ -3,8 +3,8 @@ import Link from "next/link";
 import { AskBox } from "@/components/partner/AskBox";
 import { CrunchCalendar } from "@/components/partner/CrunchCalendar";
 import { EngagementTable } from "@/components/partner/EngagementTable";
+import { getWorld } from "@/app/api/ask/world";
 import { buildPartnerView } from "@/components/partner/data";
-import { partnerFixtureWorld } from "@/components/partner/fixtures";
 import styles from "@/components/partner/partner.module.css";
 import { HOURS_BACK_ASSUMPTION } from "@/engine/productivity";
 
@@ -12,12 +12,9 @@ export const metadata: Metadata = { title: "Partner view · Frame Next" };
 // The calendar starts from today, so render on each request rather than at build time.
 export const dynamic = "force-dynamic";
 
-function today(): string {
-  return process.env.FRAME_TODAY ?? new Date().toISOString().slice(0, 10);
-}
-
 export default function PartnerPage() {
-  const view = buildPartnerView(partnerFixtureWorld(today()));
+  // Real data: data/frame engagements and timesheets, data/public scores and deadlines, catalogue.
+  const view = buildPartnerView(getWorld());
 
   return (
     <main className={styles.page}>
