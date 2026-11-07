@@ -2,6 +2,7 @@
 // Aoife's page: ask a question, answer Athena's questions, get one thing to hand to AI.
 // Questions come from POST /api/athena and the written answer from POST /api/ask.
 // The engine's recommendation for each possible client answer arrives as props from the server.
+import Link from "next/link";
 import { useEffect, useState, type FormEvent } from "react";
 import type { AskResponse, AthenaAnswer, AthenaResponse } from "@/contract/api";
 import type { AthenaQuestion, LiteracyLogEntry, MeterReading, Recommendation, Staff } from "@/contract/types";
@@ -179,6 +180,9 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
 
   return (
     <main className={styles.page}>
+      <p className={styles.back}>
+        <Link href="/">← Who are you today?</Link>
+      </p>
       <header className={styles.header}>
         <p className={styles.hello}>Hi {staff.name}</p>
         <h1>What should you hand to AI this week?</h1>
