@@ -53,6 +53,9 @@ const WORK_WORDS = [
   "financial", "statement", "transaction", "classif", "categor", "bookkeep", "working paper",
   "email", "letter", "reply", "query", "report", "spreadsheet", "excel", "memo", "meeting", "minutes",
   "checklist", "summary", "summar", "draft", "review", "fee", "hours", "timesheet",
+  // Words for the inbox, commitment, meeting, status, process and messaging skills.
+  "inbox", "unread", "commitment", "promis", "transcript", "status report", "process", "workflow",
+  "messaging", "positioning", "pitch", "proposal", "seminar", "briefing", "partner",
 ];
 
 const HELP_ONLY = /^\s*(help|help me|hi|hello|hey|hiya|start|\?+|what can you do\??|what is this\??)\s*[.!?]*\s*$/i;
@@ -77,6 +80,13 @@ export function topicOffline(request: string, engagements: Engagement[] = []): T
 // ---------- Context extraction ----------
 
 const TASKS: [RegExp, string][] = [
+  // The more specific skills come first, so "summarise this meeting transcript" is not read as plain meeting notes.
+  [/\b(inbox|unread (e-?mails?|mail)|triage)\b/i, "inbox triage"],
+  [/\b(commitments?|promised|promises)\b|\bwhat (did|have) i (commit|promise)/i, "commitment tracker"],
+  [/\btranscript\b|\bsummar(y|ise|ize) (the |this |our |my )?meeting\b|\bmeeting summary\b/i, "meeting summary"],
+  [/\bstatus report\b|\bmonthly status\b|\bmonthly report\b/i, "engagement status report"],
+  [/\b(automate|automation|ai opportunit|map (my|our|the) process|process map)/i, "AI opportunity finder"],
+  [/\b(messaging|positioning|value proposition|pitch|seminar|briefing event)\b/i, "messaging framework"],
   [/\breconcil/i, "reconciliation"],
   [/\b(classif|categori[sz]|cod(e|ing) (the )?(bank )?transactions)/i, "transaction classification"],
   [/\bct1\b|\bcorporation tax\b/i, "CT1 return"],

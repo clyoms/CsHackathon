@@ -8,7 +8,7 @@ import type { AthenaQuestion, LiteracyLogEntry, MeterReading, Recommendation, St
 import { recordAdopted } from "@/engine/literacy";
 import type { AthenaOutcome, Usage } from "@/engine/contract";
 import { ALL_CLIENTS, type Choices } from "./choices";
-import { UPLOAD_HINT, downloadSkill } from "./exportSkill";
+import { UPLOAD_HINT, copyText, downloadSkill } from "./exportSkill";
 import { SourceLink, SyntheticBadge } from "./Tags";
 import styles from "./employee.module.css";
 
@@ -159,24 +159,7 @@ export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
 
   async function copySkill() {
     if (!recommendation) return;
-    const text = recommendation.item.body;
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied("done");
-      return;
-    } catch {
-      // Some browsers block the clipboard API. Fall back to a hidden text box and the copy command.
-    }
-    const box = document.createElement("textarea");
-    box.value = text;
-    box.setAttribute("readonly", "");
-    box.style.position = "fixed";
-    box.style.opacity = "0";
-    document.body.appendChild(box);
-    box.select();
-    const ok = document.execCommand("copy");
-    box.remove();
-    setCopied(ok ? "done" : "failed");
+    setCopied((await copyText(recommendation.item.body)) ? "done" : "failed");
   }
 
   function exportSkill() {
@@ -328,18 +311,31 @@ function AnswerCard({ recommendation, cardDeadline, written, today, copied, expo
       <p className={styles.summary}>{item.plainSummary}</p>
 
       <dl className={styles.figures}>
-        <div>
-          <dt>Time back</dt>
-          <dd>
-            About {recommendation.hoursBackEstimate} hours {recommendation.synthetic && <SyntheticBadge />}
-          </dd>
-        </div>
-        <div>
-          <dt>Worth</dt>
-          <dd>
-            {euro.format(recommendation.eurosBack)} {recommendation.synthetic && <SyntheticBadge />}
-          </dd>
-        </div>
+        {recommendation.hoursBackEstimate > 0 ? (
+          <>
+            <div>
+              <dt>Time back</dt>
+              <dd>
+                About {recommendation.hoursBackEstimate} hours {recommendation.synthetic && <SyntheticBadge />}
+              </dd>
+            </div>
+            <div>
+              <dt>Worth</dt>
+              <dd>
+                {euro.format(recommendation.eurosBack)} {recommendation.synthetic && <SyntheticBadge />}
+              </dd>
+            </div>
+          </>
+        ) : (
+          // No logged hours on the tasks this item covers, or those tasks score 0 in the Economic Index:
+          // say so instead of showing "0 hours · €0".
+          <div>
+            <dt>Time back</dt>
+            <dd className={styles.small}>
+              Not estimated: none of your logged hours are on work that AI is measured to help with for this {item.kind}.
+            </dd>
+          </div>
+        )}
         <div>
           <dt>{deadline.label}</dt>
           <dd>
