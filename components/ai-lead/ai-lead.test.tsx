@@ -2,13 +2,13 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { toCsv } from "@/engine/literacy";
 import { loadCsoAdoption, loadEurostatAdoption } from "@/data/public";
-import HarryPage from "@/app/harry/page";
+import AiLeadPage from "@/app/ai-lead/page";
 import { adoptionByTeam, benchmarks, costPanel, frameActiveShare } from "./data";
-import { harryFixtureWorld } from "./fixtures";
+import { aiLeadFixtureWorld } from "./fixtures";
 
-const world = harryFixtureWorld();
+const world = aiLeadFixtureWorld();
 
-describe("harry view data", () => {
+describe("AI Lead view data", () => {
   it("counts active users, prompts and verified rate per team", () => {
     const tax = adoptionByTeam(world.staff, world.usage).find((t) => t.team === "Tax")!;
     // Tax: Aoife (42 + 51 + 38 prompts) and Niamh (12 + 14); Conor has none.
@@ -61,15 +61,16 @@ describe("harry view data", () => {
   });
 });
 
-describe("harry page", () => {
+describe("AI Lead page", () => {
   it("renders all four panels, the export button and the question box", () => {
-    const html = renderToStaticMarkup(<HarryPage />);
+    const html = renderToStaticMarkup(<AiLeadPage />);
     for (const title of ["Adoption by team", "Frame against Ireland and the EU", "Cost per task", "AI literacy log"]) {
       expect(html).toContain(`aria-label="${title}"`);
     }
     expect(html).toContain("Export CSV");
     expect(html).toContain("Which teams improve when they adopt a skill?");
-    expect(html).toContain("synthetic");
+    expect(html).toContain("AI Lead view");
+    expect(html).not.toMatch(/synthetic/i);
     expect(html).toContain("Source: https://");
   });
 });

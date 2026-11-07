@@ -1,8 +1,8 @@
-// Plain SVG charts for Harry's page. No chart library. Each bar is focusable, and hovering or
+// Plain SVG charts for the AI Lead page. No chart library. Each bar is focusable, and hovering or
 // focusing it shows its detail line, so the numbers work with a mouse, a keyboard or a screen reader.
 import type { Benchmark, TeamAdoption } from "./data";
 import { pct } from "./Num";
-import styles from "./harry.module.css";
+import styles from "./ai-lead.module.css";
 
 const ROW = 46;
 const LABEL_W = 132;
@@ -27,7 +27,7 @@ export function CheckedChart({ teams }: { teams: TeamAdoption[] }) {
           const low = rate < 0.5;
           return (
             <g key={t.team} className={styles.bar} tabIndex={0} aria-label={`${t.team}: ${pct(rate)} checked, ${t.activeUsers} of ${t.staff} people use AI, ${t.prompts} prompts`}>
-              <title>{`${t.team}: ${pct(rate)} of AI output checked (synthetic usage records)`}</title>
+              <title>{`${t.team}: ${pct(rate)} of AI output checked (usage records)`}</title>
               <line x1={0} x2={W} y1={y + ROW - 4} y2={y + ROW - 4} className={styles.rule} />
               <text x={0} y={y + 20} className={styles.label}>
                 {t.team}
@@ -45,7 +45,7 @@ export function CheckedChart({ teams }: { teams: TeamAdoption[] }) {
         })}
       </svg>
       <figcaption className={styles.caption}>
-        Accent bars sit below half checked. Hover or tab to a team for its detail. <span className={styles.badge}>synthetic</span>
+        Accent bars sit below half checked. Hover or tab to a team for its detail.
       </figcaption>
     </figure>
   );
@@ -67,7 +67,7 @@ export function BenchmarkChart({ frameShare, benchmarks }: { frameShare: number;
           const w = Math.max(2, (BAR_W * r.percent) / max);
           return (
             <g key={r.label} className={styles.bar} tabIndex={0} aria-label={`${r.label}, ${r.year}: ${r.percent}%`}>
-              <title>{r.source ? `Source: ${r.source}` : "Synthetic Frame data"}</title>
+              <title>{r.source ? `Source: ${r.source}` : "Frame data"}</title>
               <line x1={0} x2={W} y1={y + ROW - 4} y2={y + ROW - 4} className={styles.rule} />
               <text x={0} y={y + 20} className={styles.label}>
                 {r.label.length > 20 ? `${r.label.slice(0, 19)}…` : r.label}
@@ -78,7 +78,7 @@ export function BenchmarkChart({ frameShare, benchmarks }: { frameShare: number;
               </text>
               <text x={LABEL_W} y={y + 38} className={styles.detail}>
                 {r.frame
-                  ? "Staff who used AI this period (synthetic)"
+                  ? "Staff who used AI this period"
                   : // Short form so it fits a phone: the source name in brackets at the end of the label, and the year.
                     `${r.label.match(/\(([^)]+)\)\s*$/)?.[1] ?? r.label.slice(0, 20)} ${r.year} · hover for source`}
               </text>

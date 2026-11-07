@@ -54,7 +54,7 @@ describe("engagement table", () => {
     expect(html.indexOf("Walsh Holdings")).toBeLessThan(html.indexOf("Murphy Engineering Ltd"));
     expect(html.indexOf("Murphy Engineering Ltd")).toBeLessThan(html.indexOf("Kelly Family"));
     expect(html).not.toContain("Task breakdown");
-    expect(html).toContain("synthetic");
+    expect(html).not.toMatch(/synthetic/i);
   });
 
   it("shows the task breakdown and recommended item for an opened row", () => {

@@ -109,6 +109,8 @@ export const CatalogueItem = z.object({
   body: z.string().min(1),
   /** How to check the output. Empty string when the item has none. */
   verifyStep: z.string(),
+  /** One plain sentence on what the item saves and for whom. Empty string when the item has none. */
+  howThisHelps: z.string(),
 });
 export type CatalogueItem = z.infer<typeof CatalogueItem>;
 
@@ -158,7 +160,8 @@ export type MeterReading = z.infer<typeof MeterReading>;
 export const LiteracyLogEntry = z.object({
   staffId: z.string().min(1),
   date: IsoDate,
-  measure: z.enum(["shown", "adopted"]),
+  /** "lesson": a finished 4D literacy lesson. itemId is then the lesson id and adopted is true. */
+  measure: z.enum(["shown", "adopted", "lesson"]),
   itemId: z.string().min(1),
   adopted: z.boolean(),
 });

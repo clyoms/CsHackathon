@@ -42,14 +42,7 @@ export function RolePicker({ roles }: { roles: Role[] }) {
             {r.number && (
               <span className={styles.figure}>
                 <span className={`${styles.value} total`}>{r.number.value}</span>
-                <span className={styles.caption}>
-                  {r.number.caption}{" "}
-                  {r.number.synthetic && (
-                    <span className={styles.badge} title="Made-up number for the demo, from synthetic Frame data">
-                      synthetic
-                    </span>
-                  )}
-                </span>
+                <span className={styles.caption}>{r.number.caption}</span>
               </span>
             )}
           </Link>

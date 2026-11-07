@@ -10,7 +10,7 @@ import { recordAdopted } from "@/engine/literacy";
 import type { AthenaOutcome, Usage } from "@/engine/contract";
 import { ALL_CLIENTS, namesClient, type Choices } from "./choices";
 import { UPLOAD_HINT, copyText, downloadSkill } from "./exportSkill";
-import { SourceLink, SyntheticBadge } from "./Tags";
+import { SourceLink } from "./Tags";
 import styles from "./employee.module.css";
 
 export interface EmployeeFlowProps {
@@ -320,13 +320,13 @@ function AnswerCard({ recommendation, cardDeadline, written, today, copied, expo
             <div>
               <dt>Time back</dt>
               <dd>
-                About {recommendation.hoursBackEstimate} hours {recommendation.synthetic && <SyntheticBadge />}
+                About {recommendation.hoursBackEstimate} hours
               </dd>
             </div>
             <div>
               <dt>Worth</dt>
               <dd>
-                {euro.format(recommendation.eurosBack)} {recommendation.synthetic && <SyntheticBadge />}
+                {euro.format(recommendation.eurosBack)}
               </dd>
             </div>
           </>

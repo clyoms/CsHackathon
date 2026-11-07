@@ -93,6 +93,7 @@ const ct1Checklist: CatalogueItem = {
   targetsOnetTasks: [TASKS.checkForms, TASKS.prepReturns],
   body: "Check each CT1 box against the accounts and list every difference.",
   verifyStep: "Trace the three largest differences to the accounts yourself.",
+  howThisHelps: "",
 };
 
 const auditSummary: CatalogueItem = {
@@ -103,6 +104,7 @@ const auditSummary: CatalogueItem = {
   targetsOnetTasks: [TASKS.examine],
   body: "Summarise the working papers for one audit area into one page with cross-references.",
   verifyStep: "Open three cross-references and confirm they point to the right paper.",
+  howThisHelps: "",
 };
 
 export function partnerFixtureWorld(today = "2026-11-07"): PartnerWorld {

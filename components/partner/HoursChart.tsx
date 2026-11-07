@@ -23,7 +23,7 @@ export function HoursChart({ rows }: { rows: PartnerRow[] }) {
             <li key={r.engagementId} className={styles.chartRow}>
               <div className={styles.chartLabel}>
                 <span className={styles.chartClient}>{r.client}</span>
-                <Num synthetic={r.synthetic} detail={detail}>
+                <Num detail={detail}>
                   {hours(r.actualHours)} / {hours(r.budgetHours)}
                 </Num>
               </div>
@@ -48,7 +48,7 @@ export function HoursChart({ rows }: { rows: PartnerRow[] }) {
       </ul>
       <figcaption className={styles.explain}>
         <span className={styles.keyUsed} aria-hidden /> hours inside budget <span className={styles.keyOver} aria-hidden /> hours over budget{" "}
-        <span className={styles.keyBudget} aria-hidden /> budget line. All hours are synthetic Frame data.
+        <span className={styles.keyBudget} aria-hidden /> budget line. All hours are Frame data.
       </figcaption>
     </figure>
   );

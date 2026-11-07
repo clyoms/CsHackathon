@@ -109,11 +109,12 @@ describe("ask with a stubbed Claude client", () => {
   const world = fixtureWorld("2026-11-07");
 
   it("returns Claude's answer and meters its usage", async () => {
-    const text = "Start with the transaction classification skill. It could give you about 1 hours back (synthetic Frame data).";
+    const text = "Start with the transaction classification skill. It could give you about 1 hours back (Frame data).";
     const create = vi.fn().mockResolvedValue({ stop_reason: "end_turn", content: [{ type: "text", text }], usage: sample.usage });
     const body = await handleAsk(req, { world, client: { messages: { create } } as never });
     expect(create.mock.calls[0][0].model).toBe("claude-sonnet-5-5");
     expect(create.mock.calls[0][0].messages[0].content).toContain("Hours back before the deadline: 1 hours");
+    expect(create.mock.calls[0][0].messages[0].content).toContain("View: Employee");
     expect(body).toMatchObject({ answer: text, fallback: false });
     expect(body.meter).toMatchObject({ tokensIn: 1612, tokensOut: 96, finished: true });
   });
@@ -227,6 +228,6 @@ describe("sourceName", () => {
   it("names known sources", () => {
     expect(sourceName("https://huggingface.co/datasets/Anthropic/EconomicIndex/resolve/main/x.csv")).toBe("Anthropic Economic Index");
     expect(sourceName("https://www.irs.gov/filing")).toBe("IRS");
-    expect(sourceName(undefined)).toBe("synthetic Frame data");
+    expect(sourceName(undefined)).toBe("Frame data");
   });
 });

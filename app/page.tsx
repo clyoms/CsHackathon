@@ -26,12 +26,12 @@ export default function Home() {
       number: n.partner,
     },
     {
-      href: "/harry",
-      monogram: "H",
-      name: "Harry",
+      href: "/ai-lead",
+      monogram: "AI",
+      name: "AI Lead",
       role: "AI and Automation Analyst",
       promise: "Track how the firm uses AI and what it costs.",
-      number: n.harry,
+      number: n.aiLead,
     },
   ];
 
@@ -44,7 +44,6 @@ export default function Home() {
       <p className={styles.library}>
         <Link href="/skills">Browse the skills library</Link>: every skill, hook and plugin, ready to copy or export.
       </p>
-      <p className={styles.foot}>Numbers marked synthetic come from made-up Frame data for the demo.</p>
     </main>
   );
 }

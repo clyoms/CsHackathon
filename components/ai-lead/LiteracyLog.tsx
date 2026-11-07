@@ -2,7 +2,7 @@
 
 import type { LiteracyLogEntry } from "@/contract/types";
 import { toCsv } from "@/engine/literacy";
-import styles from "./harry.module.css";
+import styles from "./ai-lead.module.css";
 
 export const CSV_FILE_NAME = "frame-ai-literacy-log.csv";
 

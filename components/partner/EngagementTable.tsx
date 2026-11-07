@@ -47,11 +47,10 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                     <div className={styles.explain}>{r.type}</div>
                   </td>
                   <td className={styles.num} data-label="Fee">
-                    <Num synthetic={r.synthetic}>{euro(r.fee)}</Num>
+                    <Num>{euro(r.fee)}</Num>
                   </td>
                   <td className={styles.num} data-label="Budget vs actual">
                     <Num
-                      synthetic={r.synthetic}
                       detail={`${hours(r.budgetHours)} budgeted, ${hours(r.actualHours)} logged: ${
                         over ? `${hours(r.varianceHours)} over` : `${hours(-r.varianceHours)} left`
                       }.`}
@@ -64,7 +63,6 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                   </td>
                   <td className={styles.num} data-label="Effective rate">
                     <Num
-                      synthetic={r.synthetic}
                       detail={
                         r.effectiveRate === null
                           ? "No hours logged yet."
@@ -76,7 +74,6 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                   </td>
                   <td className={`${styles.num} ${r.moneyLost > 0 ? styles.loss : ""}`} data-label="Money lost">
                     <Num
-                      synthetic={r.synthetic}
                       detail={
                         r.moneyLost > 0
                           ? `${hours(r.varianceHours)} over budget × ${euro(r.budgetRate)}/h budgeted rate.`
@@ -90,7 +87,7 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                     {r.topTask ? (
                       <>
                         <span title={r.topTask.onetTask}>{short(r.topTask.onetTask, 60)}</span>{" "}
-                        <Num synthetic>{hours(r.topTask.aiReadyHours)}</Num>
+                        <Num>{hours(r.topTask.aiReadyHours)}</Num>
                       </>
                     ) : (
                       <span className={styles.explain}>None scored</span>
@@ -117,7 +114,7 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                             <tr key={t.onetTask}>
                               <td title={t.onetTask}>{short(t.onetTask)}</td>
                               <td className={styles.num} data-label="Hours">
-                                <Num synthetic>{hours(t.hours)}</Num>
+                                <Num>{hours(t.hours)}</Num>
                               </td>
                               <td className={styles.num} data-label="AI usage share">
                                 {t.penetration === null ? (
@@ -127,13 +124,13 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                                 )}
                               </td>
                               <td className={styles.num} data-label="AI-ready hours">
-                                <Num synthetic>{hours(t.aiReadyHours)}</Num>
+                                <Num>{hours(t.aiReadyHours)}</Num>
                               </td>
                               <td className={styles.num} data-label="Hours back">
-                                <Num synthetic>{hours(t.hoursBack)}</Num>
+                                <Num>{hours(t.hoursBack)}</Num>
                               </td>
                               <td className={styles.num} data-label="Euros back">
-                                <Num synthetic>{euro(t.eurosBack)}</Num>
+                                <Num>{euro(t.eurosBack)}</Num>
                               </td>
                             </tr>
                           ))}
@@ -142,7 +139,7 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                       {r.recommended ? (
                         <div className={styles.rec}>
                           <strong>Recommended for the team:</strong> {r.recommended.title} ({r.recommended.kind}).{" "}
-                          {r.recommended.plainSummary} It covers <Num synthetic>{hours(r.recommended.aiReadyHours)}</Num> of
+                          {r.recommended.plainSummary} It covers <Num>{hours(r.recommended.aiReadyHours)}</Num> of
                           AI-ready work on this job.
                         </div>
                       ) : (

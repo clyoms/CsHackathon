@@ -1,4 +1,4 @@
-// Builds the numbers on Harry's page. Pure: no I/O.
+// Builds the numbers on the AI Lead page. Pure: no I/O.
 import type { MeterReading, Staff, UsageRecord } from "@/contract/types";
 import type { CsoAdoption, EurostatAdoption } from "@/data/public";
 

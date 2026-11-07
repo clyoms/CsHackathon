@@ -37,6 +37,7 @@ const reconSkill: CatalogueItem = {
   targetsOnetTasks: [RECONCILE],
   body: "Match each bank line to a ledger line and list the differences.",
   verifyStep: "",
+  howThisHelps: "",
 };
 const memoSkill: CatalogueItem = {
   id: "test-item-b",
@@ -46,6 +47,7 @@ const memoSkill: CatalogueItem = {
   targetsOnetTasks: [MEMO],
   body: "Summarise this working paper in five bullets.",
   verifyStep: "",
+  howThisHelps: "",
 };
 const checkedClassify: CatalogueItem = { ...catalogueItemFixture }; // has a verify step
 

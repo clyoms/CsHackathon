@@ -1,4 +1,4 @@
-// Adapters from the real world to Harry's panels. Server only: engine/meter reads files.
+// Adapters from the real world to the AI Lead panels. Server only: engine/meter reads files.
 import type { LiteracyLogEntry, MeterReading, Recommendation, UsageRecord } from "@/contract/types";
 import { recordShown, type LiteracyLog } from "@/engine/literacy";
 import { euros, type EuroPrice } from "@/engine/meter";

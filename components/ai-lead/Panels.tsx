@@ -1,6 +1,6 @@
 import type { Benchmark, CostPanel as Cost, TeamAdoption } from "./data";
 import { Num, int, pct } from "./Num";
-import styles from "./harry.module.css";
+import styles from "./ai-lead.module.css";
 
 export function Panel({ title, explain, children }: { title: string; explain: string; children: React.ReactNode }) {
   return (
@@ -28,15 +28,15 @@ export function AdoptionTable({ teams }: { teams: TeamAdoption[] }) {
           <tr key={t.team}>
             <td data-label="Team">{t.team}</td>
             <td className={styles.num} data-label="Active users">
-              <Num synthetic>
+              <Num>
                 {t.activeUsers} of {t.staff}
               </Num>
             </td>
             <td className={styles.num} data-label="Prompts">
-              <Num synthetic>{int(t.prompts)}</Num>
+              <Num>{int(t.prompts)}</Num>
             </td>
             <td className={styles.num} data-label="Checked">
-              <Num synthetic>{t.verifiedRate === null ? "n/a" : pct(t.verifiedRate)}</Num>
+              <Num>{t.verifiedRate === null ? "n/a" : pct(t.verifiedRate)}</Num>
             </td>
           </tr>
         ))}
@@ -52,7 +52,7 @@ export function BenchmarkBars({ frameShare, benchmarks }: { frameShare: number; 
       <div className={styles.barRow}>
         <span>Frame: staff who used AI this period</span>
         <span className={styles.num}>
-          <Num synthetic>{pct(frameShare)}</Num>
+          <Num>{pct(frameShare)}</Num>
         </span>
         <div className={styles.barTrack}>
           <div className={`${styles.barFill} ${styles.barFrame}`} style={{ width: `${(frameShare * 100 * 100) / max}%` }} />
@@ -80,19 +80,19 @@ export function CostStats({ cost }: { cost: Cost }) {
     <div className={styles.stats}>
       <div className={styles.stat}>
         <div className={styles.statValue}>
-          <Num synthetic>{cost.tokensPerFinishedTask === null ? "n/a" : int(cost.tokensPerFinishedTask)}</Num>
+          <Num>{cost.tokensPerFinishedTask === null ? "n/a" : int(cost.tokensPerFinishedTask)}</Num>
         </div>
         <div className={styles.statLabel}>Tokens per finished task</div>
       </div>
       <div className={styles.stat}>
         <div className={styles.statValue}>
-          {cost.eurosPerFinishedTask === null ? "Price not set" : <Num synthetic>{`€${cost.eurosPerFinishedTask.toFixed(3)}`}</Num>}
+          {cost.eurosPerFinishedTask === null ? "Price not set" : <Num>{`€${cost.eurosPerFinishedTask.toFixed(3)}`}</Num>}
         </div>
         <div className={styles.statLabel}>Euros per finished task</div>
       </div>
       <div className={styles.stat}>
         <div className={styles.statValue}>
-          <Num synthetic>{cost.topTenShare === null ? "n/a" : pct(cost.topTenShare)}</Num>
+          <Num>{cost.topTenShare === null ? "n/a" : pct(cost.topTenShare)}</Num>
         </div>
         <div className={styles.statLabel}>Share of {cost.measuredIn} spent on the top 10% of tasks</div>
       </div>
