@@ -1,5 +1,5 @@
 /* Partner page, in the ledger style of docs/design/brief.md. Colours come only from the tokens in
-   app/globals.css, so light and dark mode both follow. Purple stays on the synthetic badge alone. */
+   app/globals.css, so light and dark mode both follow. The synthetic badge is amber. */
 
 .page {
   max-width: var(--measure);
@@ -72,7 +72,8 @@
 
 /* The accountant's double rule under a total. */
 .total {
-  border-bottom: 3px double var(--accent);
+  border-bottom: 0;
+
 }
 
 /* ---------- Sections ---------- */
@@ -488,8 +489,8 @@
   padding: 0.6rem 1.1rem;
   border: 0;
   border-radius: var(--radius);
-  background: var(--accent);
-  color: var(--on-accent);
+  background: var(--primary);
+  color: var(--on-primary);
   cursor: pointer;
 }
 
@@ -535,4 +536,55 @@
   .hasDetail:focus .tip {
     animation: none;
   }
+}
+
+/* ---------- Nightshift Violet layer ---------- */
+.back a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid var(--rule);
+  color: var(--green);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.back a:hover { border-color: var(--rule-strong); color: var(--ink); }
+.kicker { color: var(--accent); font-weight: 600; }
+.title { color: var(--ink); font-size: clamp(2.2rem, 6vw, 3.4rem); letter-spacing: -0.035em; }
+.stats { border-top: 0; gap: 16px; }
+.stats > div {
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.stats > div:first-child {
+  background: linear-gradient(150deg, color-mix(in srgb, var(--primary) 32%, var(--surface)), var(--surface) 72%);
+  border-color: var(--rule-strong);
+}
+.statValue { font-size: clamp(2rem, 5vw, 2.8rem); }
+.section {
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.section h2 { color: var(--ink); border-bottom: 0; padding-bottom: 0; }
+.week { border-radius: 12px; }
+.weekCrunch { border-color: #a855f7; }
+.table tbody tr:hover > td { background: color-mix(in srgb, var(--primary) 8%, transparent); }
+.chartTrack, .barFill, .chartUsed, .chartOver { rx: 4px; }
+.ask input {
+  border-radius: var(--radius);
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--ink);
+}
+.ask button:hover:not(:disabled) { background: var(--primary-hover); }
+.badge { border: 1px dashed var(--badge-fg); }
+@media (max-width: 640px) {
+  .section { padding: var(--space-3); }
 }

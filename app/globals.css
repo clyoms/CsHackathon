@@ -1,67 +1,70 @@
-/* Frame Next design tokens, from docs/design/brief.md (approved, T-7).
-   Ledger paper, counting-house green ink, one vermilion accent for the main action and key numbers.
-   Purple is reserved for the synthetic badge. */
+/* Frame Next design tokens: "Nightshift Violet".
+   Deep violet-black ground, lilac ink for headings and links, an orchid accent for key numbers,
+   and a saturated violet for the one main action on each screen.
+   The synthetic badge moved to amber so "made-up number" still looks unlike every real number. */
 :root {
-  --paper: #f6f1e7;
-  --surface: #fffdf8;
-  --ink: #1c2b24;
-  --muted: #4f5b55;
-  --green: #1f4d3f;
-  --accent: #c2410c;
-  --on-accent: #ffffff;
-  --rule: #d8cfbd;
-  --badge-fg: #5b2a9a;
-  --badge-bg: #f1e6ff;
+  --paper: #0d0a1a;
+  --surface: #161127;
+  --surface-2: #1f1836;
+  --ink: #f3f0ff;
+  --muted: #b4abd6;
+  --green: #c4b5fd;          /* headings, links (name kept so older modules still read it) */
+  --accent: #f0abfc;         /* key numbers */
+  --on-accent: #1a0b24;
+  --primary: #7c3aed;        /* main action */
+  --primary-hover: #6d28d9;
+  --on-primary: #ffffff;
+  --rule: #2e2550;
+  --rule-strong: #4c3d85;
+  --badge-fg: #fcd34d;
+  --badge-bg: rgba(251, 191, 36, 0.12);
+  --glow: rgba(124, 58, 237, 0.38);
+  --glow-2: rgba(217, 70, 239, 0.16);
+  --shadow: 0 18px 50px rgba(5, 2, 15, 0.55);
 
-  --font-head: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-body: var(--font-plex), "Segoe UI", Arial, sans-serif;
+  --font-head: var(--font-grotesk), "Segoe UI", Arial, sans-serif;
+  --font-body: var(--font-inter), "Segoe UI", Arial, sans-serif;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 1rem;
   --space-4: 1.5rem;
   --space-5: 2.5rem;
-  --radius: 4px;
+  --radius: 14px;
+  --radius-lg: 24px;
   --gutter: 16px;
-  --measure: 72rem;
-  --ease: 150ms ease;
+  --measure: 75rem;
+  --ease: 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
 
-  /* Older names, kept so pages not yet restyled still read the new palette. */
+  /* Older names, kept so pages read the new palette. */
   --bg: var(--paper);
   --fg: var(--ink);
   --line: var(--rule);
 
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --paper: #121a16;
-    --surface: #1a241f;
-    --ink: #ede6d6;
-    --muted: #a9b3ac;
-    --green: #7fb59e;
-    --accent: #ff8a4c;
-    --on-accent: #121a16;
-    --rule: #2c3a33;
-    --badge-fg: #e4d2ff;
-    --badge-bg: #3b2160;
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme="dark"] {
-  --paper: #121a16;
-  --surface: #1a241f;
-  --ink: #ede6d6;
-  --muted: #a9b3ac;
-  --green: #7fb59e;
-  --accent: #ff8a4c;
-  --on-accent: #121a16;
-  --rule: #2c3a33;
-  --badge-fg: #e4d2ff;
-  --badge-bg: #3b2160;
   color-scheme: dark;
+}
+
+/* Light variant, opt-in with <html data-theme="light">. */
+:root[data-theme="light"] {
+  --paper: #f7f5ff;
+  --surface: #ffffff;
+  --surface-2: #f0ebff;
+  --ink: #1b1433;
+  --muted: #5b5277;
+  --green: #5b21b6;
+  --accent: #a21caf;
+  --on-accent: #ffffff;
+  --primary: #7c3aed;
+  --primary-hover: #6d28d9;
+  --on-primary: #ffffff;
+  --rule: #e2dbf7;
+  --rule-strong: #c4b5fd;
+  --badge-fg: #92400e;
+  --badge-bg: #fef3c7;
+  --glow: rgba(124, 58, 237, 0.18);
+  --glow-2: rgba(217, 70, 239, 0.10);
+  --shadow: 0 18px 40px rgba(76, 29, 149, 0.12);
+  color-scheme: light;
 }
 
 * { box-sizing: border-box; }
@@ -70,36 +73,45 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  background: var(--paper);
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 520px at 82% -10%, var(--glow), transparent 70%),
+    radial-gradient(700px 420px at 4% 12%, var(--glow-2), transparent 70%),
+    var(--paper);
+  background-repeat: no-repeat;
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 18px;
-  line-height: 1.5;
+  font-size: 17px;
+  line-height: 1.55;
   overflow-x: hidden;
 }
 
 h1, h2, h3 {
   font-family: var(--font-head);
-  color: var(--green);
-  line-height: 1.2;
-  font-weight: 650;
+  color: var(--ink);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-a { color: var(--green); text-underline-offset: 0.15em; }
-a:focus-visible, button:focus-visible, input:focus-visible {
+h1 { letter-spacing: -0.035em; }
+
+a { color: var(--green); text-underline-offset: 0.18em; transition: color var(--ease); }
+a:hover { color: var(--ink); }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
   outline: 3px solid var(--green);
   outline-offset: 2px;
 }
 
-/* Figures line up like a trial balance. */
+::selection { background: var(--primary); color: var(--on-primary); }
+
+/* Figures line up in columns. */
 .num, td, dd, data { font-variant-numeric: tabular-nums; }
 
-/* The accountant's double rule under a total. */
+/* A key total: orchid, bold, no ledger rule. */
 .total {
   color: var(--accent);
   font-weight: 700;
-  border-bottom: 3px double var(--accent);
-  padding-bottom: 2px;
 }
 
 @media (prefers-reduced-motion: reduce) {
