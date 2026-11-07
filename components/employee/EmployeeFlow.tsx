@@ -6,16 +6,21 @@ import { useEffect, useState, type FormEvent } from "react";
 import type { AskResponse, AthenaAnswer, AthenaResponse } from "@/contract/api";
 import type { AthenaQuestion, LiteracyLogEntry, MeterReading, Recommendation, Staff } from "@/contract/types";
 import { recordAdopted } from "@/engine/literacy";
+import type { AthenaOutcome, Usage } from "@/engine/contract";
 import { ALL_CLIENTS, type Choices } from "./choices";
+import { UPLOAD_HINT, downloadSkill } from "./exportSkill";
 import { SourceLink, SyntheticBadge } from "./Tags";
 import styles from "./employee.module.css";
 
 export interface EmployeeFlowProps {
   staff: Staff;
   choices: Choices;
-  /** Share of AI-ready hours we assume come back. Shown as an assumption. */
-  hoursBackFactor: number;
+  /** Share of AI-ready hours we assume come back. No longer shown on the page. */
+  hoursBackFactor?: number;
 }
+
+/** Fields the routes may add on top of the base response: the offline label and Athena's outcome. */
+type Extra = Partial<Usage> & { outcome?: AthenaOutcome };
 
 type Step = "ask" | "thinking" | "questions" | "answer";
 
@@ -57,14 +62,17 @@ function addReadings(a: MeterReading | null, b: MeterReading | null): { tokens: 
   return { tokens, euros };
 }
 
-export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowProps) {
+export function EmployeeFlow({ staff, choices }: EmployeeFlowProps) {
   const clients = Object.keys(choices).filter((c) => c !== ALL_CLIENTS);
   const [step, setStep] = useState<Step>("ask");
   const [request, setRequest] = useState("");
   const [questions, setQuestions] = useState<AthenaQuestion[]>([]);
   const [answers, setAnswers] = useState<AthenaAnswer[]>([]);
-  const [written, setWritten] = useState<AskResponse | null>(null);
+  const [written, setWritten] = useState<(AskResponse & Extra) | null>(null);
   const [athenaMeter, setAthenaMeter] = useState<MeterReading | null>(null);
+  const [athenaOffline, setAthenaOffline] = useState(false);
+  const [outcome, setOutcome] = useState<AthenaOutcome | null>(null);
+  const [exported, setExported] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
   const [copied, setCopied] = useState<"idle" | "done" | "failed">("idle");
   const [log, setLog] = useState<readonly LiteracyLogEntry[]>([]);
@@ -79,9 +87,14 @@ export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowPr
     setAnswers(withAnswers);
     setStep("thinking");
     try {
-      setWritten(
-        await postJson<AskResponse>("/api/ask", { question: request, view: "employee", staffId: staff.id, athenaAnswers: withAnswers }),
-      );
+      const res = await postJson<AskResponse & Extra>("/api/ask", {
+        question: request,
+        view: "employee",
+        staffId: staff.id,
+        athenaAnswers: withAnswers,
+      });
+      setWritten(res);
+      if (res.outcome && res.outcome.kind !== "skill" && res.outcome.kind !== "clarify") setOutcome(res.outcome);
     } catch {
       setWritten(null);
       setProblem("The written answer is not available right now. The numbers below come straight from the engine.");
@@ -96,10 +109,21 @@ export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowPr
     setWritten(null);
     setAnswers([]);
     setCopied("idle");
+    setExported(null);
+    setOutcome(null);
+    setAthenaOffline(false);
     setStep("thinking");
     try {
-      const athena = await postJson<AthenaResponse>("/api/athena", { staffId: staff.id, request });
+      const athena = await postJson<AthenaResponse & Extra>("/api/athena", { staffId: staff.id, request });
       setAthenaMeter(athena.meter);
+      setAthenaOffline(athena.offline ?? athena.fallback);
+      // Off-topic question: one line, no skill, no numbers.
+      if (athena.outcome?.kind === "decline") {
+        setOutcome(athena.outcome);
+        setQuestions([]);
+        setStep("answer");
+        return;
+      }
       const qs = athena.result.needed ? athena.result.questions.map((q) => withAllClients(q, clients)) : [];
       setQuestions(qs);
       if (qs.length > 0) setStep("questions");
@@ -140,6 +164,11 @@ export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowPr
     setCopied(ok ? "done" : "failed");
   }
 
+  function exportSkill() {
+    if (!recommendation) return;
+    setExported(downloadSkill(recommendation.item));
+  }
+
   function tryIt() {
     if (!recommendation) return;
     setLog((l) => recordAdopted(l, staff.id, recommendation.item.id, todayIso()));
@@ -148,6 +177,7 @@ export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowPr
   const current = step === "questions" ? questions[answers.length] : undefined;
   const adopted = recommendation ? log.some((e) => e.adopted && e.itemId === recommendation.item.id) : false;
   const meter = addReadings(athenaMeter, written?.meter ?? null);
+  const offline = step === "answer" && (athenaOffline || (written ? (written.offline ?? written.fallback) : false));
 
   return (
     <main className={styles.page}>
@@ -202,28 +232,44 @@ export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowPr
         </section>
       )}
 
-      {step === "answer" && !recommendation && (
-        <section className={styles.card} aria-live="polite">
-          <h2>Nothing to hand over yet</h2>
-          <p>{written?.answer ?? "None of your logged work matches a skill in the catalogue yet."}</p>
-        </section>
+      {step === "answer" && outcome?.kind === "decline" && (
+        <p className={styles.card} aria-live="polite">
+          {outcome.message ?? "Frame Next helps with work tasks."}
+        </p>
       )}
 
-      {step === "answer" && recommendation && (
+      {step === "answer" && outcome?.kind === "no_match" && (
+        <p className={styles.card} aria-live="polite">
+          {outcome.message ?? "There is no matching skill for that task yet."}
+        </p>
+      )}
+
+      {step === "answer" && !outcome && !recommendation && (
+        <p className={styles.card} aria-live="polite">
+          There is no matching skill for your logged work yet.
+        </p>
+      )}
+
+      {step === "answer" && !outcome && recommendation && (
         <AnswerCard
           recommendation={recommendation}
           written={written}
-          answers={answers}
           today={today}
-          hoursBackFactor={hoursBackFactor}
           copied={copied}
+          exported={exported}
           adopted={adopted}
           onCopy={copySkill}
+          onExport={exportSkill}
           onTry={tryIt}
         />
       )}
 
       <footer className={styles.meter} aria-label="AI use for this task">
+        {offline && (
+          <span className={styles.badge} title="Claude was not reached, so this is a fixed answer. The server log says why.">
+            offline answer
+          </span>
+        )}{" "}
         <span>AI used for this task:</span> <span>{meter.tokens.toLocaleString("en-IE")} tokens</span>
         {" · "}
         <span>{meter.euros === null ? "cost not set yet" : euro.format(meter.euros)}</span>
@@ -235,23 +281,22 @@ export function EmployeeFlow({ staff, choices, hoursBackFactor }: EmployeeFlowPr
 interface AnswerCardProps {
   recommendation: Recommendation;
   written: AskResponse | null;
-  answers: AthenaAnswer[];
   today: string | null;
-  hoursBackFactor: number;
   copied: "idle" | "done" | "failed";
+  exported: string | null;
   adopted: boolean;
   onCopy: () => void;
+  onExport: () => void;
   onTry: () => void;
 }
 
-function AnswerCard({ recommendation, written, answers, today, hoursBackFactor, copied, adopted, onCopy, onTry }: AnswerCardProps) {
+function AnswerCard({ recommendation, written, today, copied, exported, adopted, onCopy, onExport, onTry }: AnswerCardProps) {
   const { item, deadline } = recommendation;
   const days = today === null ? null : daysUntil(deadline.date, today);
   const dateText = longDate.format(new Date(`${deadline.date}T00:00:00Z`));
 
   return (
     <section className={styles.card} aria-live="polite">
-      {answers.length > 0 && <p className={styles.muted}>You said: {answers.map((a) => a.answer).join(", ")}</p>}
       <p className={styles.step}>Try this {item.kind}</p>
       <h2>{item.title}</h2>
       <p className={styles.summary}>{item.plainSummary}</p>
@@ -281,21 +326,15 @@ function AnswerCard({ recommendation, written, answers, today, hoursBackFactor, 
         </div>
       </dl>
 
-      <p>{written?.answer ?? recommendation.reason}</p>
-      <p className={styles.small}>
-        The time is an estimate: it assumes about {Math.round(hoursBackFactor * 100)}% of the {recommendation.aiReadyHours} hours
-        AI could help with come back to you.
-      </p>
-
-      {item.verifyStep && (
-        <p className={styles.verify}>
-          <strong>Before you use the result:</strong> {item.verifyStep}
-        </p>
-      )}
+      {written && !written.fallback && <p>{written.answer}</p>}
+      <p className={styles.verify}>Check what AI gives you before you rely on it: you delegate the work, you do not hand it off.</p>
 
       <div className={styles.actions}>
         <button type="button" className={styles.primary} onClick={onCopy}>
           {copied === "done" ? "Copied" : "Copy skill"}
+        </button>
+        <button type="button" className={styles.secondary} onClick={onExport}>
+          Export skill
         </button>
         <button type="button" className={styles.secondary} onClick={onTry} disabled={adopted}>
           {adopted ? "Noted, thanks" : "I'll try it"}
@@ -304,6 +343,11 @@ function AnswerCard({ recommendation, written, answers, today, hoursBackFactor, 
       {copied === "failed" && (
         <p className={styles.small} role="alert">
           Your browser blocked copying. Open the skill below and copy it by hand.
+        </p>
+      )}
+      {exported && (
+        <p className={styles.small} role="status">
+          Saved {exported}. {UPLOAD_HINT}
         </p>
       )}
       {adopted && <p className={styles.small}>We'll ask how it went next week.</p>}
