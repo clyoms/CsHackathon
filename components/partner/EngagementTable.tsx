@@ -46,24 +46,47 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                     </button>
                     <div className={styles.explain}>{r.type}</div>
                   </td>
-                  <td className={styles.num}>
+                  <td className={styles.num} data-label="Fee">
                     <Num synthetic={r.synthetic}>{euro(r.fee)}</Num>
                   </td>
-                  <td className={styles.num}>
-                    <Num synthetic={r.synthetic}>
+                  <td className={styles.num} data-label="Budget vs actual">
+                    <Num
+                      synthetic={r.synthetic}
+                      detail={`${hours(r.budgetHours)} budgeted, ${hours(r.actualHours)} logged: ${
+                        over ? `${hours(r.varianceHours)} over` : `${hours(-r.varianceHours)} left`
+                      }.`}
+                    >
                       {hours(r.budgetHours)} / {hours(r.actualHours)}
                     </Num>
                     <div className={styles.bar} aria-hidden>
                       <div className={`${styles.barFill} ${over ? styles.barOver : ""}`} style={{ width: `${used * 100}%` }} />
                     </div>
                   </td>
-                  <td className={styles.num}>
-                    <Num synthetic={r.synthetic}>{r.effectiveRate === null ? "n/a" : `${euro(r.effectiveRate)}/h`}</Num>
+                  <td className={styles.num} data-label="Effective rate">
+                    <Num
+                      synthetic={r.synthetic}
+                      detail={
+                        r.effectiveRate === null
+                          ? "No hours logged yet."
+                          : `${euro(r.fee)} fee ÷ ${hours(r.actualHours)} logged. Budgeted rate was ${euro(r.budgetRate)}/h.`
+                      }
+                    >
+                      {r.effectiveRate === null ? "n/a" : `${euro(r.effectiveRate)}/h`}
+                    </Num>
                   </td>
-                  <td className={`${styles.num} ${r.moneyLost > 0 ? styles.loss : ""}`}>
-                    <Num synthetic={r.synthetic}>{euro(r.moneyLost)}</Num>
+                  <td className={`${styles.num} ${r.moneyLost > 0 ? styles.loss : ""}`} data-label="Money lost">
+                    <Num
+                      synthetic={r.synthetic}
+                      detail={
+                        r.moneyLost > 0
+                          ? `${hours(r.varianceHours)} over budget × ${euro(r.budgetRate)}/h budgeted rate.`
+                          : "On or under budget, so nothing lost yet."
+                      }
+                    >
+                      {euro(r.moneyLost)}
+                    </Num>
                   </td>
-                  <td>
+                  <td data-label="Top AI-ready task">
                     {r.topTask ? (
                       <>
                         <span title={r.topTask.onetTask}>{short(r.topTask.onetTask, 60)}</span>{" "}
@@ -93,23 +116,23 @@ export function EngagementTable({ rows, initialOpen = null }: { rows: PartnerRow
                           {r.tasks.map((t) => (
                             <tr key={t.onetTask}>
                               <td title={t.onetTask}>{short(t.onetTask)}</td>
-                              <td className={styles.num}>
+                              <td className={styles.num} data-label="Hours">
                                 <Num synthetic>{hours(t.hours)}</Num>
                               </td>
-                              <td className={styles.num}>
+                              <td className={styles.num} data-label="AI usage share">
                                 {t.penetration === null ? (
                                   <span className={styles.explain}>no score</span>
                                 ) : (
                                   <Num source={t.source}>{t.penetration.toFixed(2)}</Num>
                                 )}
                               </td>
-                              <td className={styles.num}>
+                              <td className={styles.num} data-label="AI-ready hours">
                                 <Num synthetic>{hours(t.aiReadyHours)}</Num>
                               </td>
-                              <td className={styles.num}>
+                              <td className={styles.num} data-label="Hours back">
                                 <Num synthetic>{hours(t.hoursBack)}</Num>
                               </td>
-                              <td className={styles.num}>
+                              <td className={styles.num} data-label="Euros back">
                                 <Num synthetic>{euro(t.eurosBack)}</Num>
                               </td>
                             </tr>

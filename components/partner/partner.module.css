@@ -1,52 +1,330 @@
+/* Partner page, in the ledger style of docs/design/brief.md. Colours come only from the tokens in
+   app/globals.css, so light and dark mode both follow. Purple stays on the synthetic badge alone. */
+
 .page {
-  max-width: 1080px;
+  max-width: var(--measure);
   margin: 0 auto;
-  padding: 2rem 1rem 4rem;
+  padding: var(--space-5) var(--gutter);
+}
+
+.back {
+  margin: 0 0 var(--space-4);
+  font-size: 0.95rem;
+}
+
+.back a,
+.page a {
+  color: var(--green);
+}
+
+.kicker {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-head);
+  font-size: clamp(2rem, 6vw, 3.2rem);
+  line-height: 1.1;
+  color: var(--green);
+  margin: var(--space-2) 0;
 }
 
 .lede {
   color: var(--muted);
-  margin-top: 0;
+  margin: 0 0 var(--space-4);
+  max-width: 40rem;
 }
 
+/* ---------- Headline figures ---------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  margin: 0 0 var(--space-5);
+  border-top: 2px solid var(--green);
+}
+
+.stats > div {
+  padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.stats dt {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stats dd {
+  margin: var(--space-1) 0 0;
+}
+
+.statValue {
+  font-family: var(--font-head);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The accountant's double rule under a total. */
+.total {
+  border-bottom: 3px double var(--accent);
+}
+
+/* ---------- Sections ---------- */
+
 .section {
-  margin-top: 2.5rem;
+  margin: var(--space-5) 0;
 }
 
 .section h2 {
-  font-size: 1.25rem;
-  margin-bottom: 0.25rem;
+  font-family: var(--font-head);
+  font-size: 1.5rem;
+  color: var(--green);
+  margin: 0 0 var(--space-1);
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--rule);
 }
 
 .explain {
   color: var(--muted);
   font-size: 0.9rem;
-  margin: 0 0 0.75rem;
+  margin: var(--space-1) 0 var(--space-3);
 }
 
-.tableWrap {
+/* ---------- Numbers: badges, sources, hover detail ---------- */
+
+.badge {
+  display: inline-block;
+  margin-left: 0.35em;
+  padding: 0.05em 0.45em;
+  border-radius: 999px;
+  background: var(--badge-bg);
+  color: var(--badge-fg);
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+.badgeUnchecked {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--rule);
+}
+
+.sourced {
+  text-decoration: underline dotted var(--green);
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+.hasDetail {
+  position: relative;
+  cursor: help;
+  border-radius: var(--radius);
+}
+
+.hasDetail:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+/* Hidden with display so it never widens the page while closed. */
+.tip {
+  display: none;
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  top: calc(100% + 6px);
+  width: max-content;
+  max-width: min(18rem, 80vw);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.18);
+}
+
+.hasDetail:hover .tip,
+.hasDetail:focus .tip {
+  display: block;
+  animation: tipIn var(--ease);
+}
+
+@keyframes tipIn {
+  from { opacity: 0; transform: translateY(-2px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Chart ---------- */
+
+.chart {
+  margin: 0;
+}
+
+.chartRows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chartRow {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.chartLabel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.chartClient {
+  font-weight: 600;
+}
+
+.chartSvg {
+  display: block;
+  width: 100%;
+  height: 14px;
+  margin-top: var(--space-1);
+  overflow: visible;
+}
+
+.chartTrack { fill: var(--rule); }
+.chartUsed { fill: var(--green); }
+.chartOver { fill: var(--accent); }
+
+.chartBudget {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.chartGrow {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: grow 700ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.keyUsed,
+.keyOver,
+.keyBudget {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.6em;
+  margin: 0 0.25em 0 0.6em;
+  vertical-align: middle;
+}
+
+.keyUsed { background: var(--green); }
+.keyOver { background: var(--accent); }
+.keyBudget { width: 2px; height: 0.9em; background: var(--ink); }
+
+/* ---------- Crunch calendar strip ---------- */
+
+.strip {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(10.5rem, 1fr);
+  gap: var(--space-2);
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  padding-bottom: var(--space-2);
+}
+
+.week {
+  scroll-snap-align: start;
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--rule);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+}
+
+.weekCrunch {
+  border-top-color: var(--accent);
+}
+
+.weekLabel {
+  font-weight: 600;
+  color: var(--green);
+}
+
+.ticks {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  margin: var(--space-2) 0;
+}
+
+.tick {
+  height: 10px;
+  background: var(--rule);
+  border-radius: 1px;
+}
+
+.tickDue { background: var(--accent); }
+.tickToday { outline: 2px solid var(--green); outline-offset: 1px; }
+
+.due {
+  margin-top: var(--space-1);
+}
+
+.due a {
+  font-weight: 600;
+}
+
+/* ---------- Engagement table ---------- */
+
+.tableWrap {
+  width: 100%;
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  background: var(--surface);
 }
 
 .table th,
 .table td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--rule);
   text-align: left;
-  padding: 0.6rem 0.5rem;
-  border-bottom: 1px solid var(--line);
   vertical-align: top;
 }
 
 .table th {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
   color: var(--muted);
+  border-bottom: 2px solid var(--green);
 }
 
 .num {
@@ -54,144 +332,164 @@
   white-space: nowrap;
 }
 
+.table th.num,
+.table td.num {
+  text-align: right;
+}
+
 .rowButton {
-  all: unset;
-  cursor: pointer;
+  font: inherit;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--green);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
 }
 
 .rowButton:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--green);
   outline-offset: 2px;
 }
 
-.open {
-  background: #f0f4fb;
+.open > td {
+  background: color-mix(in srgb, var(--accent) 6%, var(--surface));
 }
 
 .loss {
-  color: #a3261f;
+  color: var(--accent);
   font-weight: 600;
 }
 
-.detail td {
-  background: #f7f9fc;
-  padding: 1rem;
+.detail > td {
+  background: var(--paper);
+  animation: tipIn 200ms ease;
 }
 
 .detail h3 {
-  font-size: 1rem;
-  margin: 0 0 0.5rem;
+  font-family: var(--font-head);
+  color: var(--green);
+  margin: var(--space-2) 0;
 }
 
 .rec {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  margin-top: 1rem;
-  background: #fff;
-}
-
-.badge {
-  display: inline-block;
-  margin-left: 0.35rem;
-  padding: 0 0.4rem;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  line-height: 1.5;
-  background: #fff3d6;
-  color: #7a5200;
-  border: 1px solid #f0d58c;
-  vertical-align: middle;
-}
-
-.badgeUnchecked {
-  background: #eef0f3;
-  color: #4b5563;
-  border-color: #d5d9df;
-}
-
-.sourced {
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  cursor: help;
+  margin-top: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
 }
 
 .bar {
-  height: 6px;
-  background: var(--line);
-  border-radius: 3px;
+  height: 4px;
   margin-top: 4px;
+  background: var(--rule);
+  border-radius: 2px;
   overflow: hidden;
 }
 
 .barFill {
   height: 100%;
-  background: var(--accent);
+  background: var(--green);
 }
 
 .barOver {
-  background: #a3261f;
+  background: var(--accent);
 }
 
-.calendar {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(110px, 1fr));
-  gap: 0.5rem;
-  overflow-x: auto;
+/* Under 720px each engagement becomes a card: label on the left, value on the right. */
+@media (max-width: 720px) {
+  .table thead {
+    display: none;
+  }
+
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+    width: 100%;
+  }
+
+  .table tr {
+    border-bottom: 2px solid var(--rule);
+    padding: var(--space-2) 0;
+  }
+
+  .table td {
+    border-bottom: 0;
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .table td[data-label] {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-3);
+    text-align: right;
+    white-space: normal;
+  }
+
+  .table td[data-label]::before {
+    content: attr(data-label);
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: left;
+    flex: 0 0 auto;
+  }
+
+  /* Text cells (the task name) stack under their label instead of squeezing beside it. */
+  .table td[data-label]:not(.num) {
+    flex-direction: column;
+    gap: 2px;
+    text-align: left;
+  }
+
+  .table td[data-label] .bar {
+    display: none;
+  }
+
+  .detail .table td {
+    text-align: left;
+  }
+
+  .tip {
+    left: auto;
+    right: 0;
+  }
 }
 
-.week {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.5rem;
-  min-height: 110px;
-  background: #fff;
-  font-size: 0.85rem;
-}
-
-.weekCrunch {
-  border-color: #a3261f;
-  background: #fff6f5;
-}
-
-.weekLabel {
-  color: var(--muted);
-  font-size: 0.75rem;
-  margin-bottom: 0.35rem;
-}
-
-.due {
-  margin-top: 0.35rem;
-}
-
-.due a {
-  font-weight: 600;
-}
+/* ---------- Ask box ---------- */
 
 .ask {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .ask input {
-  flex: 1 1 320px;
+  flex: 1 1 16rem;
+  min-width: 0;
   font: inherit;
   padding: 0.6rem 0.75rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.ask input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 1px;
 }
 
 .ask button {
   font: inherit;
+  font-weight: 600;
   padding: 0.6rem 1.1rem;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   cursor: pointer;
 }
 
@@ -201,16 +499,16 @@
 }
 
 .answer {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-left: 4px solid var(--accent);
-  background: #fff;
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
 }
 
 .numbers {
   list-style: none;
   padding: 0;
-  margin: 0.75rem 0 0;
+  margin: var(--space-2) 0 0;
   font-size: 0.9rem;
 }
 
@@ -221,9 +519,20 @@
 .meter {
   color: var(--muted);
   font-size: 0.8rem;
-  margin-top: 0.5rem;
+  margin-top: var(--space-2);
 }
 
 .error {
-  color: #a3261f;
+  color: var(--accent);
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .chartGrow,
+  .detail > td,
+  .hasDetail:hover .tip,
+  .hasDetail:focus .tip {
+    animation: none;
+  }
 }
