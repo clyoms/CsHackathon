@@ -77,7 +77,10 @@ export function BenchmarkChart({ frameShare, benchmarks }: { frameShare: number;
                 {r.percent}%
               </text>
               <text x={LABEL_W} y={y + 38} className={styles.detail}>
-                {r.frame ? "Staff who used AI this period (synthetic)" : `${r.label}, ${r.year} · hover for source`}
+                {r.frame
+                  ? "Staff who used AI this period (synthetic)"
+                  : // Short form so it fits a phone: the source name in brackets at the end of the label, and the year.
+                    `${r.label.match(/\(([^)]+)\)\s*$/)?.[1] ?? r.label.slice(0, 20)} ${r.year} · hover for source`}
               </text>
             </g>
           );

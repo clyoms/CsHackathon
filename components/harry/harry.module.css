@@ -262,6 +262,33 @@
 
 @media (max-width: 640px) {
   .page { padding-top: var(--space-4); }
-  .table { font-size: 0.85rem; }
-  .table th, .table td { padding: 0.45rem 0.25rem; }
+
+  /* Each table row becomes a labelled card, so no table is wider than the phone. */
+  .table thead { display: none; }
+  .table,
+  .table tbody,
+  .table tr,
+  .table td { display: block; width: 100%; }
+  .table tr {
+    padding: var(--space-2) 0;
+    border-bottom: 2px solid var(--rule);
+  }
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding: 0.2rem 0;
+    border-bottom: 0;
+    text-align: right;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  .table td::before {
+    content: attr(data-label);
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: left;
+  }
 }
